@@ -1,37 +1,16 @@
-## Welcome to GitHub Pages
+### 项目组织方式
 
-You can use the [editor on GitHub](https://github.com/Humoonruc/Codewars.github.io/edit/main/README.md) to maintain and preview the content for your website in Markdown files.
+一个主脚本文件 `render.R`，功能如下：
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+1. 每个 kata 导出一个 html，包含题目的 description 和各语言 solutions 的脚本代码，在 Rmd 中组织起来，并自动 render html
+   1. js 代码依赖外部脚本中的变量和函数时，无法在 Rmd 中运行。因为在 Rmd 的 js 代码块不被认为是一个 module，使用 `import` 会报错
+   2. R, julia, Python 代码在 Rmd 中均可运行、实时显示结果
 
-### Markdown
+2. 读取 content.csv 后将其导出为可读性更强的表格，同样用一个 Rmd 文件来完成
+3. `render.R` 负责操作文件系统、编写 Rmd 文件的代码，并以命令的方式 render .html 文件
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+> csv 可以用在线工具转为 markdown 表格，然后导出漂亮的 html
 
-```markdown
-Syntax highlighted code block
 
-# Header 1
-## Header 2
-### Header 3
 
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/Humoonruc/Codewars.github.io/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+项目入口在 `index.html`
