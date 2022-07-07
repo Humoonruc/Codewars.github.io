@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Humoon" />
+
+<meta name="date" content="2022-07-07" />
+
+<title>Decimal to Factorial and Back</title>
+
+<script src="Rmd/libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="Rmd/libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="Rmd/libs/bootstrap-3.3.5/css/united.min.css" rel="stylesheet" />
+<script src="Rmd/libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="Rmd/libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="Rmd/libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="Rmd/libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="Rmd/libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="Rmd/libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="Rmd/libs/navigation-1.1/tabsets.js"></script>
+<script src="Rmd/libs/navigation-1.1/codefolding.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; } /* Alert */
+code span.an { color: #008000; } /* Annotation */
+code span.at { } /* Attribute */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #0000ff; } /* ControlFlow */
+code span.ch { color: #008080; } /* Char */
+code span.cn { } /* Constant */
+code span.co { color: #008000; } /* Comment */
+code span.cv { color: #008000; } /* CommentVar */
+code span.do { color: #008000; } /* Documentation */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.im { } /* Import */
+code span.in { color: #008000; } /* Information */
+code span.kw { color: #0000ff; } /* Keyword */
+code span.op { } /* Operator */
+code span.ot { color: #ff4000; } /* Other */
+code span.pp { color: #ff4000; } /* Preprocessor */
+code span.sc { color: #008080; } /* SpecialChar */
+code span.ss { color: #008080; } /* SpecialString */
+code span.st { color: #008080; } /* String */
+code span.va { } /* Variable */
+code span.vs { color: #008080; } /* VerbatimString */
+code span.wa { color: #008000; font-weight: bold; } /* Warning */
+
+.sourceCode .row {
+  width: 100%;
+}
+.sourceCode {
+  overflow-x: auto;
+}
+.code-folding-btn {
+  margin-right: -30px;
+}
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<link rel="stylesheet" href="css/vue.css" type="text/css" />
+<link rel="stylesheet" href="css/vue.user.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Decimal to Factorial and Back</h1>
+<h4 class="author">Humoon</h4>
+<h4 class="date">2022-07-07</h4>
+
+</div>
+
+
+<div id="description" class="section level3">
+<h3>Description</h3>
+<p>Coding decimal numbers with factorials is a way of writing out
+numbers in a base system that depends on factorials, rather than powers
+of numbers.</p>
+<p>In this system, the last digit is always <code>0</code> and is in
+base 0!. The digit before that is either <code>0 or 1</code> and is in
+base 1!. The digit before that is either <code>0, 1, or 2</code> and is
+in base 2!, etc. More generally, the nth-to-last digit is always
+<code>0, 1, 2, ..., n</code> and is in base n!.</p>
+<p>Read more about it at: <a
+href="http://en.wikipedia.org/wiki/Factorial_number_system"
+class="uri">http://en.wikipedia.org/wiki/Factorial_number_system</a></p>
+<div id="example" class="section level4">
+<h4>Example</h4>
+<p>The decimal number <code>463</code> is encoded as
+<code>"341010"</code>, because:</p>
+<p>463 = 3×5! + 4×4! + 1×3! + 0×2! + 1×1! + 0×0!</p>
+<p>If we are limited to digits <code>0..9</code>, the biggest number we
+can encode is 10!-1 (= 3628799). So we extend <code>0..9</code> with
+letters <code>A..Z</code>. With these 36 digits we can now encode
+numbers up to 36!-1 (= 3.72 × 1041)</p>
+</div>
+<div id="task" class="section level4">
+<h4>Task</h4>
+<p>We will need two functions. The first one will receive a decimal
+number and return a string with the factorial representation.</p>
+<p>The second one will receive a string with a factorial representation
+and produce the decimal representation.</p>
+<p>Given numbers will always be positive.</p>
+</div>
+</div>
+<div id="solution" class="section level3">
+<h3>Solution</h3>
+<div id="r" class="section level4">
+<h4>R</h4>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Decimal-to-Factorial-and-Back.R</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>codes <span class="ot">&lt;-</span> <span class="st">&quot;0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;</span> <span class="sc">%&gt;%</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_split</span>(<span class="st">&quot;&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unlist</span>()</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; 将 0:35 的阶乘视为一组基，将参数向这组基分解出系数</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @param nb 待分解的整数</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @return 系数数组的字符串</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>dec2FactString <span class="ot">&lt;-</span> <span class="cf">function</span>(nb) {</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 先找最大的基</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  max_base <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">while</span> (<span class="fu">factorial</span>(max_base <span class="sc">+</span> <span class="dv">1</span>) <span class="sc">&lt;=</span> nb) {</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    max_base <span class="ot">&lt;-</span> max_base <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 从大到小，确定每个基对应的系数</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">character</span>(<span class="dv">0</span>)</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> max_base<span class="sc">:</span><span class="dv">0</span>) {</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    x[<span class="fu">length</span>(x) <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> codes[nb <span class="sc">%/%</span> <span class="fu">factorial</span>(i) <span class="sc">+</span> <span class="dv">1</span>]</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    nb <span class="ot">&lt;-</span> nb <span class="sc">%%</span> <span class="fu">factorial</span>(i)</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>  x <span class="sc">%&gt;%</span> <span class="fu">str_c</span>(<span class="at">collapse =</span> <span class="st">&quot;&quot;</span>)</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="fu">dec2FactString</span>(<span class="dv">463</span>)</span></code></pre></div>
+<pre><code>#&gt; [1] &quot;341010&quot;</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; 已知系数和基，求和</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @param str 系数数组的字符串</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @return 加总后的整数</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>factString2Dec <span class="ot">&lt;-</span> <span class="cf">function</span>(str) {</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 逆序的系数向量</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  factors <span class="ot">&lt;-</span> str <span class="sc">%&gt;%</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_split</span>(<span class="st">&quot;&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">unlist</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rev</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">map_dbl</span>(<span class="cf">function</span>(char) <span class="fu">which</span>(codes <span class="sc">==</span> char) <span class="sc">-</span> <span class="dv">1</span>)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 基向量</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  bases <span class="ot">&lt;-</span> <span class="dv">0</span><span class="sc">:</span>(<span class="fu">length</span>(factors) <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> <span class="fu">factorial</span>()</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>(factors <span class="sc">*</span> bases)</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="fu">factString2Dec</span>(<span class="st">&quot;341010&quot;</span>)</span></code></pre></div>
+<pre><code>#&gt; [1] 463</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(testthat)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>testing1 <span class="ot">&lt;-</span> <span class="cf">function</span>(nb, expected) {</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  actual <span class="ot">&lt;-</span> <span class="fu">dec2FactString</span>(nb)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">expect_equal</span>(actual, expected)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>testing2 <span class="ot">&lt;-</span> <span class="cf">function</span>(str, expected) {</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  actual <span class="ot">&lt;-</span> <span class="fu">factString2Dec</span>(str)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">expect_equal</span>(actual, expected)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="fu">test_that</span>(<span class="st">&quot;tests dec2FactString&quot;</span>, {</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">testing1</span>(<span class="dv">2982</span>, <span class="st">&quot;4041000&quot;</span>)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">testing1</span>(<span class="dv">463</span>, <span class="st">&quot;341010&quot;</span>)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">testing1</span>(<span class="dv">36288000</span>, <span class="st">&quot;A0000000000&quot;</span>)</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">testing1</span>(<span class="dv">3628800054</span>, <span class="st">&quot;76A0000021000&quot;</span>)</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">testing1</span>(<span class="dv">1273928000</span>, <span class="st">&quot;27A0533231100&quot;</span>)</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">testing1</span>(<span class="dv">220</span>, <span class="st">&quot;140200&quot;</span>)</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">testing1</span>(<span class="dv">1936295</span>, <span class="st">&quot;5301133210&quot;</span>)</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">testing1</span>(<span class="dv">81440635</span>, <span class="st">&quot;204365543010&quot;</span>)</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">testing1</span>(<span class="dv">14808485</span>, <span class="st">&quot;40721200210&quot;</span>)</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">testing1</span>(<span class="dv">3395</span>, <span class="st">&quot;4411210&quot;</span>)</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">testing1</span>(<span class="dv">92</span>, <span class="st">&quot;33100&quot;</span>)</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">testing1</span>(<span class="dv">4881</span>, <span class="st">&quot;6431110&quot;</span>)</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">testing1</span>(<span class="dv">174720</span>, <span class="st">&quot;424400000&quot;</span>)</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">testing1</span>(<span class="dv">5897</span>, <span class="st">&quot;11102210&quot;</span>)</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">testing1</span>(<span class="dv">1947</span>, <span class="st">&quot;2410110&quot;</span>)</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">testing1</span>(<span class="dv">1575088</span>, <span class="st">&quot;4303332200&quot;</span>)</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">testing1</span>(<span class="dv">49124</span>, <span class="st">&quot;115113100&quot;</span>)</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">testing1</span>(<span class="dv">9376317</span>, <span class="st">&quot;25742343110&quot;</span>)</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">testing1</span>(<span class="dv">449</span>, <span class="st">&quot;332210&quot;</span>)</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">testing1</span>(<span class="dv">112</span>, <span class="st">&quot;42200&quot;</span>)</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">testing1</span>(<span class="dv">64269</span>, <span class="st">&quot;145123110&quot;</span>)</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">testing1</span>(<span class="dv">6742089</span>, <span class="st">&quot;18515001110&quot;</span>)</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">testing1</span>(<span class="dv">86565208</span>, <span class="st">&quot;218474232200&quot;</span>)</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">testing1</span>(<span class="dv">1806792694</span>, <span class="st">&quot;3929024133200&quot;</span>)</span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">testing1</span>(<span class="dv">12942219</span>, <span class="st">&quot;35576140110&quot;</span>)</span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div>
+<pre><code>#&gt; Test passed</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">test_that</span>(<span class="st">&quot;tests factString2Dec&quot;</span>, {</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">testing2</span>(<span class="st">&quot;4041000&quot;</span>, <span class="dv">2982</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">testing2</span>(<span class="st">&quot;27A0533231100&quot;</span>, <span class="dv">1273928000</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">testing2</span>(<span class="st">&quot;341010&quot;</span>, <span class="dv">463</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">testing2</span>(<span class="st">&quot;65341010&quot;</span>, <span class="dv">34303</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">testing2</span>(<span class="st">&quot;1461330110&quot;</span>, <span class="dv">555555</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">testing2</span>(<span class="st">&quot;13573044440000&quot;</span>, <span class="dv">7890123456</span>)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">testing2</span>(<span class="st">&quot;1630614043233100&quot;</span>, <span class="dv">1849669781372</span>)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">testing2</span>(<span class="st">&quot;150636011110&quot;</span>, <span class="dv">58322193</span>)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">testing2</span>(<span class="st">&quot;1662032340200&quot;</span>, <span class="dv">741017980</span>)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">testing2</span>(<span class="st">&quot;194B99466413200&quot;</span>, <span class="dv">145612691086</span>)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">testing2</span>(<span class="st">&quot;51465021000&quot;</span>, <span class="dv">18702054</span>)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">testing2</span>(<span class="st">&quot;445212100&quot;</span>, <span class="dv">185318</span>)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">testing2</span>(<span class="st">&quot;1000100&quot;</span>, <span class="dv">722</span>)</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">testing2</span>(<span class="st">&quot;522200&quot;</span>, <span class="dv">664</span>)</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">testing2</span>(<span class="st">&quot;2000&quot;</span>, <span class="dv">12</span>)</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">testing2</span>(<span class="st">&quot;64C0048313011110&quot;</span>, <span class="dv">8269501168833</span>)</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">testing2</span>(<span class="st">&quot;2455221000&quot;</span>, <span class="dv">916134</span>)</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">testing2</span>(<span class="st">&quot;10A739302433010&quot;</span>, <span class="dv">92262000091</span>)</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">testing2</span>(<span class="st">&quot;1A20254533200&quot;</span>, <span class="dv">885536614</span>)</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">testing2</span>(<span class="st">&quot;3855031110&quot;</span>, <span class="dv">1440081</span>)</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">testing2</span>(<span class="st">&quot;14D4831766411000&quot;</span>, <span class="dv">1739585710590</span>)</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">testing2</span>(<span class="st">&quot;331703501110&quot;</span>, <span class="dv">131284689</span>)</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">testing2</span>(<span class="st">&quot;86CB45050343200&quot;</span>, <span class="dv">740991913678</span>)</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">testing2</span>(<span class="st">&quot;112086032303100&quot;</span>, <span class="dv">94394539820</span>)</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">testing2</span>(<span class="st">&quot;30A3700211000&quot;</span>, <span class="dv">1474663950</span>)</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">testing2</span>(<span class="st">&quot;156B92750141010&quot;</span>, <span class="dv">121660182223</span>)</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div>
+<pre><code>#&gt; Test passed</code></pre>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>yTests <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  i <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">while</span> (i <span class="sc">&lt;</span> <span class="dv">20</span>) {</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    n <span class="ot">&lt;-</span> <span class="fu">floor</span>(<span class="fu">runif</span>(<span class="dv">1</span>, <span class="dv">1000000</span>, <span class="dv">12166018222</span>))</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    act <span class="ot">&lt;-</span> <span class="fu">factString2Dec</span>(<span class="fu">dec2FactString</span>(n))</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">expect_equal</span>(act, n)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    i <span class="ot">&lt;-</span> i <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="fu">test_that</span>(<span class="st">&quot;Random tests&quot;</span>, {</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">yTests</span>()</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div>
+<pre><code>#&gt; Test passed</code></pre>
+</div>
+<div id="julia" class="section level4">
+<h4>Julia</h4>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Decimal-to-Factorial-and-Back.jl</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>code <span class="op">=</span> [<span class="ch">&#39;0&#39;</span><span class="op">:</span><span class="ch">&#39;9&#39;</span>; <span class="ch">&#39;A&#39;</span><span class="op">:</span><span class="ch">&#39;Z&#39;</span>]</span></code></pre></div>
+<pre><code>#&gt; 36-element Vector{Char}:
+#&gt;  &#39;0&#39;: ASCII/Unicode U+0030 (category Nd: Number, decimal digit)
+#&gt;  &#39;1&#39;: ASCII/Unicode U+0031 (category Nd: Number, decimal digit)
+#&gt;  &#39;2&#39;: ASCII/Unicode U+0032 (category Nd: Number, decimal digit)
+#&gt;  &#39;3&#39;: ASCII/Unicode U+0033 (category Nd: Number, decimal digit)
+#&gt;  &#39;4&#39;: ASCII/Unicode U+0034 (category Nd: Number, decimal digit)
+#&gt;  &#39;5&#39;: ASCII/Unicode U+0035 (category Nd: Number, decimal digit)
+#&gt;  &#39;6&#39;: ASCII/Unicode U+0036 (category Nd: Number, decimal digit)
+#&gt;  &#39;7&#39;: ASCII/Unicode U+0037 (category Nd: Number, decimal digit)
+#&gt;  &#39;8&#39;: ASCII/Unicode U+0038 (category Nd: Number, decimal digit)
+#&gt;  &#39;9&#39;: ASCII/Unicode U+0039 (category Nd: Number, decimal digit)
+#&gt;  ⋮
+#&gt;  &#39;R&#39;: ASCII/Unicode U+0052 (category Lu: Letter, uppercase)
+#&gt;  &#39;S&#39;: ASCII/Unicode U+0053 (category Lu: Letter, uppercase)
+#&gt;  &#39;T&#39;: ASCII/Unicode U+0054 (category Lu: Letter, uppercase)
+#&gt;  &#39;U&#39;: ASCII/Unicode U+0055 (category Lu: Letter, uppercase)
+#&gt;  &#39;V&#39;: ASCII/Unicode U+0056 (category Lu: Letter, uppercase)
+#&gt;  &#39;W&#39;: ASCII/Unicode U+0057 (category Lu: Letter, uppercase)
+#&gt;  &#39;X&#39;: ASCII/Unicode U+0058 (category Lu: Letter, uppercase)
+#&gt;  &#39;Y&#39;: ASCII/Unicode U+0059 (category Lu: Letter, uppercase)
+#&gt;  &#39;Z&#39;: ASCII/Unicode U+005A (category Lu: Letter, uppercase)</code></pre>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>encode <span class="op">=</span> <span class="fu">Dict</span>(i <span class="op">-</span> <span class="fl">1</span> <span class="op">=&gt;</span> code[i] <span class="cf">for</span> i <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fu">length</span>(code))</span></code></pre></div>
+<pre><code>#&gt; Dict{Int64, Char} with 36 entries:
+#&gt;   5  =&gt; &#39;5&#39;
+#&gt;   16 =&gt; &#39;G&#39;
+#&gt;   20 =&gt; &#39;K&#39;
+#&gt;   35 =&gt; &#39;Z&#39;
+#&gt;   12 =&gt; &#39;C&#39;
+#&gt;   24 =&gt; &#39;O&#39;
+#&gt;   28 =&gt; &#39;S&#39;
+#&gt;   8  =&gt; &#39;8&#39;
+#&gt;   17 =&gt; &#39;H&#39;
+#&gt;   30 =&gt; &#39;U&#39;
+#&gt;   1  =&gt; &#39;1&#39;
+#&gt;   19 =&gt; &#39;J&#39;
+#&gt;   0  =&gt; &#39;0&#39;
+#&gt;   22 =&gt; &#39;M&#39;
+#&gt;   6  =&gt; &#39;6&#39;
+#&gt;   23 =&gt; &#39;N&#39;
+#&gt;   11 =&gt; &#39;B&#39;
+#&gt;   32 =&gt; &#39;W&#39;
+#&gt;   9  =&gt; &#39;9&#39;
+#&gt;   ⋮  =&gt; ⋮</code></pre>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>decode <span class="op">=</span> <span class="fu">Dict</span>(code[i] <span class="op">=&gt;</span> i <span class="op">-</span> <span class="fl">1</span> <span class="cf">for</span> i <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fu">length</span>(code))</span></code></pre></div>
+<pre><code>#&gt; Dict{Char, Int64} with 36 entries:
+#&gt;   &#39;1&#39; =&gt; 1
+#&gt;   &#39;E&#39; =&gt; 14
+#&gt;   &#39;7&#39; =&gt; 7
+#&gt;   &#39;6&#39; =&gt; 6
+#&gt;   &#39;X&#39; =&gt; 33
+#&gt;   &#39;Z&#39; =&gt; 35
+#&gt;   &#39;5&#39; =&gt; 5
+#&gt;   &#39;B&#39; =&gt; 11
+#&gt;   &#39;C&#39; =&gt; 12
+#&gt;   &#39;D&#39; =&gt; 13
+#&gt;   &#39;A&#39; =&gt; 10
+#&gt;   &#39;4&#39; =&gt; 4
+#&gt;   &#39;R&#39; =&gt; 27
+#&gt;   &#39;G&#39; =&gt; 16
+#&gt;   &#39;8&#39; =&gt; 8
+#&gt;   &#39;F&#39; =&gt; 15
+#&gt;   &#39;N&#39; =&gt; 23
+#&gt;   &#39;M&#39; =&gt; 22
+#&gt;   &#39;K&#39; =&gt; 20
+#&gt;   ⋮   =&gt; ⋮</code></pre>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">dec2FactString</span>(nb)<span class="op">::</span><span class="dt">String</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 先找最大的基</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  max_base <span class="op">=</span> <span class="fl">1</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">while</span> <span class="fu">factorial</span>(max_base <span class="op">+</span> <span class="fl">1</span>) <span class="op">&lt;=</span> nb</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    max_base <span class="op">+=</span> <span class="fl">1</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">end</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 从大到小，确定每个基对应的系数</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>  factors <span class="op">=</span> <span class="st">&quot;&quot;</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> base <span class="op">∈</span> [max_base<span class="op">:-</span><span class="fl">1</span><span class="op">:</span><span class="fl">0</span><span class="op">...</span>]</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>    factors <span class="op">*=</span> encode[<span class="fu">nb÷factorial</span>(base)]</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>    nb <span class="op">%=</span> <span class="fu">factorial</span>(base)</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>  <span class="cf">end</span></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>  factors</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
+<pre><code>#&gt; dec2FactString (generic function with 1 method)</code></pre>
+<div class="sourceCode" id="cb19"><pre
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dec2FactString</span>(<span class="fl">463</span>)</span></code></pre></div>
+<pre><code>#&gt; &quot;341010&quot;</code></pre>
+<div class="sourceCode" id="cb21"><pre
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">factString2Dec</span>(str)<span class="op">::</span><span class="dt">BigInt</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 逆序的系数向量</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  factors <span class="op">=</span> <span class="fu">collect</span>(str) <span class="op">.|&gt;</span> (ch <span class="op">-&gt;</span> decode[ch]) <span class="op">|&gt;</span> reverse</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 基向量，从 0! 到 max_base!</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>  bases <span class="op">=</span> <span class="fl">0</span><span class="op">:</span>(<span class="fu">length</span>(factors)<span class="op">-</span><span class="fl">1</span>) <span class="op">.|&gt;</span> factorial</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>  factors <span class="op">.*</span> bases <span class="op">|&gt;</span> sum</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
+<pre><code>#&gt; factString2Dec (generic function with 1 method)</code></pre>
+<div class="sourceCode" id="cb23"><pre
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">factString2Dec</span>(<span class="st">&quot;341010&quot;</span>)</span></code></pre></div>
+<pre><code>#&gt; 463</code></pre>
+</div>
+<div id="javascript" class="section level4">
+<h4>JavaScript</h4>
+<div class="sourceCode" id="cb25"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> naturalSequence <span class="op">=</span> <span class="pp">require</span>(<span class="st">&quot;../../src/JavaScript/toolkit/Vector&quot;</span>)<span class="op">.</span><span class="at">naturalSequence</span><span class="op">;</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> factorial <span class="op">=</span> <span class="pp">require</span>(<span class="st">&quot;../../src/JavaScript/toolkit/Arithmetic&quot;</span>)<span class="op">.</span><span class="at">factorial</span><span class="op">;</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> hadamardProduct <span class="op">=</span> <span class="pp">require</span>(<span class="st">&quot;../../src/JavaScript/toolkit/Matrix&quot;</span>)<span class="op">.</span><span class="at">hadamardProduct</span><span class="op">;</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> sum <span class="op">=</span> <span class="pp">require</span>(<span class="st">&quot;../../src/JavaScript/toolkit/Statistics&quot;</span>)<span class="op">.</span><span class="at">sum</span><span class="op">;</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="co">// 字符串本身就是 iterator, 可以用索引 [] 访问</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> code <span class="op">=</span> <span class="st">&quot;0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;</span><span class="op">;</span></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> encode <span class="op">=</span> <span class="kw">new</span> <span class="bu">Map</span><span class="op">,</span> decode <span class="op">=</span> <span class="kw">new</span> <span class="bu">Map</span><span class="op">;</span></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (<span class="kw">let</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;=</span> <span class="dv">35</span><span class="op">;</span> i<span class="op">++</span>) {</span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>  encode<span class="op">.</span><span class="fu">set</span>(i<span class="op">,</span> code[i])<span class="op">;</span></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>  decode<span class="op">.</span><span class="fu">set</span>(code[i]<span class="op">,</span> i)<span class="op">;</span></span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">dec2FactString</span>(nb) {</span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>  <span class="co">// 寻找最大的基</span></span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> maxBase <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a>  <span class="cf">while</span> (<span class="fu">factorial</span>(maxBase <span class="op">+</span> <span class="dv">1</span>) <span class="op">&lt;=</span> nb) {</span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a>    maxBase<span class="op">++;</span></span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a>  <span class="co">// 对应这组基的系数向量</span></span>
+<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> factors <span class="op">=</span> []<span class="op">;</span></span>
+<span id="cb25-26"><a href="#cb25-26" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="kw">let</span> i <span class="op">=</span> maxBase<span class="op">;</span> i <span class="op">&gt;=</span> <span class="dv">0</span><span class="op">;</span> i<span class="op">--</span>) {</span>
+<span id="cb25-27"><a href="#cb25-27" aria-hidden="true" tabindex="-1"></a>    char <span class="op">=</span> encode<span class="op">.</span><span class="fu">get</span>(<span class="bu">Math</span><span class="op">.</span><span class="fu">floor</span>(nb <span class="op">/</span> <span class="fu">factorial</span>(i)))<span class="op">;</span></span>
+<span id="cb25-28"><a href="#cb25-28" aria-hidden="true" tabindex="-1"></a>    factors<span class="op">.</span><span class="fu">push</span>(char)<span class="op">;</span></span>
+<span id="cb25-29"><a href="#cb25-29" aria-hidden="true" tabindex="-1"></a>    nb <span class="op">%=</span> <span class="fu">factorial</span>(i)<span class="op">;</span></span>
+<span id="cb25-30"><a href="#cb25-30" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb25-31"><a href="#cb25-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-32"><a href="#cb25-32" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> factors<span class="op">.</span><span class="fu">join</span>(<span class="st">&#39;&#39;</span>)<span class="op">;</span></span>
+<span id="cb25-33"><a href="#cb25-33" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb25-34"><a href="#cb25-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-35"><a href="#cb25-35" aria-hidden="true" tabindex="-1"></a><span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="fu">dec2FactString</span>(<span class="dv">463</span>))<span class="op">;</span></span>
+<span id="cb25-36"><a href="#cb25-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-37"><a href="#cb25-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-38"><a href="#cb25-38" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">factString2Dec</span>(string) {</span>
+<span id="cb25-39"><a href="#cb25-39" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> factors <span class="op">=</span> string<span class="op">.</span><span class="fu">split</span>(<span class="st">&#39;&#39;</span>)<span class="op">.</span><span class="fu">reverse</span>()<span class="op">.</span><span class="fu">map</span>(char <span class="kw">=&gt;</span> decode<span class="op">.</span><span class="fu">get</span>(char))<span class="op">;</span></span>
+<span id="cb25-40"><a href="#cb25-40" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> bases <span class="op">=</span> <span class="fu">naturalSequence</span>(string<span class="op">.</span><span class="at">length</span><span class="op">,</span> start <span class="op">=</span> <span class="dv">0</span>)<span class="op">.</span><span class="fu">map</span>(factorial)<span class="op">;</span></span>
+<span id="cb25-41"><a href="#cb25-41" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="fu">sum</span>(<span class="fu">hadamardProduct</span>(factors<span class="op">,</span> bases))<span class="op">;</span></span>
+<span id="cb25-42"><a href="#cb25-42" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb25-43"><a href="#cb25-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-44"><a href="#cb25-44" aria-hidden="true" tabindex="-1"></a><span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="fu">factString2Dec</span>(<span class="st">&quot;341010&quot;</span>))<span class="op">;</span></span></code></pre></div>
+<pre><code>#&gt; 341010
+#&gt; 463</code></pre>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

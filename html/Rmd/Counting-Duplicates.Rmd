@@ -1,0 +1,119 @@
+---
+title: "Counting Duplicates"
+author: "Humoon"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+
+```{r setup, include = FALSE}
+source("./config/config.R")
+
+## global options ===================================
+knitr::opts_chunk$set(
+  width = config$width,
+  fig.width = config$fig.width,
+  fig.asp = config$fig.asp,
+  out.width = config$out.width,
+  fig.align = config$fig.align,
+  fig.path = config$fig.path,
+  fig.show = config$fig.show,
+  warn = config$warn,
+  warning = config$warning,
+  message = config$message,
+  echo = config$echo,
+  eval = config$eval,
+  tidy = config$tidy,
+  comment = config$comment,
+  collapse = config$collapse,
+  cache = config$cache,
+  cache.comments = config$cache.comments,
+  autodep = config$autodep
+)
+```
+
+
+
+### Description
+
+对数组进行频数统计的计数器在不同语言中对应不同的数据结构，虽然在逻辑上都是键值对
+
+- R. `table(arr)` 返回一个命名的向量
+- julia. `DataStructures.counter()` 返回一个 struct，其中包裹的是一个 Dict
+- JavaScript. 可以手写一个对象，储存 `元素:频率` 的键值对
+
+
+### Solution
+
+#### R
+```{r}
+## Counting Duplicates
+
+library(tidyverse)
+
+
+#' @title 统计字符串中有几个字符的出现次数大于1
+duplicate_count <- function(text) {
+  frequency <- tolower(text) %>%
+    str_split("") %>%
+    unlist() %>%
+    table()
+
+  # 向量化写法
+  sum(frequency > 1)
+}
+
+
+library(testthat)
+test_that("Sample Tests", {
+  expect_equal(duplicate_count(""), 0)
+  expect_equal(duplicate_count("abcdeaa"), 1)
+  expect_equal(duplicate_count("Indivisibilities"), 2)
+})
+```
+
+
+#### Julia
+```{julia}
+using DataStructures
+
+
+"""
+计算text中出现次数多于1次的字符的数量
+"""
+function duplicatecount(text::String)::Int64
+  # 返回一个 struct，类型为 counter
+  # 里面只装着一个计数的 Dict
+  dict = text |> lowercase |> counter
+  sum(values(dict) .> 1) # 向量化逻辑运算产生一系列 0/false 和 1/true
+end
+
+
+using Test
+@testset "Sample tests" begin
+  @test duplicatecount("") == 0
+  @test duplicatecount("abcde") == 0
+  @test duplicatecount("aabbcde") == 2
+  @test duplicatecount("aabBcde") == 2
+  @test duplicatecount("Indivisibility") == 1
+  @test duplicatecount("Indivisibilities") == 2
+end
+```
+
+
+#### JavaScript
+
+```{node}
+const Vector = require("../../src/JavaScript/toolkit/Vector");
+
+
+function duplicateCount(text) {
+
+  const dict = Vector.counter(text.toLowerCase());
+  return Object.values(dict).filter(x => x > 1).length;
+}
+
+console.log(duplicateCount("Indivisibilities"));
+```
+
+

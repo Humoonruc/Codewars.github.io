@@ -1,0 +1,115 @@
+---
+title: "Highest Scoring Word"
+author: "Humoon"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+
+```{r setup, include = FALSE}
+source("./config/config.R")
+
+## global options ===================================
+knitr::opts_chunk$set(
+  width = config$width,
+  fig.width = config$fig.width,
+  fig.asp = config$fig.asp,
+  out.width = config$out.width,
+  fig.align = config$fig.align,
+  fig.path = config$fig.path,
+  fig.show = config$fig.show,
+  warn = config$warn,
+  warning = config$warning,
+  message = config$message,
+  echo = config$echo,
+  eval = config$eval,
+  tidy = config$tidy,
+  comment = config$comment,
+  collapse = config$collapse,
+  cache = config$cache,
+  cache.comments = config$cache.comments,
+  autodep = config$autodep
+)
+```
+
+
+
+### Description
+
+Given a string of words, you need to find the highest scoring word.
+
+Each letter of a word scores points according to its position in the alphabet: `a = 1, b = 2, c = 3` etc.
+
+You need to return the highest scoring word as a string.
+
+If two words score the same, return the word that appears earliest in the original string.
+
+All letters will be lowercase and all inputs will be valid.
+
+
+### Solution
+
+#### R
+```{r}
+# 可读性不好，要大改
+
+library(tidyverse)
+
+high <- function(x) {
+  words <- x %>%
+    str_split(" ") %>%
+    unlist()
+
+  max_index <- words %>%
+    map_int(function(w) {
+      w %>%
+        str_split("") %>%
+        unlist() %>%
+        map_int(~ match(.x, letters)) %>%
+        sum()
+    }) %>%
+    which.max()
+
+  words[max_index]
+}
+```
+
+
+#### Julia
+```{julia}
+function score(word)
+  word |> collect .|> (char -> char - 'a') |> sum
+end
+
+function high(x)
+  vector_words = x |> split
+  vector_score = vector_words .|> score
+  max_index = findmax(identity, vector_score)[2]
+  vector_words[max_index]
+end
+
+
+
+using Test
+@test high("man i need a taxi up to ubud") == "taxi"
+@test high("what time are we climbing up the volcano") == "volcano"
+```
+
+
+#### JavaScript
+
+```{node}
+
+const sum = require("../../src/JavaScript/toolkit/Statistics").sum;
+
+function high(x) {
+  const words = x.split(' ');
+  const values = words.map(word => sum(word.split('').map(char => char.charCodeAt() - 96)));
+  return words[values.indexOf(Math.max(...values))];
+}
+console.log(high('what time are we climbing up the volcano'));
+
+module.exports = high;
+```
+
+

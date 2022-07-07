@@ -1,0 +1,103 @@
+---
+title: "Credit Card Mask"
+author: "Humoon"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+
+```{r setup, include = FALSE}
+source("./config/config.R")
+
+## global options ===================================
+knitr::opts_chunk$set(
+  width = config$width,
+  fig.width = config$fig.width,
+  fig.asp = config$fig.asp,
+  out.width = config$out.width,
+  fig.align = config$fig.align,
+  fig.path = config$fig.path,
+  fig.show = config$fig.show,
+  warn = config$warn,
+  warning = config$warning,
+  message = config$message,
+  echo = config$echo,
+  eval = config$eval,
+  tidy = config$tidy,
+  comment = config$comment,
+  collapse = config$collapse,
+  cache = config$cache,
+  cache.comments = config$cache.comments,
+  autodep = config$autodep
+)
+```
+
+
+
+### Description
+
+Usually when you buy something, you're asked whether your credit card number, phone number or answer to your most secret question is still correct. However, since someone could look over your shoulder, you don't want that shown on your screen. Instead, we mask it.
+
+Your task is to write a function maskify, which changes all but the last four characters into '#'.
+
+#### Examples
+
+```
+"4556364607935616" --> "############5616"
+     "64607935616" -->      "#######5616"
+               "1" -->                "1"
+                "" -->                 ""
+
+// "What was the name of your first pet?"
+
+"Skippy" --> "##ippy"
+
+"Nananananananananananananananana Batman!"
+-->
+"####################################man!"
+```
+
+
+### Solution
+
+#### R
+```{r}
+library(tidyverse)
+
+#' 除最后四位全部打码
+maskify <- function(string) {
+  str_sub(string, start = -4L, end = -1L) %>%
+    str_pad(nchar(string), side = "left", pad = "#")
+}
+
+
+library(testthat)
+test_that("Sample Tests", {
+  expect_equal(maskify("4556364607935616"), "############5616")
+  expect_equal(maskify("1"), "1")
+  expect_equal(maskify("11111"), "#1111")
+})
+```
+
+
+#### JavaScript
+
+```{node}
+// Credit-Card-Mask.js
+
+function maskify(cc) {
+  // 解法一：按长度构造
+  // return '#'.repeat(Math.max(cc.length - 4, 0)) + cc.slice(-4);
+
+  // 解法二：`pad*()` 填充
+  // return cc.slice(-4).padStart(cc.length, '#');
+
+  // 解法三：替换
+  // return cc.slice(0, -4).replace(/./g, '#') + cc.slice(-4);
+
+  // 解法四：完全的正则
+  return cc.replace(/.(?=.{4})/g, '#');
+}
+```
+
+

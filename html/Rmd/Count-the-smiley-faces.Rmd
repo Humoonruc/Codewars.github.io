@@ -1,0 +1,110 @@
+---
+title: "Count the smiley faces"
+author: "Humoon"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+
+```{r setup, include = FALSE}
+source("./config/config.R")
+
+## global options ===================================
+knitr::opts_chunk$set(
+  width = config$width,
+  fig.width = config$fig.width,
+  fig.asp = config$fig.asp,
+  out.width = config$out.width,
+  fig.align = config$fig.align,
+  fig.path = config$fig.path,
+  fig.show = config$fig.show,
+  warn = config$warn,
+  warning = config$warning,
+  message = config$message,
+  echo = config$echo,
+  eval = config$eval,
+  tidy = config$tidy,
+  comment = config$comment,
+  collapse = config$collapse,
+  cache = config$cache,
+  cache.comments = config$cache.comments,
+  autodep = config$autodep
+)
+```
+
+
+
+### Description
+
+#### Instructions
+
+Given an array (arr) as an argument complete the function countSmileys that should return the total number of smiling faces.
+
+Rules for a smiling face:
+
+- Each smiley face must begin with a valid pair of eyes. Eyes can be marked as `:` or `;`
+- A smiley face can have a nose but it does not have to. Valid characters for a nose are `-` or `~`
+- Every smiling face must end with a smiling mouth that should be marked with either `)` or `D`
+- No additional characters are allowed except for those mentioned.
+
+**Valid smiley face examples**: `:) :D ;-D :~)`
+**Invalid smiley faces**: `;( :> :} :]`
+
+#### Example
+
+```
+countSmileys([':)', ';(', ';}', ':-D']);       // should return 2;
+countSmileys([';D', ':-(', ':-)', ';~)']);     // should return 3;
+countSmileys([';]', ':[', ';*', ':$', ';-D']); // should return 1;
+```
+
+#### Note
+In case of an empty array return 0. You will not be tested with invalid input (input will always be an array). Order of the face (eyes, nose, mouth) elements will always be the same.
+
+
+### Solution
+
+#### R
+```{r}
+library(tidyverse)
+countSmileys <- function(array) {
+  # str_detect() 支持向量化操作
+  str_detect(array, "[:;][-~]?[)D]") %>% sum()
+}
+
+
+library(testthat)
+test_that("Sample Tests", {
+  expect_equal(countSmileys(c(":)", ";(", ";}", ":-D")), 2)
+  expect_equal(countSmileys(c(";D", ":-(", ":-)", ";~)")), 3)
+  expect_equal(countSmileys(c(";]", ":[", ";*", ":$", ";-D")), 1)
+})
+```
+
+
+#### JavaScript
+
+```{node}
+
+/**
+ * smiley face checker
+ * @param {String} str 
+ * @returns {Boolean} the parameter is a smiley face or not
+ */
+function isSmileyFace(str) {
+  return /^[:;][-~]?[)D]/.test(str);
+}
+
+/**
+ * smiley face counter
+ * @param {Arrary} arr string array
+ * @returns {integer} total number of smiling faces in the array
+ */
+function countSmileys(arr) {
+  return arr.filter(isSmileyFace).length;
+}
+
+module.exports = countSmileys;
+```
+
+

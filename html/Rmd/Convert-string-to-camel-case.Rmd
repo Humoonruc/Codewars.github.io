@@ -1,0 +1,78 @@
+---
+title: "Convert string to camel case"
+author: "Humoon"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+
+```{r setup, include = FALSE}
+source("./config/config.R")
+
+## global options ===================================
+knitr::opts_chunk$set(
+  width = config$width,
+  fig.width = config$fig.width,
+  fig.asp = config$fig.asp,
+  out.width = config$out.width,
+  fig.align = config$fig.align,
+  fig.path = config$fig.path,
+  fig.show = config$fig.show,
+  warn = config$warn,
+  warning = config$warning,
+  message = config$message,
+  echo = config$echo,
+  eval = config$eval,
+  tidy = config$tidy,
+  comment = config$comment,
+  collapse = config$collapse,
+  cache = config$cache,
+  cache.comments = config$cache.comments,
+  autodep = config$autodep
+)
+```
+
+
+
+### Description
+
+
+Complete the method/function so that it converts dash/underscore delimited words into camel casing. The first word within the output should be capitalized only if the original word was capitalized (known as Upper Camel Case, also often referred to as Pascal case).
+
+#### Examples
+
+```
+"the-stealth-warrior" gets converted to "theStealthWarrior"
+"The_Stealth_Warrior" gets converted to "TheStealthWarrior"
+```
+
+
+### Solution
+
+#### R
+```{r}
+library(tidyverse)
+toCamelCase <- function(string) {
+  string %>%
+    str_replace_all("[-_]\\w", function(x) {
+      toupper(str_sub(x, 2))
+    })
+}
+
+
+toCamelCase("the-stealth-warrior")
+```
+
+
+#### JavaScript
+
+```{node}
+function toCamelCase(str) {
+  // return str.replace(/[-_]\w/g, w => w[1].toUpperCase());
+
+  // 用()分组，匹配结果返回array，第一个元素永远都是完全匹配结果，第二个元素开始是括号中pattern匹配的局部
+  return str.replace(/[-_](.)/g, (_, c) => c.toUpperCase());
+}
+```
+
+

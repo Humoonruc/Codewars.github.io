@@ -1,0 +1,377 @@
+html {
+  font-size: 17px;
+}
+
+
+/* 列表项 */
+
+ul,
+ol {
+  margin: 0 0 0.5em 0em;
+}
+
+h3+ul,
+h4+ul,
+h5+ul,
+h6+ul,
+h3+ol,
+h4+ol,
+h5+ol,
+h6+ol {
+  margin-top: 0.5em;
+}
+
+p+ul,
+p+ol {
+  margin-top: 0.5em;
+}
+
+li>ul,
+li>ol {
+  margin-top: inherit;
+  margin-bottom: 0;
+  margin-left: 0.5em;
+}
+
+ul>li {
+  list-style-type: disc;
+  list-style-position: outside;
+}
+
+li ul>li {
+  list-style-type: circle;
+}
+
+ol>li {
+  list-style-type: decimal;
+  list-style-position: outside;
+}
+
+li ol>li {
+  list-style-type: upper-alpha;
+}
+
+li li ol>li {
+  list-style-type: lower-greek;
+}
+
+
+/* 多级标题 */
+
+h1 {
+  font-weight: bolder;
+  font-size: 50px;
+  text-align: center;
+  color: red;
+  font-weight: bold;
+}
+
+h2 {
+  text-align: center;
+  font-size: 40px;
+  counter-increment: chapter;
+  counter-reset: section;
+  color: purple;
+  font-weight: bold;
+}
+
+h3 {
+  color: darkslateblue;
+  font-weight: bold;
+  line-height: 150%;
+  font-size: 36px;
+  margin-top: 2em;
+  margin-bottom: 1em;
+  /* counter-increment: section; */
+  /* counter-reset: counter1; */
+  text-align: center;
+  /* font-weight: bold; */
+}
+
+h4 {
+  /* background-color: lightgray; */
+  /* color: darkblue; */
+  /* line-height: 150%; */
+  font-size: 24px;
+  /* font-family: "Microsoft YaHei"; */
+  /* font-weight: bold; */
+  /* counter-increment: counter1; */
+  /* counter-reset: counter2; */
+}
+
+h5 {
+  font-size: 20px;
+  font-weight: bold;
+  /* font-family: "Microsoft YaHei"; */
+  /* counter-increment: counter2; */
+  /* counter-reset: counter3; */
+}
+
+h6 {
+  /* counter-increment: counter3; */
+}
+
+h2:before {
+  /* content: counter(chapter, cjk-ideographic)"、"; */
+}
+
+h3:before {
+  /* content: counter(section)' '; */
+}
+
+h4:before {
+  /* content: counter(counter1, cjk-ideographic)'、'; */
+}
+
+h5:before {
+  /* content: '（'counter(counter2, cjk-ideographic)'）'; */
+}
+
+h6:before {
+  /* content: counter(counter3)'. '; */
+}
+
+
+/* 正文 */
+
+p {
+  font-size: 17px;
+}
+
+/* 链接 */
+
+a {
+  /* font-family: 'PT Serif'; */
+  font-weight: normal;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+
+
+/* strong */
+
+/* #write strong {
+  background: #ecd609;
+  font-weight: normal;
+  padding-top: 2px;
+  padding-bottom: 0.5px;
+  padding-left: 1px;
+  padding-right: 1px;
+  border-radius: 2px;
+} */
+
+
+
+/* 代码高亮 */
+
+/*.cm-s-inner  {  }*/
+.cm-s-inner.CodeMirror {
+  /* background: #2B2B2B; */
+  background: #272822;
+  color: #F8F8F2;
+  /* color: #A9B7C6; */
+  font-family: Consolas, 'Courier New', monospace;
+  font-size: 16px;
+}
+
+.cm-s-inner span.cm-meta {
+  color: #BBB529;
+}
+
+.cm-s-inner span.cm-number {
+  /* color: #6897BB; */
+  color: #AE81FF;
+}
+
+.cm-s-inner span.cm-keyword {
+  /* color: #CC7832; */
+  color: #F92772;
+}
+
+/* 变量名 */
+.cm-s-inner span.cm-def {
+  color: #fd971f;
+}
+
+/* 被使用的变量名 */
+.cm-s-inner span.cm-variable {
+  /* color: #A9B7C6; */
+  color: #9CDCFE;
+}
+
+.cm-s-inner span.cm-variable-2 {
+  color: #9effff;
+}
+
+/* 这是反引号的颜色 */
+.cm-s-inner span.cm-variable-3 {
+  /* color: #a6e22e; */
+  color: orange;
+}
+
+.cm-s-inner span.cm-type {
+  color: #66d9ef;
+}
+
+/* 被调用的方法 */
+.cm-s-inner span.cm-property {
+  /* color: #a6e22e; */
+  color: #66d9ef;
+}
+
+/* 这是运算符的颜色 */
+.cm-s-inner span.cm-operator {
+  /* color: #F8F8F2;
+  color: #F92772; */
+  color: rgb(83, 117, 220);
+}
+
+.cm-s-inner span.cm-string {
+  /* color: #6A8759; */
+  color: #E6DB74;
+  /* font-family: 'Courier New', monospace; */
+}
+
+/*正则表达式*/
+.cm-s-inner span.cm-string-2 {
+  color: #6A8759;
+}
+
+.cm-s-inner span.cm-comment {
+  color: #6e961e;
+  /* color: #61A151; */
+  /* color: #6A8759; */
+  /* font-style: italic; */
+  font-family: Courier, SimSun;
+}
+
+.cm-s-inner span.cm-comment.cm-attribute {
+  color: #97b757;
+}
+
+.cm-s-inner span.cm-comment.cm-def {
+  color: #bc9262;
+}
+
+
+.cm-s-inner span.cm-comment.cm-tag {
+  color: #bc6283;
+}
+
+.cm-s-inner span.cm-comment.cm-type {
+  color: #5998a6;
+}
+
+.cm-s-inner span.cm-link {
+  color: #ae81ff;
+}
+
+/*css属性值，布尔值等等*/
+.cm-s-inner span.cm-atom {
+  color: #ae81ff;
+}
+
+.cm-s-inner span.cm-error {
+  background: #f92672;
+  color: #f8f8f0;
+}
+
+/* html 标签 */
+.cm-s-inner span.cm-tag {
+  color: #f92672;
+}
+
+.cm-s-inner span.cm-header {
+  color: #ae81ff;
+}
+
+.cm-s-inner span.cm-quote {
+  color: #a6e22e;
+}
+
+/* html 属性 */
+.cm-s-inner span.cm-attribute {
+  color: #a6e22e;
+}
+
+.cm-s-inner span.cm-qualifier {
+  color: #6A8759;
+}
+
+/* html 标签尖括号 */
+.cm-s-inner span.cm-bracket {
+  color: #E8BF6A;
+}
+
+.cm-s-inner span.cm-builtin {
+  color: #66d9ef;
+}
+
+.cm-s-inner span.cm-special {
+  color: #FF9E59;
+}
+
+.cm-s-inner span.cm-matchhighlight {
+  color: #FFFFFF;
+  background-color: rgba(50, 89, 48, .7);
+  font-weight: normal;
+}
+
+.cm-s-inner span.cm-searching {
+  color: #FFFFFF;
+  background-color: rgba(61, 115, 59, .7);
+  font-weight: normal;
+}
+
+.cm-s-inner .CodeMirror-cursor {
+  border-left: 1px solid #A9B7C6;
+}
+
+.cm-s-inner .CodeMirror-gutters {
+  background: #313335;
+  border-right: 1px solid #313335;
+}
+
+.cm-s-inner .CodeMirror-guttermarker {
+  color: #FFEE80;
+}
+
+.cm-s-inner .CodeMirror-guttermarker-subtle {
+  color: #D0D0D0;
+}
+
+.cm-s-inner .CodeMirrir-linenumber {
+  color: #606366;
+}
+
+.cm-s-inner .CodeMirror-matchingbracket {
+  text-decoration: underline;
+  background-color: #3B514D;
+  color: #FFEF28 !important;
+}
+
+.cm-s-inner .CodeMirror-selected {
+  background: #214283 !important;
+}
+
+.cm-s-inner .CodeMirror-selectedtext {
+  background: #214283 !important;
+}
+
+.cm-overlay.CodeMirror-selectedtext {
+  background: #B5D6FC !important;
+}
+
+.cm-s-inner div.CodeMirror-cursor {
+  border-left: 1px solid #ffffff;
+}
+
+
+/* 函数名 */
+div.sourceCode code.sourceCode span.fu {
+  color: orangered;
+}

@@ -1,0 +1,141 @@
+---
+title: "Mean without outliers"
+author: "Humoon"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+
+```{r setup, include = FALSE}
+source("./config/config.R")
+
+## global options ===================================
+knitr::opts_chunk$set(
+  width = config$width,
+  fig.width = config$fig.width,
+  fig.asp = config$fig.asp,
+  out.width = config$out.width,
+  fig.align = config$fig.align,
+  fig.path = config$fig.path,
+  fig.show = config$fig.show,
+  warn = config$warn,
+  warning = config$warning,
+  message = config$message,
+  echo = config$echo,
+  eval = config$eval,
+  tidy = config$tidy,
+  comment = config$comment,
+  collapse = config$collapse,
+  cache = config$cache,
+  cache.comments = config$cache.comments,
+  autodep = config$autodep
+)
+```
+
+
+
+### Solution
+
+#### R
+```{r}
+## Mean without outliers
+
+library(tidyverse)
+
+
+not_outlier <- function(x, mean, std, cutoff) {
+  abs(x - mean) <= cutoff * std
+}
+
+
+#' @title calculate mean of a sample without outliers
+#' @param sam a sample
+#' @param cutoff 评估一个样本点是否为 outlier 的参数
+#'    当一个样本点的离差大于标准差的 cutoff 倍时，认为它是 outlier
+clean_mean <- function(sample, cutoff) {
+  while (TRUE) { # 无限循环，满足条件时用 return() 跳出
+    m <- mean(sample)
+    n <- length(sample)
+    sd <- sqrt((1 / n) * sum((sample - m)^2))
+    sample_without_outlier <- sample %>% keep(~ not_outlier(.x, m, sd, cutoff))
+
+    if (length(sample_without_outlier) == n) {
+      return(m)
+    } else {
+      sample <- sample_without_outlier
+    }
+  }
+}
+
+
+library(testthat)
+test_that("Example Tests", {
+  sam <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 100)
+  cutoff <- 3
+  expect_equal(clean_mean(sam, cutoff), 5.5)
+})
+```
+
+
+#### Julia
+```{julia}
+using Statistics
+
+
+function not_outlier(x, mean, std, cutoff)
+  abs(x - mean) <= cutoff * std
+end
+
+function clean_mean(sample::Vector, cutoff)::Float64
+  while true
+    m = mean(sample)
+    n = length(sample)
+    sd = sqrt(sum((sample .- m) .^ 2) / n)
+    sample_without_outlier = filter(x -> not_outlier(x, m, sd, cutoff), sample)
+
+    if length(sample_without_outlier) == n
+      return m
+    else
+      sample = sample_without_outlier
+    end
+  end
+end
+
+clean_mean([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 100], 3)
+```
+
+
+#### JavaScript
+
+```{node}
+const Statistics = require("../../src/JavaScript/toolkit/Statistics")
+const sum = Statistics.sum;
+const mean = Statistics.mean;
+
+
+function notOutlier(x, mean, std, cutoff) {
+  return Math.abs(x - mean) <= cutoff * std;
+}
+
+function cleanMean(sample, cutoff) {
+  let m, n, std;
+  let sample_without_outlier = [];
+  while (true) {
+    m = mean(sample);
+    n = sample.length;
+    sd = Math.sqrt(sum(sample.map(x => Math.pow(x - m, 2))) / n);
+    sample_without_outlier = sample.filter(x => notOutlier(x, m, sd, cutoff));
+
+    if (sample_without_outlier.length === n) {
+      return m;
+    } else {
+      sample = sample_without_outlier;
+    }
+  }
+}
+
+
+console.log(cleanMean([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 100], 3));
+```
+
+

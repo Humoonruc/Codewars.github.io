@@ -1,0 +1,294 @@
+---
+title: "Decimal to Factorial and Back"
+author: "Humoon"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+
+```{r setup, include = FALSE}
+source("./config/config.R")
+
+## global options ===================================
+knitr::opts_chunk$set(
+  width = config$width,
+  fig.width = config$fig.width,
+  fig.asp = config$fig.asp,
+  out.width = config$out.width,
+  fig.align = config$fig.align,
+  fig.path = config$fig.path,
+  fig.show = config$fig.show,
+  warn = config$warn,
+  warning = config$warning,
+  message = config$message,
+  echo = config$echo,
+  eval = config$eval,
+  tidy = config$tidy,
+  comment = config$comment,
+  collapse = config$collapse,
+  cache = config$cache,
+  cache.comments = config$cache.comments,
+  autodep = config$autodep
+)
+```
+
+
+
+### Description
+
+
+Coding decimal numbers with factorials is a way of writing out numbers in a base system that depends on factorials, rather than powers of numbers.
+
+In this system, the last digit is always `0` and is in base 0!. The digit before that is either `0 or 1` and is in base 1!. The digit before that is either `0, 1, or 2` and is in base 2!, etc. More generally, the nth-to-last digit is always `0, 1, 2, ..., n` and is in base n!.
+
+Read more about it at: http://en.wikipedia.org/wiki/Factorial_number_system
+
+#### Example
+The decimal number `463` is encoded as `"341010"`, because:
+
+463 = 3×5! + 4×4! + 1×3! + 0×2! + 1×1! + 0×0!
+
+If we are limited to digits `0..9`, the biggest number we can encode is 10!-1 (= 3628799). So we extend `0..9` with letters `A..Z`. With these 36 digits we can now encode numbers up to 36!-1 (= 3.72 × 1041)
+
+#### Task
+We will need two functions. The first one will receive a decimal number and return a string with the factorial representation.
+
+The second one will receive a string with a factorial representation and produce the decimal representation.
+
+Given numbers will always be positive.
+
+
+### Solution
+
+#### R
+```{r}
+## Decimal-to-Factorial-and-Back.R
+
+library(tidyverse)
+
+
+codes <- "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ" %>%
+  str_split("") %>%
+  unlist()
+
+
+#' 将 0:35 的阶乘视为一组基，将参数向这组基分解出系数
+#' @param nb 待分解的整数
+#' @return 系数数组的字符串
+dec2FactString <- function(nb) {
+  # 先找最大的基
+  max_base <- 1
+  while (factorial(max_base + 1) <= nb) {
+    max_base <- max_base + 1
+  }
+
+  # 从大到小，确定每个基对应的系数
+  x <- character(0)
+  for (i in max_base:0) {
+    x[length(x) + 1] <- codes[nb %/% factorial(i) + 1]
+    nb <- nb %% factorial(i)
+  }
+
+  x %>% str_c(collapse = "")
+}
+
+dec2FactString(463)
+
+
+
+#' 已知系数和基，求和
+#' @param str 系数数组的字符串
+#' @return 加总后的整数
+factString2Dec <- function(str) {
+  # 逆序的系数向量
+  factors <- str %>%
+    str_split("") %>%
+    unlist() %>%
+    rev() %>%
+    map_dbl(function(char) which(codes == char) - 1)
+
+  # 基向量
+  bases <- 0:(length(factors) - 1) %>% factorial()
+
+  sum(factors * bases)
+}
+
+factString2Dec("341010")
+
+
+library(testthat)
+testing1 <- function(nb, expected) {
+  actual <- dec2FactString(nb)
+  expect_equal(actual, expected)
+}
+testing2 <- function(str, expected) {
+  actual <- factString2Dec(str)
+  expect_equal(actual, expected)
+}
+
+test_that("tests dec2FactString", {
+  testing1(2982, "4041000")
+  testing1(463, "341010")
+  testing1(36288000, "A0000000000")
+  testing1(3628800054, "76A0000021000")
+  testing1(1273928000, "27A0533231100")
+  testing1(220, "140200")
+  testing1(1936295, "5301133210")
+  testing1(81440635, "204365543010")
+  testing1(14808485, "40721200210")
+  testing1(3395, "4411210")
+  testing1(92, "33100")
+  testing1(4881, "6431110")
+  testing1(174720, "424400000")
+  testing1(5897, "11102210")
+  testing1(1947, "2410110")
+  testing1(1575088, "4303332200")
+  testing1(49124, "115113100")
+  testing1(9376317, "25742343110")
+  testing1(449, "332210")
+  testing1(112, "42200")
+  testing1(64269, "145123110")
+  testing1(6742089, "18515001110")
+  testing1(86565208, "218474232200")
+  testing1(1806792694, "3929024133200")
+  testing1(12942219, "35576140110")
+})
+
+test_that("tests factString2Dec", {
+  testing2("4041000", 2982)
+  testing2("27A0533231100", 1273928000)
+  testing2("341010", 463)
+  testing2("65341010", 34303)
+  testing2("1461330110", 555555)
+  testing2("13573044440000", 7890123456)
+  testing2("1630614043233100", 1849669781372)
+  testing2("150636011110", 58322193)
+  testing2("1662032340200", 741017980)
+  testing2("194B99466413200", 145612691086)
+  testing2("51465021000", 18702054)
+  testing2("445212100", 185318)
+  testing2("1000100", 722)
+  testing2("522200", 664)
+  testing2("2000", 12)
+  testing2("64C0048313011110", 8269501168833)
+  testing2("2455221000", 916134)
+  testing2("10A739302433010", 92262000091)
+  testing2("1A20254533200", 885536614)
+  testing2("3855031110", 1440081)
+  testing2("14D4831766411000", 1739585710590)
+  testing2("331703501110", 131284689)
+  testing2("86CB45050343200", 740991913678)
+  testing2("112086032303100", 94394539820)
+  testing2("30A3700211000", 1474663950)
+  testing2("156B92750141010", 121660182223)
+})
+
+yTests <- function() {
+  i <- 0
+  while (i < 20) {
+    n <- floor(runif(1, 1000000, 12166018222))
+    act <- factString2Dec(dec2FactString(n))
+    expect_equal(act, n)
+    i <- i + 1
+  }
+}
+test_that("Random tests", {
+  yTests()
+})
+```
+
+
+#### Julia
+```{julia}
+## Decimal-to-Factorial-and-Back.jl
+
+
+code = ['0':'9'; 'A':'Z']
+encode = Dict(i - 1 => code[i] for i = 1:length(code))
+decode = Dict(code[i] => i - 1 for i = 1:length(code))
+
+
+function dec2FactString(nb)::String
+  # 先找最大的基
+  max_base = 1
+  while factorial(max_base + 1) <= nb
+    max_base += 1
+  end
+
+  # 从大到小，确定每个基对应的系数
+  factors = ""
+  for base ∈ [max_base:-1:0...]
+    factors *= encode[nb÷factorial(base)]
+    nb %= factorial(base)
+  end
+
+  factors
+end
+
+dec2FactString(463)
+
+
+function factString2Dec(str)::BigInt
+  # 逆序的系数向量
+  factors = collect(str) .|> (ch -> decode[ch]) |> reverse
+
+  # 基向量，从 0! 到 max_base!
+  bases = 0:(length(factors)-1) .|> factorial
+
+  factors .* bases |> sum
+end
+
+factString2Dec("341010")
+```
+
+
+#### JavaScript
+
+```{node}
+
+const naturalSequence = require("../../src/JavaScript/toolkit/Vector").naturalSequence;
+const factorial = require("../../src/JavaScript/toolkit/Arithmetic").factorial;
+const hadamardProduct = require("../../src/JavaScript/toolkit/Matrix").hadamardProduct;
+const sum = require("../../src/JavaScript/toolkit/Statistics").sum;
+
+
+// 字符串本身就是 iterator, 可以用索引 [] 访问
+const code = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const encode = new Map, decode = new Map;
+for (let i = 0; i <= 35; i++) {
+  encode.set(i, code[i]);
+  decode.set(code[i], i);
+}
+
+
+function dec2FactString(nb) {
+  // 寻找最大的基
+  let maxBase = 1;
+  while (factorial(maxBase + 1) <= nb) {
+    maxBase++;
+  }
+
+  // 对应这组基的系数向量
+  const factors = [];
+  for (let i = maxBase; i >= 0; i--) {
+    char = encode.get(Math.floor(nb / factorial(i)));
+    factors.push(char);
+    nb %= factorial(i);
+  }
+
+  return factors.join('');
+}
+
+console.log(dec2FactString(463));
+
+
+function factString2Dec(string) {
+  const factors = string.split('').reverse().map(char => decode.get(char));
+  const bases = naturalSequence(string.length, start = 0).map(factorial);
+  return sum(hadamardProduct(factors, bases));
+}
+
+console.log(factString2Dec("341010"));
+```
+
+
