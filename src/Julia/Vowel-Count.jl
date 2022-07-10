@@ -1,12 +1,12 @@
 
 
 """
-    getcount(s::String)::Int
 count vowels of lowercase in a sentence
 """
 function getcount(s::String)::Int
   count(c -> c ∈ "aeiou", s)
 end
+
 
 
 using Test

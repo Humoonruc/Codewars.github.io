@@ -1,11 +1,13 @@
-# 公式为 1/maxk/(n+1)^(2maxk)
-# 先要对此公式交叉遍历 maxk 向量和 n 向量
-# 最后求和
 
 
-function doubles(maxk, maxn)
-  v(k, n) = 1 / k / (Float64(n) + 1)^(2k)
-  [v(k, n) for k in 1:maxk for n in 1:maxn] |> sum
+
+"""
+通项公式为 1/k/(n+1)^(2k)  
+对此公式交叉遍历 k 向量和 n 向量，求和
+"""
+function doubles(maxk::Int, maxn::Int)::Float64  
+  v(k, n) = 1 / k / (big(n) + 1)^(2k) # 不转换Float64或BigInt会数值越界
+  [v(k, n) for k ∈ 1:maxk for n ∈ 1:maxn] |> sum
 end
 
 doubles(10, 1000)

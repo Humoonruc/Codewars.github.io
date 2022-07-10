@@ -1,6 +1,14 @@
 {
-  "devDependencies": {
-    "chai": "^4.3.6",
-    "mocha": "^10.0.0"
+  "name": "javascript",
+  "version": "1.0.0",
+  "description": "",
+  "main": "Convert-string-to-camel-case.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "mathjs": "^10.6.4"
   }
 }

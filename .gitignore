@@ -1,3 +1,7 @@
+# vscode config
+.vscode/
+
+
 # History files
 .Rhistory
 .Rapp.history

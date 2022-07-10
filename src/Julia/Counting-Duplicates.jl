@@ -1,8 +1,10 @@
-using DataStructures
+## Counting-Duplicates.jl
+
+using DataStructures # 其中的 counter() 已经 export，可以直接用
 
 
 """
-计算text中出现次数多于1次的字符的数量
+计算text中出现次数多于1次的字符的个数
 """
 function duplicatecount(text::String)::Int64
   # 返回一个 struct，类型为 counter

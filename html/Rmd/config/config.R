@@ -27,11 +27,11 @@ config <- list(
   message = TRUE,
   echo = TRUE, # 是否显示代码
   eval = TRUE, # 是否运行代码块
-  tidy = F, # 代码排版
+  tidy = T, # 代码排版
   comment = "#>", # 每行输出的前缀，为了方便复制粘贴时不会污染代码
   collapse = F, # 代码与结果是否显示在同一代码块，选 FALSE 可避免打印图形后，同一代码块中后面的行被落在块外
-  cache = F, # 代码块运行结果缓存
-  cache.comments = F,
+  cache = T, # 代码块运行结果缓存
+  cache.comments = T,
   autodep = T # 自动获得模块间依赖，cache 用
 )
 

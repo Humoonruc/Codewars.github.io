@@ -2,13 +2,20 @@
 using DataStructures
 
 
+"""
+出现多于1次的字符编码为右括号，只有1次的为左括号
+"""
 function duplicateencode(word)
   lower_word = lowercase(word)
   dict = counter(lower_word)
-  collect(lower_word) .|> (c -> dict[c] > 1 ? ')' : '(') |> join
-  # map(c -> letter_dict[c] > 1 ? ')' : '(', lower_word)
+  encode(c) = dict[c] > 1 ? ')' : '('
+
+  map(encode, lower_word)
 end
 
 
+
+
 # Testing
-duplicateencode("Success")
+using Test
+@test duplicateencode("Success") == ")())())"

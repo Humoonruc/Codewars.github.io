@@ -362,24 +362,22 @@ class="sourceCode julia"><code class="sourceCode julia"><span id="cb1-1"><a href
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="st">翻转一个字符串中较长的单词   </span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span></code></pre></div>
-<pre><code>#&gt; &quot;翻转一个字符串中较长的单词   \n&quot;</code></pre>
-<div class="sourceCode" id="cb3"><pre
-class="sourceCode julia"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">spinwords</span>(s<span class="op">::</span><span class="dt">String</span>)<span class="op">::</span><span class="dt">String</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  reverse_long_word <span class="op">=</span> w <span class="op">-&gt;</span> <span class="fu">length</span>(w) <span class="op">&lt;</span> <span class="fl">5</span> ? w <span class="op">:</span> <span class="fu">reverse</span>(w)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="pp">@pipe</span> s <span class="op">|&gt;</span> split <span class="op">.|&gt;</span> reverse_long_word <span class="op">|&gt;</span> <span class="fu">join</span>(_, <span class="st">&quot; &quot;</span>)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
-<pre><code>#&gt; spinwords (generic function with 1 method)</code></pre>
-<div class="sourceCode" id="cb5"><pre
-class="sourceCode julia"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Test</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="pp">@testset</span> <span class="st">&quot;spin words&quot;</span> <span class="cf">begin</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="pp">@test</span> <span class="fu">spinwords</span>(<span class="st">&quot;Hey fellow warriors&quot;</span>) <span class="op">==</span> <span class="st">&quot;Hey wollef sroirraw&quot;</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code></pre></div>
-<pre><code>#&gt; Test Summary: | Pass  Total
-#&gt; spin words    |    1      1</code></pre>
-<pre><code>#&gt; Test.DefaultTestSet(&quot;spin words&quot;, Any[], 1, false, false)</code></pre>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;翻转一个字符串中较长的单词   \n&quot;</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">spinwords</span>(s<span class="op">::</span><span class="dt">String</span>)<span class="op">::</span><span class="dt">String</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  reverse_long_word <span class="op">=</span> w <span class="op">-&gt;</span> <span class="fu">length</span>(w) <span class="op">&lt;</span> <span class="fl">5</span> ? w <span class="op">:</span> <span class="fu">reverse</span>(w)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="pp">@pipe</span> s <span class="op">|&gt;</span> split <span class="op">.|&gt;</span> reverse_long_word <span class="op">|&gt;</span> <span class="fu">join</span>(_, <span class="st">&quot; &quot;</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; spinwords (generic function with 1 method)</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Test</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="pp">@testset</span> <span class="st">&quot;spin words&quot;</span> <span class="cf">begin</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  <span class="pp">@test</span> <span class="fu">spinwords</span>(<span class="st">&quot;Hey fellow warriors&quot;</span>) <span class="op">==</span> <span class="st">&quot;Hey wollef sroirraw&quot;</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Test Summary: | Pass  Total</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; spin words    |    1      1</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Test.DefaultTestSet(&quot;spin words&quot;, Any[], 1, false, false)</span></span></code></pre></div>
 </div>
 </div>
 

@@ -1,14 +1,15 @@
-function score(word)
+
+
+function get_score(word)
   word |> collect .|> (char -> char - 'a') |> sum
 end
 
 function high(x)
-  vector_words = x |> split
-  vector_score = vector_words .|> score
-  max_index = findmax(identity, vector_score)[2]
-  vector_words[max_index]
+  words = x |> split
+  scores = words .|> get_score
+  max_index = findmax(identity, scores)[2]
+  words[max_index]
 end
-
 
 
 using Test
