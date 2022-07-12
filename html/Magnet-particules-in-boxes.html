@@ -11,7 +11,7 @@
 
 <meta name="author" content="Humoon" />
 
-<meta name="date" content="2022-07-07" />
+<meta name="date" content="2022-07-12" />
 
 <title>Magnet particules in boxes</title>
 
@@ -348,7 +348,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Magnet particules in boxes</h1>
 <h4 class="author">Humoon</h4>
-<h4 class="date">2022-07-07</h4>
+<h4 class="date">2022-07-12</h4>
 
 </div>
 
@@ -372,91 +372,97 @@ div.tocify {
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>doubles <span class="ot">&lt;-</span> <span class="cf">function</span>(maxk, maxn) {</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  iterator <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">k =</span> <span class="dv">1</span><span class="sc">:</span>maxk, <span class="at">n =</span> <span class="dv">1</span><span class="sc">:</span>maxn) <span class="sc">%&gt;%</span> <span class="fu">as.data.table</span>()</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  iterator[, v <span class="sc">:</span><span class="er">=</span> <span class="dv">1</span> <span class="sc">/</span> (k <span class="sc">*</span> (n <span class="sc">+</span> <span class="dv">1</span>)<span class="sc">^</span>(<span class="dv">2</span> <span class="sc">*</span> k))][, v] <span class="sc">%&gt;%</span> <span class="fu">sum</span>()</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">doubles</span>(<span class="dv">1</span>, <span class="dv">10</span>)</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.5580322</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(testthat)</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>dotest <span class="ot">&lt;-</span> <span class="cf">function</span>(maxk, maxn, expected) {</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  actual <span class="ot">&lt;-</span> <span class="fu">doubles</span>(maxk, maxn)</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">expect_equal</span>(actual, expected, <span class="at">tol =</span> <span class="fl">1e-6</span>, <span class="at">scale =</span> <span class="dv">1</span>, <span class="at">info =</span> <span class="st">&quot;&quot;</span>)</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="fu">test_that</span>(<span class="st">&quot;test doubles&quot;</span>, {</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dotest</span>(<span class="dv">1</span>, <span class="dv">10</span>, <span class="fl">0.5580321939764581</span>)</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dotest</span>(<span class="dv">10</span>, <span class="dv">1000</span>, <span class="fl">0.6921486500921933</span>)</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dotest</span>(<span class="dv">10</span>, <span class="dv">5000</span>, <span class="fl">0.6929472124031200</span>)</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Test passed</span></span></code></pre></div>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    iterator <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">k =</span> <span class="dv">1</span><span class="sc">:</span>maxk, <span class="at">n =</span> <span class="dv">1</span><span class="sc">:</span>maxn) <span class="sc">%&gt;%</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>        <span class="fu">as.data.table</span>()</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    iterator[, <span class="st">`</span><span class="at">:=</span><span class="st">`</span>(v, <span class="dv">1</span><span class="sc">/</span>(k <span class="sc">*</span> (n <span class="sc">+</span> <span class="dv">1</span>)<span class="sc">^</span>(<span class="dv">2</span> <span class="sc">*</span> k)))][, v] <span class="sc">%&gt;%</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>()</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">doubles</span>(<span class="dv">1</span>, <span class="dv">10</span>)</span></code></pre></div>
+<pre><code>#&gt; [1] 0.5580322</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(testthat)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>dotest <span class="ot">&lt;-</span> <span class="cf">function</span>(maxk, maxn, expected) {</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    actual <span class="ot">&lt;-</span> <span class="fu">doubles</span>(maxk, maxn)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">expect_equal</span>(actual, expected, <span class="at">tol =</span> <span class="fl">1e-06</span>, <span class="at">scale =</span> <span class="dv">1</span>, <span class="at">info =</span> <span class="st">&quot;&quot;</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">test_that</span>(<span class="st">&quot;test doubles&quot;</span>, {</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">dotest</span>(<span class="dv">1</span>, <span class="dv">10</span>, <span class="fl">0.558032193976458</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">dotest</span>(<span class="dv">10</span>, <span class="dv">1000</span>, <span class="fl">0.692148650092193</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">dotest</span>(<span class="dv">10</span>, <span class="dv">5000</span>, <span class="fl">0.69294721240312</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div>
+<pre><code>#&gt; Test passed</code></pre>
 </div>
 <div id="julia" class="section level4">
 <h4>Julia</h4>
-<div class="sourceCode" id="cb2"><pre
-class="sourceCode julia"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 公式为 1/maxk/(n+1)^(2maxk)</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 先要对此公式交叉遍历 maxk 向量和 n 向量</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 最后求和</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">doubles</span>(maxk, maxn)</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">v</span>(k, n) <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> k <span class="op">/</span> (<span class="fu">Float64</span>(n) <span class="op">+</span> <span class="fl">1</span>)<span class="op">^</span>(<span class="fl">2</span>k)</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  [<span class="fu">v</span>(k, n) for k <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>maxk for n <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>maxn] <span class="op">|&gt;</span> sum</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; doubles (generic function with 1 method)</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="fu">doubles</span>(<span class="fl">10</span>, <span class="fl">1000</span>)</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 0.6921486500921956</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Test</span></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Printf</span></span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">ifinrange</span>(maxk, maxn, expect)</span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>  merr <span class="op">=</span> <span class="fl">1e-6</span> <span class="co"># max error</span></span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>  actual <span class="op">=</span> <span class="fu">doubles</span>(maxk, maxn)</span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>  <span class="cn">e</span> <span class="op">=</span> <span class="fu">abs</span>(actual <span class="op">-</span> expect)</span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>  inrange <span class="op">=</span> <span class="cn">e</span> <span class="op">&lt;=</span> merr</span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>  <span class="pp">@printf</span>(<span class="st">&quot;Expect %.12f</span><span class="sc">\n</span><span class="st">&quot;</span>, <span class="fu">float</span>(expect))</span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>  <span class="pp">@printf</span>(<span class="st">&quot;Actual %.12f</span><span class="sc">\n</span><span class="st">&quot;</span>, <span class="fu">float</span>(actual))</span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>  inrange</span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ifinrange (generic function with 1 method)</span></span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="pp">@testset</span> <span class="st">&quot;fixed tests&quot;</span> <span class="cf">begin</span></span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>  <span class="pp">@test</span> <span class="fu">ifinrange</span>(<span class="fl">1</span>, <span class="fl">10</span>, <span class="fl">0.5580321939764581</span>) <span class="op">==</span> <span class="cn">true</span></span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>  <span class="pp">@test</span> <span class="fu">ifinrange</span>(<span class="fl">10</span>, <span class="fl">1000</span>, <span class="fl">0.6921486500921933</span>) <span class="op">==</span> <span class="cn">true</span></span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Expect 0.558032193976</span></span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Actual 0.558032193976</span></span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Expect 0.692148650092</span></span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Actual 0.692148650092</span></span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Test Summary: | Pass  Total</span></span>
-<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; fixed tests   |    2      2</span></span>
-<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Test.DefaultTestSet(&quot;fixed tests&quot;, Any[], 2, false, false)</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="st">通项公式为 1/k/(n+1)^(2k)  </span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="st">对此公式交叉遍历 k 向量和 n 向量，求和</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span></code></pre></div>
+<pre><code>#&gt; &quot;通项公式为 1/k/(n+1)^(2k)  \n对此公式交叉遍历 k 向量和 n 向量，求和\n&quot;</code></pre>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">doubles</span>(maxk<span class="op">::</span><span class="dt">Int</span>, maxn<span class="op">::</span><span class="dt">Int</span>)<span class="op">::</span><span class="dt">Float64  </span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">v</span>(k, n) <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> k <span class="op">/</span> (<span class="fu">big</span>(n) <span class="op">+</span> <span class="fl">1</span>)<span class="op">^</span>(<span class="fl">2</span>k) <span class="co"># 不转换Float64或BigInt会数值越界</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  [<span class="fu">v</span>(k, n) for k <span class="op">∈</span> <span class="fl">1</span><span class="op">:</span>maxk for n <span class="op">∈</span> <span class="fl">1</span><span class="op">:</span>maxn] <span class="op">|&gt;</span> sum</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
+<pre><code>#&gt; doubles (generic function with 1 method)</code></pre>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">doubles</span>(<span class="fl">10</span>, <span class="fl">1000</span>)</span></code></pre></div>
+<pre><code>#&gt; 0.6921486500921955</code></pre>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Test</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Printf</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">ifinrange</span>(maxk, maxn, expect)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  merr <span class="op">=</span> <span class="fl">1e-6</span> <span class="co"># max error</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  actual <span class="op">=</span> <span class="fu">doubles</span>(maxk, maxn)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  <span class="cn">e</span> <span class="op">=</span> <span class="fu">abs</span>(actual <span class="op">-</span> expect)</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  inrange <span class="op">=</span> <span class="cn">e</span> <span class="op">&lt;=</span> merr</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>  <span class="pp">@printf</span>(<span class="st">&quot;Expect %.12f</span><span class="sc">\n</span><span class="st">&quot;</span>, <span class="fu">float</span>(expect))</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>  <span class="pp">@printf</span>(<span class="st">&quot;Actual %.12f</span><span class="sc">\n</span><span class="st">&quot;</span>, <span class="fu">float</span>(actual))</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>  inrange</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
+<pre><code>#&gt; ifinrange (generic function with 1 method)</code></pre>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@testset</span> <span class="st">&quot;fixed tests&quot;</span> <span class="cf">begin</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="pp">@test</span> <span class="fu">ifinrange</span>(<span class="fl">1</span>, <span class="fl">10</span>, <span class="fl">0.5580321939764581</span>) <span class="op">==</span> <span class="cn">true</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="pp">@test</span> <span class="fu">ifinrange</span>(<span class="fl">10</span>, <span class="fl">1000</span>, <span class="fl">0.6921486500921933</span>) <span class="op">==</span> <span class="cn">true</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code></pre></div>
+<pre><code>#&gt; Expect 0.558032193976
+#&gt; Actual 0.558032193976
+#&gt; Expect 0.692148650092
+#&gt; Actual 0.692148650092
+#&gt; Test Summary: | Pass  Total
+#&gt; fixed tests   |    2      2</code></pre>
+<pre><code>#&gt; Test.DefaultTestSet(&quot;fixed tests&quot;, Any[], 2, false, false)</code></pre>
 </div>
 <div id="javascript" class="section level4">
 <h4>JavaScript</h4>
-<div class="sourceCode" id="cb3"><pre
-class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> Vector <span class="op">=</span> <span class="pp">require</span>(<span class="st">&quot;../../src/JavaScript/toolkit/Vector&quot;</span>)<span class="op">;</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> naturalSequence <span class="op">=</span> Vector<span class="op">.</span><span class="at">naturalSequence</span><span class="op">;</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> crossing <span class="op">=</span> Vector<span class="op">.</span><span class="at">crossing</span><span class="op">;</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> sum <span class="op">=</span> <span class="pp">require</span>(<span class="st">&quot;../../src/JavaScript/toolkit/Statistics&quot;</span>)<span class="op">.</span><span class="at">sum</span><span class="op">;</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">doubles</span>(K<span class="op">,</span> N) {</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> v <span class="op">=</span> (k<span class="op">,</span> n) <span class="kw">=&gt;</span> <span class="dv">1</span> <span class="op">/</span> (k <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">pow</span>(n <span class="op">+</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">2</span> <span class="op">*</span> k))<span class="op">;</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> crossIterator <span class="op">=</span> <span class="fu">crossing</span>(<span class="fu">naturalSequence</span>(K)<span class="op">,</span> <span class="fu">naturalSequence</span>(N))<span class="op">;</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="fu">sum</span>(crossIterator<span class="op">.</span><span class="fu">map</span>(paras <span class="kw">=&gt;</span> <span class="fu">v</span>(paras[<span class="dv">0</span>]<span class="op">,</span> paras[<span class="dv">1</span>])))<span class="op">;</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="fu">doubles</span>(<span class="dv">1</span><span class="op">,</span> <span class="dv">10</span>))<span class="op">;</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="fu">doubles</span>(<span class="dv">10</span><span class="op">,</span> <span class="dv">1000</span>))<span class="op">;</span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>#<span class="op">&gt;</span> <span class="fl">0.5580321939764581</span></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>#<span class="op">&gt;</span> <span class="fl">0.6921486500921895</span></span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> Vector <span class="op">=</span> <span class="pp">require</span>(<span class="st">&quot;../../src/JavaScript/toolkit/Vector&quot;</span>)<span class="op">;</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> naturalSequence <span class="op">=</span> Vector<span class="op">.</span><span class="at">naturalSequence</span><span class="op">;</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> crossing <span class="op">=</span> Vector<span class="op">.</span><span class="at">crossing</span><span class="op">;</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> sum <span class="op">=</span> <span class="pp">require</span>(<span class="st">&quot;../../src/JavaScript/toolkit/Statistics&quot;</span>)<span class="op">.</span><span class="at">sum</span><span class="op">;</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">doubles</span>(K<span class="op">,</span> N) {</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> v <span class="op">=</span> (k<span class="op">,</span> n) <span class="kw">=&gt;</span> <span class="dv">1</span> <span class="op">/</span> (k <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">pow</span>(n <span class="op">+</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">2</span> <span class="op">*</span> k))<span class="op">;</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> crossIterator <span class="op">=</span> <span class="fu">crossing</span>(<span class="fu">naturalSequence</span>(K)<span class="op">,</span> <span class="fu">naturalSequence</span>(N))<span class="op">;</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="fu">sum</span>(crossIterator<span class="op">.</span><span class="fu">map</span>(paras <span class="kw">=&gt;</span> <span class="fu">v</span>(paras[<span class="dv">0</span>]<span class="op">,</span> paras[<span class="dv">1</span>])))<span class="op">;</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="fu">doubles</span>(<span class="dv">1</span><span class="op">,</span> <span class="dv">10</span>))<span class="op">;</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="fu">doubles</span>(<span class="dv">10</span><span class="op">,</span> <span class="dv">1000</span>))<span class="op">;</span></span></code></pre></div>
+<pre><code>#&gt; 0.5580321939764581
+#&gt; 0.6921486500921895</code></pre>
 </div>
 </div>
 

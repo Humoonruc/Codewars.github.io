@@ -44,7 +44,7 @@ using Pipe
 翻转一个字符串中较长的单词   
 """
 function spinwords(s::String)::String
-  reverse_long_word = w -> length(w) < 5 ? w : reverse(w)
+  reverse_long_word(w) = length(w) < 5 ? w : reverse(w)
   return @pipe s |> split .|> reverse_long_word |> join(_, " ")
 end
 

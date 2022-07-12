@@ -1,0 +1,201 @@
+---
+title: "Directions Reduction"
+author: "Humoon"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+
+```{r setup, include = FALSE}
+source("./config/config.R")
+
+## global options ===================================
+knitr::opts_chunk$set(
+  width = config$width,
+  fig.width = config$fig.width,
+  fig.asp = config$fig.asp,
+  out.width = config$out.width,
+  fig.align = config$fig.align,
+  fig.path = config$fig.path,
+  fig.show = config$fig.show,
+  warn = config$warn,
+  warning = config$warning,
+  message = config$message,
+  echo = config$echo,
+  eval = config$eval,
+  tidy = config$tidy,
+  comment = config$comment,
+  collapse = config$collapse,
+  cache = config$cache,
+  cache.comments = config$cache.comments,
+  autodep = config$autodep
+)
+```
+
+
+
+### Description
+
+#### Once upon a time, on a way through the old wild mountainous west,…
+… a man was given directions to go from one point to another. The directions were "NORTH", "SOUTH", "WEST", "EAST". Clearly "NORTH" and "SOUTH" are opposite, "WEST" and "EAST" too.
+
+Going to one direction and coming back the opposite direction right away is a needless effort. Since this is the wild west, with dreadful weather and not much water, it's important to save yourself some energy, otherwise you might die of thirst!
+
+#### How I crossed a mountainous desert the smart way.
+The directions given to the man are, for example, the following (depending on the language):
+
+```
+["NORTH", "SOUTH", "SOUTH", "EAST", "WEST", "NORTH", "WEST"].
+or
+{ "NORTH", "SOUTH", "SOUTH", "EAST", "WEST", "NORTH", "WEST" };
+or
+[North, South, South, East, West, North, West]
+```
+
+You can immediately see that going "NORTH" and immediately "SOUTH" is not reasonable, better stay to the same place! So the task is to give to the man a simplified version of the plan. A better plan in this case is simply:
+
+```
+["WEST"]
+or
+{ "WEST" }
+or
+[West]
+```
+
+
+#### Other examples:
+
+In ["NORTH", "SOUTH", "EAST", "WEST"], the direction "NORTH" + "SOUTH" is going north and coming back right away.
+
+The path becomes ["EAST", "WEST"], now "EAST" and "WEST" annihilate each other, therefore, the final result is [] (nil in Clojure).
+
+In ["NORTH", "EAST", "WEST", "SOUTH", "WEST", "WEST"], "NORTH" and "SOUTH" are not directly opposite but they become directly opposite after the reduction of "EAST" and "WEST" so the whole path is reducible to ["WEST", "WEST"].
+
+#### Task
+
+Write a function dirReduc which will take an array of strings and returns an array of strings with the needless directions removed (W<->E or S<->N side by side).
+
+#### See more examples in "Sample Tests:"
+
+#### Notes
+
+Not all paths can be made simpler. The path ["NORTH", "WEST", "SOUTH", "EAST"] is not reducible. "NORTH" and "WEST", "WEST" and "SOUTH", "SOUTH" and "EAST" are not directly opposite of each other and can't become such. Hence the result path is itself : ["NORTH", "WEST", "SOUTH", "EAST"].
+if you want to translate, please ask before translating.
+
+
+### Solution
+
+#### R
+```{r}
+library(tidyverse)
+library(magrittr)
+
+
+dirReduc <- function(arr) {
+  # 用 named vector 起到其他语言中 Dict/Map 的作用
+  opposite_dir <- c("NORTH", "SOUTH", "EAST", "WEST") %>%
+    set_names(c("SOUTH", "NORTH", "WEST", "EAST"))
+
+  stack <- character(0)
+
+  for (step in arr) {
+    n <- length(stack)
+    if (n > 0 && opposite_dir[step] == stack[n]) {
+      stack <- stack[-n]
+    } else {
+      stack[n + 1] <- step
+    }
+  }
+
+  stack
+}
+
+
+
+library(testthat)
+testing <- function(ls, expected) {
+  actual <- dirReduc(ls)
+  expect_equal(actual, expected)
+}
+test_that("tests", {
+  a <- c("NORTH", "SOUTH", "SOUTH", "EAST", "WEST", "NORTH", "WEST")
+  testing(a, c("WEST"))
+  a <- c("NORTH", "WEST", "SOUTH", "EAST")
+  testing(a, c("NORTH", "WEST", "SOUTH", "EAST"))
+  a <- c("NORTH", "SOUTH", "SOUTH", "EAST", "WEST", "NORTH", "NORTH")
+  testing(a, c("NORTH"))
+})
+```
+
+
+#### Julia
+```{julia}
+
+
+# 有对应关系时，经常可以用 Dict 化简代码
+const OppositeDir = Dict(
+  "NORTH" => "SOUTH",
+  "EAST" => "WEST",
+  "SOUTH" => "NORTH",
+  "WEST" => "EAST"
+)
+
+
+"""
+简化无效路径
+"""
+function dir_reduc(arr)
+  stack = []
+
+  for step ∈ arr
+    # short-circuit logic：当stack为空时，stack[end]根本不会运行
+    if !isempty(stack) && (stack[end] => step) ∈ OppositeDir
+      pop!(stack)
+    else
+      push!(stack, step)
+    end
+  end
+
+  stack
+end
+
+
+using Test
+@test dir_reduc(["NORTH", "SOUTH", "SOUTH", "EAST", "WEST", "NORTH", "WEST"]) == ["WEST"]
+
+
+```
+
+
+#### JavaScript
+
+```{node}
+function dirReduc(arr) {
+
+  const opposite_dir = new Map([
+    ["NORTH", "SOUTH"], ["SOUTH", "NORTH"],
+    ["EAST", "WEST"], ["WEST", "EAST"]]);
+
+  const stack = [];
+
+  for (step of arr) {
+    let n = stack.length;
+    if (n !== 0 && opposite_dir.get(step) === stack[n - 1]) {
+      stack.pop();
+    } else {
+      stack.push(step);
+    }
+  }
+
+  return stack;
+}
+
+
+
+console.log(dirReduc(["NORTH", "SOUTH", "SOUTH", "EAST", "WEST", "NORTH", "WEST"]));
+
+
+
+```
+
+

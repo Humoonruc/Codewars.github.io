@@ -17,6 +17,27 @@ function naturalSequence(n, start = 1) {
 
 
 /**
+ * 序列重复
+ * @param {Array} arr 
+ * @param {Integer} inner 
+ * @param {Integer} outer
+ * @return {Array} 
+ */
+function repeat(arr, inner = 1, outer = 1) {
+  let innerRepeat = arr
+    .map(x => Array(inner).fill(x))
+    .reduce((a, b) => a.concat(b), []);
+
+  let outerRepeat = Array(outer).fill(innerRepeat)
+    .reduce((a, b) => a.concat(b), []);
+
+  return outerRepeat;
+}
+
+// console.log(repeat([1, 2], undefined, 3));
+
+
+/**
  * 数组去重
  * @param {Array} arr 
  */
@@ -88,4 +109,4 @@ function crossing(arr1, arr2) {
 
 
 
-module.exports = { naturalSequence, unique, counter, zip, crossing };
+module.exports = { naturalSequence, repeat, unique, counter, zip, crossing };

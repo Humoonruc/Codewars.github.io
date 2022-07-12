@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Humoon" />
+
+<meta name="date" content="2022-07-12" />
+
+<title>Game Hit the target</title>
+
+<script src="Rmd/libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="Rmd/libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="Rmd/libs/bootstrap-3.3.5/css/united.min.css" rel="stylesheet" />
+<script src="Rmd/libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="Rmd/libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="Rmd/libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="Rmd/libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="Rmd/libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="Rmd/libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="Rmd/libs/navigation-1.1/tabsets.js"></script>
+<script src="Rmd/libs/navigation-1.1/codefolding.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; } /* Alert */
+code span.an { color: #008000; } /* Annotation */
+code span.at { } /* Attribute */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #0000ff; } /* ControlFlow */
+code span.ch { color: #008080; } /* Char */
+code span.cn { } /* Constant */
+code span.co { color: #008000; } /* Comment */
+code span.cv { color: #008000; } /* CommentVar */
+code span.do { color: #008000; } /* Documentation */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.im { } /* Import */
+code span.in { color: #008000; } /* Information */
+code span.kw { color: #0000ff; } /* Keyword */
+code span.op { } /* Operator */
+code span.ot { color: #ff4000; } /* Other */
+code span.pp { color: #ff4000; } /* Preprocessor */
+code span.sc { color: #008080; } /* SpecialChar */
+code span.ss { color: #008080; } /* SpecialString */
+code span.st { color: #008080; } /* String */
+code span.va { } /* Variable */
+code span.vs { color: #008080; } /* VerbatimString */
+code span.wa { color: #008000; font-weight: bold; } /* Warning */
+
+.sourceCode .row {
+  width: 100%;
+}
+.sourceCode {
+  overflow-x: auto;
+}
+.code-folding-btn {
+  margin-right: -30px;
+}
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<link rel="stylesheet" href="css/vue.css" type="text/css" />
+<link rel="stylesheet" href="css/vue.user.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Game Hit the target</h1>
+<h4 class="author">Humoon</h4>
+<h4 class="date">2022-07-12</h4>
+
+</div>
+
+
+<div id="description" class="section level3">
+<h3>Description</h3>
+<p>given a matrix <code>n x n</code> , determine if the arrow is
+directed to the target (x). There will be only 1 arrow ‘&gt;’ and 1
+target ‘x’ An empty spot will be denoted by a space ” “, the target with
+a cross”x”, and the scope “&gt;”</p>
+<div id="examples" class="section level4">
+<h4>Examples:</h4>
+<p>given matrix 4x4:</p>
+<pre><code>[
+
+  [&#39; &#39;, &#39; &#39;, &#39; &#39;, &#39; &#39;],
+
+  [&#39; &#39;, &#39; &#39;, &#39; &#39;, &#39; &#39;], --&gt; return true
+
+  [&#39; &#39;, &#39;&gt;&#39;, &#39; &#39;, &#39;x&#39;],
+
+  [&#39; &#39;, &#39; &#39;, &#39; &#39;, &#39; &#39;]
+
+] </code></pre>
+<p>given matrix 4x4:</p>
+<pre><code>[
+
+  [&#39; &#39;, &#39; &#39;, &#39; &#39;, &#39; &#39;],
+
+  [&#39; &#39;, &#39;&gt;&#39;, &#39; &#39;, &#39; &#39;], --&gt; return false
+
+  [&#39; &#39;, &#39; &#39;, &#39; &#39;, &#39;x&#39;],
+
+  [&#39; &#39;, &#39; &#39;, &#39; &#39;, &#39; &#39;]
+
+] </code></pre>
+<p>given matrix 4x4:</p>
+<pre><code>[
+
+  [&#39; &#39;, &#39; &#39;, &#39; &#39;, &#39; &#39;],
+
+  [&#39; &#39;, &#39;x&#39;, &#39;&gt;&#39;, &#39; &#39;], --&gt; return false
+
+  [&#39; &#39;, &#39;&#39;, &#39; &#39;, &#39; &#39;],
+
+  [&#39; &#39;, &#39; &#39;, &#39; &#39;, &#39; &#39;]
+
+] </code></pre>
+<p>In this example, only a 4x4 matrix was used, the problem will have
+matrices of dimensions from 2 to 7 Happy hacking as they say!</p>
+</div>
+</div>
+<div id="solution" class="section level3">
+<h3>Solution</h3>
+<div id="r" class="section level4">
+<h4>R</h4>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>solution <span class="ot">&lt;-</span> <span class="cf">function</span>(M) {</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 将M沿列展开为向量的一维坐标</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    arrow_index <span class="ot">&lt;-</span> <span class="fu">match</span>(<span class="st">&quot;&gt;&quot;</span>, M)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    target_index <span class="ot">&lt;-</span> <span class="fu">match</span>(<span class="st">&quot;x&quot;</span>, M)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 二维坐标中的行</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    arrow_i <span class="ot">&lt;-</span> arrow_index<span class="sc">%%</span><span class="fu">nrow</span>(M)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    target_i <span class="ot">&lt;-</span> target_index<span class="sc">%%</span><span class="fu">nrow</span>(M)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    arrow_i <span class="sc">==</span> target_i <span class="sc">&amp;&amp;</span> arrow_index <span class="sc">&lt;</span> target_index</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>M <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">&quot; &quot;</span>, <span class="dv">17</span>), <span class="st">&quot;&gt;&quot;</span>, <span class="st">&quot; &quot;</span>, <span class="st">&quot;x&quot;</span>, <span class="fu">rep</span>(<span class="st">&quot; &quot;</span>, <span class="dv">5</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">matrix</span>(<span class="at">nrow =</span> <span class="dv">5</span>, <span class="at">ncol =</span> <span class="dv">5</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="fu">solution</span>(M)</span></code></pre></div>
+<pre><code>#&gt; [1] TRUE</code></pre>
+</div>
+<div id="julia" class="section level4">
+<h4>Julia</h4>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">solution</span>(A<span class="op">::</span><span class="dt">Matrix{Char}</span>)<span class="op">::</span><span class="dt">Bool</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  arrow_indice <span class="op">=</span> <span class="fu">findfirst</span>(c <span class="op">-&gt;</span> c <span class="op">==</span> <span class="ch">&#39;&gt;&#39;</span>, A)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  target_indice <span class="op">=</span> <span class="fu">findfirst</span>(c <span class="op">-&gt;</span> c <span class="op">==</span> <span class="ch">&#39;x&#39;</span>, A)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  in_same_line <span class="op">=</span> arrow_indice[<span class="fl">1</span>] <span class="op">==</span> target_indice[<span class="fl">1</span>]</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  order_is_right <span class="op">=</span> arrow_indice[<span class="fl">2</span>] <span class="op">&lt;</span> target_indice[<span class="fl">2</span>]</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  in_same_line <span class="op">&amp;&amp;</span> order_is_right</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
+<pre><code>#&gt; solution (generic function with 1 method)</code></pre>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> [</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="ch">&#39; &#39;</span> <span class="ch">&#39; &#39;</span> <span class="ch">&#39; &#39;</span> <span class="ch">&#39; &#39;</span> <span class="ch">&#39; &#39;</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="ch">&#39; &#39;</span> <span class="ch">&#39; &#39;</span> <span class="ch">&#39; &#39;</span> <span class="ch">&#39; &#39;</span> <span class="ch">&#39; &#39;</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="ch">&#39; &#39;</span> <span class="ch">&#39; &#39;</span> <span class="ch">&#39; &#39;</span> <span class="ch">&#39; &#39;</span> <span class="ch">&#39; &#39;</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="ch">&#39; &#39;</span> <span class="ch">&#39; &#39;</span> <span class="ch">&#39;&gt;&#39;</span> <span class="ch">&#39; &#39;</span> <span class="ch">&#39;x&#39;</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="ch">&#39; &#39;</span> <span class="ch">&#39; &#39;</span> <span class="ch">&#39; &#39;</span> <span class="ch">&#39; &#39;</span> <span class="ch">&#39; &#39;</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>]</span></code></pre></div>
+<pre><code>#&gt; 5×5 Matrix{Char}:
+#&gt;  &#39; &#39;  &#39; &#39;  &#39; &#39;  &#39; &#39;  &#39; &#39;
+#&gt;  &#39; &#39;  &#39; &#39;  &#39; &#39;  &#39; &#39;  &#39; &#39;
+#&gt;  &#39; &#39;  &#39; &#39;  &#39; &#39;  &#39; &#39;  &#39; &#39;
+#&gt;  &#39; &#39;  &#39; &#39;  &#39;&gt;&#39;  &#39; &#39;  &#39;x&#39;
+#&gt;  &#39; &#39;  &#39; &#39;  &#39; &#39;  &#39; &#39;  &#39; &#39;</code></pre>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">solution</span>(A)</span></code></pre></div>
+<pre><code>#&gt; true</code></pre>
+</div>
+<div id="javascript" class="section level4">
+<h4>JavaScript</h4>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> solution <span class="op">=</span> <span class="kw">function</span> (mtrx) {</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="kw">let</span> row <span class="kw">of</span> mtrx) {</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> scope <span class="op">=</span> row<span class="op">.</span><span class="fu">indexOf</span>(<span class="st">&#39;&gt;&#39;</span>)<span class="op">;</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> target <span class="op">=</span> row<span class="op">.</span><span class="fu">indexOf</span>(<span class="st">&#39;x&#39;</span>)<span class="op">;</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (target <span class="op">&gt;</span> <span class="op">-</span><span class="dv">1</span> <span class="op">&amp;&amp;</span> scope <span class="op">&gt;</span> <span class="op">-</span><span class="dv">1</span> <span class="op">&amp;&amp;</span> scope <span class="op">&lt;</span> target) <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>}<span class="op">;</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="fu">solution</span>([</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  [<span class="st">&#39; &#39;</span><span class="op">,</span> <span class="st">&#39; &#39;</span><span class="op">,</span> <span class="st">&#39; &#39;</span><span class="op">,</span> <span class="st">&#39; &#39;</span><span class="op">,</span> <span class="st">&#39; &#39;</span>]<span class="op">,</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>  [<span class="st">&#39; &#39;</span><span class="op">,</span> <span class="st">&#39; &#39;</span><span class="op">,</span> <span class="st">&#39; &#39;</span><span class="op">,</span> <span class="st">&#39; &#39;</span><span class="op">,</span> <span class="st">&#39; &#39;</span>]<span class="op">,</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  [<span class="st">&#39; &#39;</span><span class="op">,</span> <span class="st">&#39; &#39;</span><span class="op">,</span> <span class="st">&#39; &#39;</span><span class="op">,</span> <span class="st">&#39; &#39;</span><span class="op">,</span> <span class="st">&#39; &#39;</span>]<span class="op">,</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>  [<span class="st">&#39; &#39;</span><span class="op">,</span> <span class="st">&#39; &#39;</span><span class="op">,</span> <span class="st">&#39;&gt;&#39;</span><span class="op">,</span> <span class="st">&#39; &#39;</span><span class="op">,</span> <span class="st">&#39;x&#39;</span>]<span class="op">,</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>  [<span class="st">&#39; &#39;</span><span class="op">,</span> <span class="st">&#39; &#39;</span><span class="op">,</span> <span class="st">&#39;&#39;</span><span class="op">,</span> <span class="st">&#39; &#39;</span><span class="op">,</span> <span class="st">&#39; &#39;</span>]</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>]))<span class="op">;</span></span></code></pre></div>
+<pre><code>#&gt; true</code></pre>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -51,12 +51,13 @@ Complete the solution so that it splits the string into pairs of two characters.
 #### R
 ```{r}
 library(tidyverse)
+library(magrittr)
 
 solution <- function(string) {
   string %>%
     str_c("_") %>%
     str_extract_all(".{2}") %>%
-    `[[`(1)
+    extract2(1)
 }
 
 library(testthat)

@@ -8,8 +8,8 @@ Priority,Difficulty(kyu),Title,Link,Tag,Grammar,Solution
 0,7,Vowel Count,https://www.codewars.com/kata/54ff3102c1bad923760001f3,Grammar,`count()`,[HTML](./html/Vowel-Count.html)
 0,6,Stop gninnipS My sdroW!,https://www.codewars.com/kata/5264d2b162488dc400000001,Array,vectorization,[HTML](./html/Stop-gninnipS-My-sdroW!.html)
 1,7,Highest and Lowest,https://www.codewars.com/kata/554b4ac871d6813a03000035,Grammar,`@pipe`,[HTML](./html/Highest-and-Lowest.html)
-2,6,Counting Duplicates,https://www.codewars.com/kata/54bf1c2cd5b56cc47f0007a1,Dict/Map,counter,[HTML](./html/Counting-Duplicates.html)
-2,6,Duplicate Encoder,https://www.codewars.com/kata/54b42f9314d9229fd6000d9c,Dict/Map,counter,[HTML](./html/Duplicate-Encoder.html)
+2,6,Counting Duplicates,https://www.codewars.com/kata/54bf1c2cd5b56cc47f0007a1,Dict/Map,`counter()`,[HTML](./html/Counting-Duplicates.html)
+2,6,Duplicate Encoder,https://www.codewars.com/kata/54b42f9314d9229fd6000d9c,Dict/Map,`counter()`,[HTML](./html/Duplicate-Encoder.html)
 2,4,Magnet particules in boxes,https://www.codewars.com/kata/56c04261c3fcf33f2d000534,Grammar,combination,[HTML](./html/Magnet-particules-in-boxes.html)
 0,5,Primes in numbers,https://www.codewars.com/kata/54d512e62a5e54c96200019e,Algorithm,"",[HTML](./html/Primes-in-numbers.html)
 1,4,Rectangle Rotation,https://www.codewars.com/kata/5886e082a836a691340000c3,Algorithm,"",[HTML](./html/Rectangle-Rotation.html)
@@ -26,6 +26,9 @@ Priority,Difficulty(kyu),Title,Link,Tag,Grammar,Solution
 0,6,Take a Ten Minutes Walk,https://www.codewars.com/kata/54da539698b8a2ad76000228,Grammar,`all()`,[HTML](./html/Take-a-Ten-Minutes-Walk.html)
 1,6,Highest Scoring Word,https://www.codewars.com/kata/57eb8fcdf670e99d9b000272,ACSII,"",[HTML](./html/Highest-Scoring-Word.html)
 2,7,Ones and Zeros,https://www.codewars.com/kata/578553c3a1b8d5c40300037c,Grammar,base conversion,[HTML](./html/Ones-and-Zeros.html)
-2,5,Valid Parentheses,https://www.codewars.com/kata/52774a314c2333f0a7000688,Algorithm,Stack,
-2,5,Directions Reduction,https://www.codewars.com/kata/550f22f4d758534c1100025a,Algorithm,Stack & short-circuit logic,
-2,6,Rainfall,https://www.codewars.com/kata/56a32dd6e4f4748cc3000006,"","",[HTML](./html/Rainfall.html)
+2,5,Valid Parentheses,https://www.codewars.com/kata/52774a314c2333f0a7000688,Algorithm,Stack,[HTML](./html/Valid-Parentheses.html)
+2,5,Directions Reduction,https://www.codewars.com/kata/550f22f4d758534c1100025a,Algorithm,Stack & short-circuit logic,[HTML](./html/Directions-Reduction.html)
+2,7,Game Hit the target,https://www.codewars.com/kata/5ffc226ce1666a002bf023d2,Matrix,index of matched element,[HTML](./html/Game-Hit-the-target.html)
+2,6,Pyramid Array,https://www.codewars.com/kata/515f51d438015969f7000013,Array,`repeat()`,[HTML](./html/Pyramid-Array.html)
+2,6,Make the Deadfish Swim,https://www.codewars.com/kata/51e0007c1f9378fa810002a9,Functional,`reduce()`,[HTML](./html/Make-the-Deadfish-Swim.html)
+2,6,N-th Fibonacci,https://www.codewars.com/kata/522551eee9abb932420004a0,Matrix,linear transformation,[HTML](./html/N-th-Fibonacci.html)

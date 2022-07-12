@@ -87,14 +87,15 @@ test_that("Sample Tests", {
 
 using Statistics
 
+
 """
-    getmiddle(s::String)::String
 return middle character(s) of a string
 """
-function getmiddle(s)
-  m = median(1:length(s)) # median() 返回 Float
-  s[Int(floor(m)):Int(ceil(m))]
+function getmiddle(s::String)::String
+  m = median(1:length(s))
+  s[floor(Int, m):ceil(Int, m)] # median() 返回 Float
 end
+
 
 using Test
 @testset "Sample tests" begin

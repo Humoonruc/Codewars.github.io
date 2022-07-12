@@ -82,24 +82,24 @@ test_that("Example Tests", {
 using Statistics
 
 
-function not_outlier(x, mean, std, cutoff)
-  abs(x - mean) <= cutoff * std
+function get_outlier(sample::Vector, cutoff)::Vector
+  m = mean(sample)
+  n = length(sample)
+  sd = √((1 / n) * sum((sample .- m) .^ 2))
+
+  filter(x -> abs(x - m) > cutoff * sd, sample)
 end
+
 
 function clean_mean(sample::Vector, cutoff)::Float64
   while true
-    m = mean(sample)
-    n = length(sample)
-    sd = sqrt(sum((sample .- m) .^ 2) / n)
-    sample_without_outlier = filter(x -> not_outlier(x, m, sd, cutoff), sample)
-
-    if length(sample_without_outlier) == n
-      return m
-    else
-      sample = sample_without_outlier
-    end
+    outliers = get_outlier(sample, cutoff)
+    isempty(outliers) && return mean(sample)
+    # sample = sample[sample.∉tuple(outliers)] # []选择器
+    sample = filter(x -> x ∉ outliers, sample)
   end
 end
+
 
 clean_mean([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 100], 3)
 ```
