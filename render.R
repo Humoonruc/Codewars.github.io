@@ -8,97 +8,100 @@ library(data.table)
 
 #' meta Programming 生成可执行的 Rmd 文件
 renderRmd <- function(title) {
-  fileName <- title %>% str_replace_all(" ", "-")
+    fileName <- title %>% str_replace_all(" ", "-")
 
-  meta <- c(
-    "---",
-    str_glue('title: "{title}"'),
-    read_lines("./html/Rmd/config/meta.txt"),
-    "\n"
-  )
-
-  kata <- meta
-
-  if (file.exists(str_glue("./md/{fileName}.md"))) {
-    kata <- c(
-      kata,
-      "### Description\n",
-      read_lines(str_glue("./md/{fileName}.md")),
-      "\n"
+    meta <- c(
+        "---",
+        str_glue('title: "{title}"'),
+        read_lines("./html/Rmd/config/meta.txt"),
+        "\n"
     )
-  }
 
-  kata <- c(kata, "### Solution\n")
+    kata <- meta
 
-  if (file.exists(str_glue("./src/R/{fileName}.R"))) {
-    R_code <- read_lines(str_glue("./src/R/{fileName}.R")) %>%
-      str_replace("\\./src/R/toolkit", "\\.\\./\\.\\./src/R/toolkit")
+    if (file.exists(str_glue("./md/{fileName}.md"))) {
+        kata <- c(
+            kata,
+            "### Description\n",
+            read_lines(str_glue("./md/{fileName}.md")),
+            "\n"
+        )
+    }
 
-    kata <- c(
-      kata,
-      "#### R",
-      "```{r}",
-      R_code,
-      "```",
-      "\n"
-    )
-  }
+    kata <- c(kata, "### Solution\n")
 
-  if (file.exists(str_glue("./src/Julia/{fileName}.jl"))) {
-    kata <- c(
-      kata,
-      "#### Julia",
-      "```{julia}",
-      read_lines(str_glue("./src/Julia/{fileName}.jl")),
-      "```",
-      "\n"
-    )
-  }
+    if (file.exists(str_glue("./src/R/{fileName}.R"))) {
+        R_code <- read_lines(str_glue("./src/R/{fileName}.R")) %>%
+            str_replace("\\./src/R/toolkit", "\\.\\./\\.\\./src/R/toolkit")
 
-  if (file.exists(str_glue("./src/JavaScript/{fileName}.js"))) {
-    js_code <- read_lines(str_glue("./src/JavaScript/{fileName}.js")) %>%
-      str_replace("\\./toolkit", "\\.\\./\\.\\./src/JavaScript/toolkit")
+        kata <- c(
+            kata,
+            "#### R",
+            "```{r}",
+            R_code,
+            "```",
+            "\n"
+        )
+    }
 
-    kata <- c(
-      kata,
-      "#### JavaScript\n",
-      "```{node}",
-      js_code,
-      "```",
-      "\n"
-    )
-  }
+    if (file.exists(str_glue("./src/Julia/{fileName}.jl"))) {
+        kata <- c(
+            kata,
+            "#### Julia",
+            "```{julia}",
+            read_lines(str_glue("./src/Julia/{fileName}.jl")),
+            "```",
+            "\n"
+        )
+    }
 
-  if (file.exists(str_glue("./src/Python/{fileName}.py"))) {
-    kata <- c(
-      kata,
-      "#### Python",
-      "```{python}",
-      read_lines(str_glue("./src/Python/{fileName}.py")),
-      "```",
-      "\n"
-    )
-  }
+    if (file.exists(str_glue("./src/JavaScript/{fileName}.js"))) {
+        js_code <- read_lines(str_glue("./src/JavaScript/{fileName}.js")) %>%
+            str_replace("\\./toolkit", "\\.\\./\\.\\./src/JavaScript/toolkit")
+
+        kata <- c(
+            kata,
+            "#### JavaScript\n",
+            "```{node}",
+            js_code,
+            "```",
+            "\n"
+        )
+    }
+
+    if (file.exists(str_glue("./src/Python/{fileName}.py"))) {
+        kata <- c(
+            kata,
+            "#### Python",
+            "```{python}",
+            read_lines(str_glue("./src/Python/{fileName}.py")),
+            "```",
+            "\n"
+        )
+    }
 
 
-  readr::write_lines(kata, str_glue("./html/Rmd/{fileName}.Rmd"), sep = "\n")
+    readr::write_lines(kata, str_glue("./html/Rmd/{fileName}.Rmd"), sep = "\n")
 
-  # outputPath <- str_glue("./Rmd/{fileName}.Rmd") %>%
-  #   normalizePath() %>%
-  #   dirname() %>%
-  #   dirname() %>%
-  #   str_c(str_glue("/html/{fileName}"))
+    # outputPath <- str_glue("./Rmd/{fileName}.Rmd") %>%
+    #   normalizePath() %>%
+    #   dirname() %>%
+    #   dirname() %>%
+    #   str_c(str_glue("/html/{fileName}"))
 
-  # print(outputPath)
+    # print(outputPath)
 }
 
 
 #' 将 Rmd 全部生成 Html
 renderHtml <- function() {
-  str_c("./html/Rmd/", dir("./html/Rmd/", ".Rmd$", all.files = TRUE)) %>%
-    walk(function(filename) {
-      rmarkdown::render(filename, output_dir = "./html/", encoding = "UTF-8")
-    })
+    str_c(
+        "./html/Rmd/",
+        dir("./html/Rmd/", ".Rmd$", all.files = TRUE)
+    ) %>%
+        walk(function(filename) {
+            rmarkdown::render(filename, output_dir = "./html/", encoding = "UTF-8")
+        })
 }
 
 
@@ -107,7 +110,10 @@ titles <- kata_table$Title
 titles %>% walk(renderRmd) # 对每个 kata 生成 Rmd
 renderHtml()
 kata_table[, Solution := str_c("[HTML](./html/", str_replace_all(Title, " ", "-"), ".html)")]
-fwrite(kata_table, "./content.csv")
+
+kata_table %>%
+    arrange(Tag, desc(Priority), `Difficulty(kyu)`) %>%
+    fwrite("./content.csv")
 
 
 ###############################################################

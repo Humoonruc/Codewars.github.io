@@ -34,6 +34,25 @@ knitr::opts_chunk$set(
 
 
 
+### Description
+
+The mean and standard deviation of a sample of data can be thrown off if the sample contains one or many outlier(s) :
+
+For this reason, it is usually a good idea to check for and remove outliers before computing the mean or the standard deviation of a sample. To this aim, your function will receive a list of numbers representing a sample of data. Your function must remove any outliers and return the mean of the sample, rounded to two decimal places (round only at the end).
+
+Since there is no objective definition of "outlier" in statistics, your function will also receive a cutoff, in standard deviation units. So for example if the cutoff is 3, then any value that is more than 3 standard deviations above or below the mean must be removed. Notice that, once outlying values are removed in a first "sweep", other less extreme values may then "become" outliers, that you'll have to remove as well!
+
+
+#### Example
+```
+sample = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 100]
+cutoff = 3
+clean_mean(sample, cutoff) → 5.5
+```
+
+Note : since we are not computing the sample standard deviation for inferential purposes, the denominator is n, not n - 1.
+
+
 ### Solution
 
 #### R
@@ -44,7 +63,7 @@ library(tidyverse)
 
 
 not_outlier <- function(x, mean, std, cutoff) {
-  abs(x - mean) <= cutoff * std
+    abs(x - mean) <= cutoff * std
 }
 
 
@@ -53,55 +72,63 @@ not_outlier <- function(x, mean, std, cutoff) {
 #' @param cutoff 评估一个样本点是否为 outlier 的参数
 #'    当一个样本点的离差大于标准差的 cutoff 倍时，认为它是 outlier
 clean_mean <- function(sample, cutoff) {
-  while (TRUE) { # 无限循环，满足条件时用 return() 跳出
-    m <- mean(sample)
-    n <- length(sample)
-    sd <- sqrt((1 / n) * sum((sample - m)^2))
-    sample_without_outlier <- sample %>% keep(~ not_outlier(.x, m, sd, cutoff))
+    while (TRUE) { # 无限循环，满足条件时用 return() 跳出
+        m <- mean(sample)
+        n <- length(sample)
+        sd <- sqrt((1 / n) * sum((sample - m)^2))
+        sample_without_outlier <- sample %>% keep(~ not_outlier(.x, m, sd, cutoff))
 
-    if (length(sample_without_outlier) == n) {
-      return(m)
-    } else {
-      sample <- sample_without_outlier
+        if (length(sample_without_outlier) == n) {
+            return(m)
+        } else {
+            sample <- sample_without_outlier
+        }
     }
-  }
 }
 
 
 library(testthat)
 test_that("Example Tests", {
-  sam <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 100)
-  cutoff <- 3
-  expect_equal(clean_mean(sam, cutoff), 5.5)
+    sam <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 100)
+    cutoff <- 3
+    expect_equal(clean_mean(sam, cutoff), 5.5)
 })
 ```
 
 
 #### Julia
 ```{julia}
-using Statistics
+using Statistics, Test
 
 
-function get_outlier(sample::Vector, cutoff)::Vector
-  m = mean(sample)
-  n = length(sample)
-  sd = √((1 / n) * sum((sample .- m) .^ 2))
+function get_outlier(sample::Vector{Int64}, cutoff::Real)::Vector{Int64}
+    xs = sample
+    x_bar = mean(sample)
+    n = length(sample)
+    sd = √(n \ sum((x - x_bar)^2 for x in xs))
 
-  filter(x -> abs(x - m) > cutoff * sd, sample)
+    is_outlier(x::Real)::Bool = abs(x - x_bar) > cutoff * sd
+
+    return filter(is_outlier, xs)
 end
 
+@test get_outlier([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 100, 10000], 3) == [10000]
 
-function clean_mean(sample::Vector, cutoff)::Float64
-  while true
-    outliers = get_outlier(sample, cutoff)
-    isempty(outliers) && return mean(sample)
-    # sample = sample[sample.∉tuple(outliers)] # []选择器
-    sample = filter(x -> x ∉ outliers, sample)
-  end
+
+"""
+去掉所有离群点后，求均值
+"""
+function clean_mean(sample::Vector{Int64}, cutoff::Real)::Float64
+    while true
+        outliers = get_outlier(sample, cutoff)
+        isempty(outliers) && return mean(sample)
+        # sample = sample[sample.∉outliers] # []选择器
+        # sample = filter(x -> x ∉ outliers, sample)
+        sample = filter(∉(outliers), sample)
+    end
 end
 
-
-clean_mean([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 100], 3)
+clean_mean([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 100, 10000], 3)
 ```
 
 

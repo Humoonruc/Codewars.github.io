@@ -11,7 +11,7 @@
 
 <meta name="author" content="Humoon" />
 
-<meta name="date" content="2022-07-12" />
+<meta name="date" content="2022-07-20" />
 
 <title>Moving Zeros To The End</title>
 
@@ -348,7 +348,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Moving Zeros To The End</h1>
 <h4 class="author">Humoon</h4>
-<h4 class="date">2022-07-12</h4>
+<h4 class="date">2022-07-20</h4>
 
 </div>
 
@@ -405,15 +405,15 @@ the end, preserving the order of the other elements.</p>
 <h4>Julia</h4>
 <div class="sourceCode" id="cb6"><pre
 class="sourceCode julia"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">is_zero</span>(x)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  x <span class="op">==</span> <span class="fl">0</span> <span class="op">&amp;&amp;</span> <span class="fu">typeof</span>(x) <span class="op">==</span> <span class="dt">Int64</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">is_zero</span>(arr<span class="op">::</span><span class="dt">Vector</span>)<span class="op">::</span><span class="dt">Vector{Bool}</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">map</span>(x <span class="op">-&gt;</span> x <span class="op">==</span> <span class="fl">0</span> <span class="op">&amp;&amp;</span> <span class="fu">typeof</span>(x) <span class="op">!=</span> <span class="dt">Bool</span>, arr)</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
 <pre><code>#&gt; is_zero (generic function with 1 method)</code></pre>
 <div class="sourceCode" id="cb8"><pre
 class="sourceCode julia"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">moveZeros</span>(arr)</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  [arr[.!<span class="fu">is_zero</span>.(arr)]<span class="op">...</span>, arr[<span class="fu">is_zero</span>.(arr)]<span class="op">...</span>]</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># [filter(x -&gt; !is_zero(x), arr)..., filter(is_zero, arr)...]</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">moveZeros</span>(arr<span class="op">::</span><span class="dt">Vector</span>)<span class="op">::</span><span class="dt">Vector</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    [arr[.!<span class="fu">is_zero</span>(arr)]<span class="op">...</span>, arr[<span class="fu">is_zero</span>(arr)]<span class="op">...</span>]</span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
 <pre><code>#&gt; moveZeros (generic function with 1 method)</code></pre>
 <div class="sourceCode" id="cb10"><pre

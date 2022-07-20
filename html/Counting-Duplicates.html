@@ -11,7 +11,7 @@
 
 <meta name="author" content="Humoon" />
 
-<meta name="date" content="2022-07-12" />
+<meta name="date" content="2022-07-20" />
 
 <title>Counting Duplicates</title>
 
@@ -348,7 +348,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Counting Duplicates</h1>
 <h4 class="author">Humoon</h4>
-<h4 class="date">2022-07-12</h4>
+<h4 class="date">2022-07-20</h4>
 
 </div>
 
@@ -398,50 +398,50 @@ struct，其中包裹的是一个 Dict</li>
 <div class="sourceCode" id="cb3"><pre
 class="sourceCode julia"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Counting-Duplicates.jl</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataStructures </span><span class="co"># 其中的 counter() 已经 export，可以直接用</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataStructures</span>, <span class="bu">Test</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="st">计算text中出现次数多于1次的字符的个数</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span></code></pre></div>
-<pre><code>#&gt; &quot;计算text中出现次数多于1次的字符的个数\n&quot;</code></pre>
-<div class="sourceCode" id="cb5"><pre
-class="sourceCode julia"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">duplicatecount</span>(text<span class="op">::</span><span class="dt">String</span>)<span class="op">::</span><span class="dt">Int64</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 返回一个 struct，类型为 counter</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 里面只装着一个计数的 Dict</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  dict <span class="op">=</span> text <span class="op">|&gt;</span> lowercase <span class="op">|&gt;</span> counter</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>(<span class="fu">values</span>(dict) <span class="op">.&gt;</span> <span class="fl">1</span>) <span class="co"># 向量化逻辑运算产生一系列 0/false 和 1/true</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
-<pre><code>#&gt; duplicatecount (generic function with 1 method)</code></pre>
-<div class="sourceCode" id="cb7"><pre
-class="sourceCode julia"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Test</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="pp">@testset</span> <span class="st">&quot;Sample tests&quot;</span> <span class="cf">begin</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="pp">@test</span> <span class="fu">duplicatecount</span>(<span class="st">&quot;&quot;</span>) <span class="op">==</span> <span class="fl">0</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="pp">@test</span> <span class="fu">duplicatecount</span>(<span class="st">&quot;abcde&quot;</span>) <span class="op">==</span> <span class="fl">0</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="pp">@test</span> <span class="fu">duplicatecount</span>(<span class="st">&quot;aabbcde&quot;</span>) <span class="op">==</span> <span class="fl">2</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="pp">@test</span> <span class="fu">duplicatecount</span>(<span class="st">&quot;aabBcde&quot;</span>) <span class="op">==</span> <span class="fl">2</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="pp">@test</span> <span class="fu">duplicatecount</span>(<span class="st">&quot;Indivisibility&quot;</span>) <span class="op">==</span> <span class="fl">1</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="pp">@test</span> <span class="fu">duplicatecount</span>(<span class="st">&quot;Indivisibilities&quot;</span>) <span class="op">==</span> <span class="fl">2</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code></pre></div>
-<pre><code>#&gt; Test Summary: | Pass  Total
-#&gt; Sample tests  |    6      6</code></pre>
-<pre><code>#&gt; Test.DefaultTestSet(&quot;Sample tests&quot;, Any[], 6, false, false)</code></pre>
-</div>
-<div id="javascript" class="section level4">
-<h4>JavaScript</h4>
-<div class="sourceCode" id="cb10"><pre
-class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> Vector <span class="op">=</span> <span class="pp">require</span>(<span class="st">&quot;../../src/JavaScript/toolkit/Vector&quot;</span>)<span class="op">;</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">duplicateCount</span>(text) {</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> dict <span class="op">=</span> Vector<span class="op">.</span><span class="fu">counter</span>(text<span class="op">.</span><span class="fu">toLowerCase</span>())<span class="op">;</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="bu">Object</span><span class="op">.</span><span class="fu">values</span>(dict)<span class="op">.</span><span class="fu">filter</span>(x <span class="kw">=&gt;</span> x <span class="op">&gt;</span> <span class="dv">1</span>)<span class="op">.</span><span class="at">length</span><span class="op">;</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="fu">duplicateCount</span>(<span class="st">&quot;Indivisibilities&quot;</span>))<span class="op">;</span></span></code></pre></div>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="st">    duplicatecount(str)</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="st">计算str中出现次数多于1次的字符的个数</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="st"># Example</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="st">```jldoctest</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="st">julia&gt; duplicatecount(&quot;aabbcde&quot;)</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="st">2</span></span></code></pre></div>
+<p>““” function duplicatecount(str::String)::Int64 dict = str |&gt;
+lowercase |&gt; counter # <span class="citation">@show</span> dict</p>
+<pre><code># broadcast() 的参数可以是 iterator
+# .&gt; 返回 BitVector，可以传给 sum()
+sum(values(dict) .&gt; 1)
+
+# filter(&gt;(1), [values(dict)...]) |&gt; length # 等价形式</code></pre>
+<p>end</p>
+<p><span class="citation">@testset</span> “Sample tests” begin <span
+class="citation">@test</span> duplicatecount(““) == 0 <span
+class="citation">@test</span> duplicatecount(”abcde”) == 0 <span
+class="citation">@test</span> duplicatecount(“aabbcde”) == 2 <span
+class="citation">@test</span> duplicatecount(“aabBcde”) == 2 <span
+class="citation">@test</span> duplicatecount(“Indivisibility”) == 1
+<span class="citation">@test</span> duplicatecount(“Indivisibilities”)
+== 2 end</p>
+<pre><code>
+
+#### JavaScript
+
+
+```javascript
+const Vector = require(&quot;../../src/JavaScript/toolkit/Vector&quot;);
+
+
+function duplicateCount(text) {
+
+  const dict = Vector.counter(text.toLowerCase());
+  return Object.values(dict).filter(x =&gt; x &gt; 1).length;
+}
+
+console.log(duplicateCount(&quot;Indivisibilities&quot;));</code></pre>
 <pre><code>#&gt; 2</code></pre>
 </div>
 </div>

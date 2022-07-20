@@ -11,7 +11,7 @@
 
 <meta name="author" content="Humoon" />
 
-<meta name="date" content="2022-07-12" />
+<meta name="date" content="2022-07-20" />
 
 <title>RGB To Hex Conversion</title>
 
@@ -348,7 +348,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">RGB To Hex Conversion</h1>
 <h4 class="author">Humoon</h4>
-<h4 class="date">2022-07-12</h4>
+<h4 class="date">2022-07-20</h4>
 
 </div>
 
@@ -408,8 +408,8 @@ rgb(148, 0, 211) // returns 9400D3</code></pre>
 <h4>Julia</h4>
 <div class="sourceCode" id="cb4"><pre
 class="sourceCode julia"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">convert2hex</span>(x)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">string</span>(<span class="fu">clamp</span>(x, <span class="fl">0</span>, <span class="fl">255</span>); base<span class="op">=</span><span class="fl">16</span>, pad<span class="op">=</span><span class="fl">2</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">convert2hex</span>(x<span class="op">::</span><span class="dt">Int64</span>)<span class="op">::</span><span class="dt">String</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">string</span>(<span class="fu">clamp</span>(x, <span class="fl">0</span>, <span class="fl">255</span>); base<span class="op">=</span><span class="fl">16</span>, pad<span class="op">=</span><span class="fl">2</span>)</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
 <pre><code>#&gt; convert2hex (generic function with 1 method)</code></pre>
 <div class="sourceCode" id="cb6"><pre
@@ -418,9 +418,9 @@ class="sourceCode julia"><code class="sourceCode julia"><span id="cb6-1"><a href
 <div class="sourceCode" id="cb8"><pre
 class="sourceCode julia"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">rgb</span>(r, g, b)</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  [r, g, b] <span class="op">.|&gt;</span> convert2hex <span class="op">|&gt;</span> join <span class="op">|&gt;</span> uppercase</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># string(convert2hex.([r, g, b])...) |&gt; uppercase</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">rgb</span>(r<span class="op">::</span><span class="dt">Int64</span>, g<span class="op">::</span><span class="dt">Int64</span>, b<span class="op">::</span><span class="dt">Int64</span>)<span class="op">::</span><span class="dt">String</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    [r, g, b] <span class="op">.|&gt;</span> convert2hex <span class="op">|&gt;</span> join <span class="op">|&gt;</span> uppercase</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># string(convert2hex.([r, g, b])...) |&gt; uppercase</span></span>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
 <pre><code>#&gt; rgb (generic function with 1 method)</code></pre>
 <div class="sourceCode" id="cb10"><pre

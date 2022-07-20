@@ -11,7 +11,7 @@
 
 <meta name="author" content="Humoon" />
 
-<meta name="date" content="2022-07-12" />
+<meta name="date" content="2022-07-20" />
 
 <title>Get the Middle Character</title>
 
@@ -348,7 +348,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Get the Middle Character</h1>
 <h4 class="author">Humoon</h4>
-<h4 class="date">2022-07-12</h4>
+<h4 class="date">2022-07-20</h4>
 
 </div>
 
@@ -406,7 +406,7 @@ you that you do not need to worry about your solution timing out.</p>
 <div class="sourceCode" id="cb4"><pre
 class="sourceCode julia"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Get-the-Middle-Character.jl</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Statistics</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Statistics</span>, <span class="bu">Test</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span>
@@ -415,18 +415,17 @@ class="sourceCode julia"><code class="sourceCode julia"><span id="cb4-1"><a href
 <pre><code>#&gt; &quot;return middle character(s) of a string\n&quot;</code></pre>
 <div class="sourceCode" id="cb6"><pre
 class="sourceCode julia"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">getmiddle</span>(s<span class="op">::</span><span class="dt">String</span>)<span class="op">::</span><span class="dt">String</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  m <span class="op">=</span> <span class="fu">median</span>(<span class="fl">1</span><span class="op">:</span><span class="fu">length</span>(s))</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  s[<span class="fu">floor</span>(<span class="dt">Int</span>, m)<span class="op">:</span><span class="fu">ceil</span>(<span class="dt">Int</span>, m)] <span class="co"># median() 返回 Float</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> <span class="fu">median</span>(<span class="fl">1</span><span class="op">:</span><span class="fu">length</span>(s))</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    s[<span class="fu">floor</span>(<span class="dt">Int</span>, m)<span class="op">:</span><span class="fu">ceil</span>(<span class="dt">Int</span>, m)] <span class="co"># median() 返回 Float</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
 <pre><code>#&gt; getmiddle (generic function with 1 method)</code></pre>
 <div class="sourceCode" id="cb8"><pre
 class="sourceCode julia"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Test</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="pp">@testset</span> <span class="st">&quot;Sample tests&quot;</span> <span class="cf">begin</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="pp">@test</span> <span class="fu">getmiddle</span>(<span class="st">&quot;test&quot;</span>) <span class="op">==</span> <span class="st">&quot;es&quot;</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="pp">@test</span> <span class="fu">getmiddle</span>(<span class="st">&quot;testing&quot;</span>) <span class="op">==</span> <span class="st">&quot;t&quot;</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code></pre></div>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="pp">@testset</span> <span class="st">&quot;Sample tests&quot;</span> <span class="cf">begin</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@test</span> <span class="fu">getmiddle</span>(<span class="st">&quot;test&quot;</span>) <span class="op">==</span> <span class="st">&quot;es&quot;</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@test</span> <span class="fu">getmiddle</span>(<span class="st">&quot;testing&quot;</span>) <span class="op">==</span> <span class="st">&quot;t&quot;</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code></pre></div>
 <pre><code>#&gt; Test Summary: | Pass  Total
 #&gt; Sample tests  |    2      2</code></pre>
 <pre><code>#&gt; Test.DefaultTestSet(&quot;Sample tests&quot;, Any[], 2, false, false)</code></pre>

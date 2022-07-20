@@ -11,7 +11,7 @@
 
 <meta name="author" content="Humoon" />
 
-<meta name="date" content="2022-07-12" />
+<meta name="date" content="2022-07-20" />
 
 <title>Make the Deadfish Swim</title>
 
@@ -348,7 +348,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Make the Deadfish Swim</h1>
 <h4 class="author">Humoon</h4>
-<h4 class="date">2022-07-12</h4>
+<h4 class="date">2022-07-20</h4>
 
 </div>
 
@@ -390,67 +390,121 @@ div.tocify {
 <div id="julia" class="section level4">
 <h4>Julia</h4>
 <div class="sourceCode" id="cb3"><pre
-class="sourceCode julia"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a></span>
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Test</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 写成返回两个值的函数，避免定义全局变量arr</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 更彻底地解耦，使程序易于维护</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>dict <span class="op">=</span> <span class="fu">Dict</span>(</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="ch">&#39;i&#39;</span> <span class="op">=&gt;</span> (x, arr) <span class="op">-&gt;</span> (x <span class="op">+</span> <span class="fl">1</span>, arr),</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="ch">&#39;d&#39;</span> <span class="op">=&gt;</span> (x, arr) <span class="op">-&gt;</span> (x <span class="op">-</span> <span class="fl">1</span>, arr),</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="ch">&#39;s&#39;</span> <span class="op">=&gt;</span> (x, arr) <span class="op">-&gt;</span> (x<span class="op">^</span><span class="fl">2</span>, arr),</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="ch">&#39;o&#39;</span> <span class="op">=&gt;</span> (x, arr) <span class="op">-&gt;</span> (x, <span class="fu">push!</span>(arr, x))</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
-<pre><code>#&gt; Dict{Char, Function} with 4 entries:
-#&gt;   &#39;d&#39; =&gt; #392
-#&gt;   &#39;i&#39; =&gt; #391
-#&gt;   &#39;s&#39; =&gt; #393
-#&gt;   &#39;o&#39; =&gt; #394</code></pre>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">##################################</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 解法一</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">##################################</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="st">rules是依赖于一个初始化容器的</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span></code></pre></div>
+<pre><code>#&gt; &quot;rules是依赖于一个初始化容器的\n&quot;</code></pre>
 <div class="sourceCode" id="cb5"><pre
-class="sourceCode julia"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">deadfish</span>(data)</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  valid_commands <span class="op">=</span> <span class="fu">filter</span>(c <span class="op">-&gt;</span> c <span class="op">∈</span> <span class="st">&quot;idso&quot;</span>, data)</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  x, output <span class="op">=</span> <span class="fl">0</span>, [] <span class="co"># 初始值</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> c <span class="kw">in</span> valid_commands</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    x, output <span class="op">=</span> dict[c](x, output) <span class="co"># 串行操作</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">end</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> output</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
-<pre><code>#&gt; deadfish (generic function with 1 method)</code></pre>
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gender_rules</span>(output<span class="op">::</span><span class="dt">Vector{Int64}</span>)<span class="op">::</span><span class="dt">Dict{Char,Function} </span><span class="op">=</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Dict</span>(</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>        <span class="ch">&#39;i&#39;</span> <span class="op">=&gt;</span> x <span class="op">-&gt;</span> x <span class="op">+</span> <span class="fl">1</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>        <span class="ch">&#39;d&#39;</span> <span class="op">=&gt;</span> x <span class="op">-&gt;</span> x <span class="op">-</span> <span class="fl">1</span>,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        <span class="ch">&#39;s&#39;</span> <span class="op">=&gt;</span> x <span class="op">-&gt;</span> x<span class="op">^</span><span class="fl">2</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        <span class="ch">&#39;o&#39;</span> <span class="op">=&gt;</span> x <span class="op">-&gt;</span> <span class="fu">push!</span>(output, x)[<span class="kw">end</span>]</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 一行内既改变了output又返回了x</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    )</span></code></pre></div>
+<pre><code>#&gt; gender_rules (generic function with 1 method)</code></pre>
 <div class="sourceCode" id="cb7"><pre
 class="sourceCode julia"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Test</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="pp">@test</span> <span class="fu">deadfish</span>(<span class="st">&quot;iiisxxxdoso&quot;</span>) <span class="op">==</span> [<span class="fl">8</span>, <span class="fl">64</span>]</span></code></pre></div>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">deadfish1</span>(commands<span class="op">::</span><span class="dt">String</span>)<span class="op">::</span><span class="dt">Vector{Int64}</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># initialize</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> <span class="fl">0</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    output <span class="op">=</span> <span class="dt">Int64</span>[]</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># gender rules</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    rules <span class="op">=</span> <span class="fu">gender_rules</span>(output)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># operation</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    valid_commands <span class="op">=</span> <span class="fu">filter</span>(<span class="fu">∈</span>(<span class="st">&quot;idso&quot;</span>), commands)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> c <span class="kw">in</span> valid_commands</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> rules[c](x) <span class="co"># 串行loop</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> output</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
+<pre><code>#&gt; deadfish1 (generic function with 1 method)</code></pre>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@test</span> <span class="fu">deadfish1</span>(<span class="st">&quot;iiisxxxdoso&quot;</span>) <span class="op">==</span> [<span class="fl">8</span>, <span class="fl">64</span>]</span></code></pre></div>
 <pre><code>#&gt; Test Passed
-#&gt;   Expression: deadfish(&quot;iiisxxxdoso&quot;) == [8, 64]
-#&gt;    Evaluated: Any[8, 64] == [8, 64]</code></pre>
+#&gt;   Expression: deadfish1(&quot;iiisxxxdoso&quot;) == [8, 64]
+#&gt;    Evaluated: [8, 64] == [8, 64]</code></pre>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co">##################################</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 解法二</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co">##################################</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 写成返回两个值的函数，dict独立为不依赖其他变量的const</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 更彻底地解耦，使程序易于维护</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> rules2 <span class="op">=</span> <span class="fu">Dict</span><span class="dt">{Char,Function}</span>(</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    <span class="ch">&#39;i&#39;</span> <span class="op">=&gt;</span> (x, arr) <span class="op">-&gt;</span> (x <span class="op">+</span> <span class="fl">1</span>, arr),</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    <span class="ch">&#39;d&#39;</span> <span class="op">=&gt;</span> (x, arr) <span class="op">-&gt;</span> (x <span class="op">-</span> <span class="fl">1</span>, arr),</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    <span class="ch">&#39;s&#39;</span> <span class="op">=&gt;</span> (x, arr) <span class="op">-&gt;</span> (x<span class="op">^</span><span class="fl">2</span>, arr),</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>    <span class="ch">&#39;o&#39;</span> <span class="op">=&gt;</span> (x, arr) <span class="op">-&gt;</span> (x, <span class="fu">push!</span>(arr, x))</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<pre><code>#&gt; Dict{Char, Function} with 4 entries:
+#&gt;   &#39;d&#39; =&gt; #456
+#&gt;   &#39;i&#39; =&gt; #455
+#&gt;   &#39;s&#39; =&gt; #457
+#&gt;   &#39;o&#39; =&gt; #458</code></pre>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">deadfish2</span>(commands<span class="op">::</span><span class="dt">String</span>)<span class="op">::</span><span class="dt">Vector{Int64}</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># initialize</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> <span class="fl">0</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    output <span class="op">=</span> <span class="dt">Int64</span>[]</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># operation</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    valid_commands <span class="op">=</span> <span class="fu">filter</span>(<span class="fu">∈</span>(<span class="st">&quot;idso&quot;</span>), commands)</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> c <span class="kw">in</span> valid_commands</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>        x, output <span class="op">=</span> rules2[c](x, output) <span class="co"># 串行操作</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> output</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
+<pre><code>#&gt; deadfish2 (generic function with 1 method)</code></pre>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@test</span> <span class="fu">deadfish2</span>(<span class="st">&quot;iiisxxxdoso&quot;</span>) <span class="op">==</span> [<span class="fl">8</span>, <span class="fl">64</span>]</span></code></pre></div>
+<pre><code>#&gt; Test Passed
+#&gt;   Expression: deadfish2(&quot;iiisxxxdoso&quot;) == [8, 64]
+#&gt;    Evaluated: [8, 64] == [8, 64]</code></pre>
 </div>
 <div id="javascript" class="section level4">
 <h4>JavaScript</h4>
-<div class="sourceCode" id="cb9"><pre
-class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> dict <span class="op">=</span> <span class="kw">new</span> <span class="bu">Map</span>()</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span><span class="fu">set</span>(<span class="st">&#39;i&#39;</span><span class="op">,</span> ({ <span class="dt">n</span><span class="op">:</span> k<span class="op">,</span> <span class="dt">output</span><span class="op">:</span> arr }) <span class="kw">=&gt;</span> ({ <span class="dt">n</span><span class="op">:</span> k <span class="op">+</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">output</span><span class="op">:</span> arr }))</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span><span class="fu">set</span>(<span class="st">&#39;d&#39;</span><span class="op">,</span> ({ <span class="dt">n</span><span class="op">:</span> k<span class="op">,</span> <span class="dt">output</span><span class="op">:</span> arr }) <span class="kw">=&gt;</span> ({ <span class="dt">n</span><span class="op">:</span> k <span class="op">-</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">output</span><span class="op">:</span> arr }))</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span><span class="fu">set</span>(<span class="st">&#39;s&#39;</span><span class="op">,</span> ({ <span class="dt">n</span><span class="op">:</span> k<span class="op">,</span> <span class="dt">output</span><span class="op">:</span> arr }) <span class="kw">=&gt;</span> ({ <span class="dt">n</span><span class="op">:</span> k <span class="op">**</span> <span class="dv">2</span><span class="op">,</span> <span class="dt">output</span><span class="op">:</span> arr }))</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span><span class="fu">set</span>(<span class="st">&#39;o&#39;</span><span class="op">,</span> ({ <span class="dt">n</span><span class="op">:</span> k<span class="op">,</span> <span class="dt">output</span><span class="op">:</span> arr }) <span class="kw">=&gt;</span> ({ <span class="dt">n</span><span class="op">:</span> k<span class="op">,</span> <span class="dt">output</span><span class="op">:</span> arr<span class="op">.</span><span class="fu">concat</span>(k) }))<span class="op">;</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">parse</span>(data) {</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> result <span class="op">=</span> data<span class="op">.</span><span class="fu">split</span>(<span class="st">&quot;&quot;</span>)</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">filter</span>(c <span class="kw">=&gt;</span> <span class="st">&quot;idso&quot;</span><span class="op">.</span><span class="fu">includes</span>(c))</span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">reduce</span>(</span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>      callBack <span class="op">=</span> (obj<span class="op">,</span> c) <span class="kw">=&gt;</span> dict<span class="op">.</span><span class="fu">get</span>(c)(obj)<span class="op">,</span></span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>      initialValue <span class="op">=</span> { <span class="dt">n</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">output</span><span class="op">:</span> [] }</span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>    )<span class="op">;</span></span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> result<span class="op">.</span><span class="at">output</span><span class="op">;</span></span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="fu">parse</span>(<span class="st">&quot;iiisxxxdoso&quot;</span>))<span class="op">;</span> <span class="co">// [8, 64]</span></span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> dict <span class="op">=</span> <span class="kw">new</span> <span class="bu">Map</span>()</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span><span class="fu">set</span>(<span class="st">&#39;i&#39;</span><span class="op">,</span> ({ <span class="dt">n</span><span class="op">:</span> k<span class="op">,</span> <span class="dt">output</span><span class="op">:</span> arr }) <span class="kw">=&gt;</span> ({ <span class="dt">n</span><span class="op">:</span> k <span class="op">+</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">output</span><span class="op">:</span> arr }))</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span><span class="fu">set</span>(<span class="st">&#39;d&#39;</span><span class="op">,</span> ({ <span class="dt">n</span><span class="op">:</span> k<span class="op">,</span> <span class="dt">output</span><span class="op">:</span> arr }) <span class="kw">=&gt;</span> ({ <span class="dt">n</span><span class="op">:</span> k <span class="op">-</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">output</span><span class="op">:</span> arr }))</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span><span class="fu">set</span>(<span class="st">&#39;s&#39;</span><span class="op">,</span> ({ <span class="dt">n</span><span class="op">:</span> k<span class="op">,</span> <span class="dt">output</span><span class="op">:</span> arr }) <span class="kw">=&gt;</span> ({ <span class="dt">n</span><span class="op">:</span> k <span class="op">**</span> <span class="dv">2</span><span class="op">,</span> <span class="dt">output</span><span class="op">:</span> arr }))</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span><span class="fu">set</span>(<span class="st">&#39;o&#39;</span><span class="op">,</span> ({ <span class="dt">n</span><span class="op">:</span> k<span class="op">,</span> <span class="dt">output</span><span class="op">:</span> arr }) <span class="kw">=&gt;</span> ({ <span class="dt">n</span><span class="op">:</span> k<span class="op">,</span> <span class="dt">output</span><span class="op">:</span> arr<span class="op">.</span><span class="fu">concat</span>(k) }))<span class="op">;</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">parse</span>(data) {</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> result <span class="op">=</span> data<span class="op">.</span><span class="fu">split</span>(<span class="st">&quot;&quot;</span>)</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">filter</span>(c <span class="kw">=&gt;</span> <span class="st">&quot;idso&quot;</span><span class="op">.</span><span class="fu">includes</span>(c))</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">reduce</span>(</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>      callBack <span class="op">=</span> (obj<span class="op">,</span> c) <span class="kw">=&gt;</span> dict<span class="op">.</span><span class="fu">get</span>(c)(obj)<span class="op">,</span></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>      initialValue <span class="op">=</span> { <span class="dt">n</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">output</span><span class="op">:</span> [] }</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>    )<span class="op">;</span></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> result<span class="op">.</span><span class="at">output</span><span class="op">;</span></span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a><span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="fu">parse</span>(<span class="st">&quot;iiisxxxdoso&quot;</span>))<span class="op">;</span> <span class="co">// [8, 64]</span></span></code></pre></div>
 <pre><code>#&gt; [ 8, 64 ]</code></pre>
 </div>
 </div>

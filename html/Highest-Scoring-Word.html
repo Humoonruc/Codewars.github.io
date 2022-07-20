@@ -11,7 +11,7 @@
 
 <meta name="author" content="Humoon" />
 
-<meta name="date" content="2022-07-12" />
+<meta name="date" content="2022-07-20" />
 
 <title>Highest Scoring Word</title>
 
@@ -348,7 +348,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Highest Scoring Word</h1>
 <h4 class="author">Humoon</h4>
-<h4 class="date">2022-07-12</h4>
+<h4 class="date">2022-07-20</h4>
 
 </div>
 
@@ -368,75 +368,122 @@ the original string.</p>
 <h3>Solution</h3>
 <div id="r" class="section level4">
 <h4>R</h4>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 可读性不好，要大改</span></span>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Highest-Scoring-Word.R</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>high <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    words <span class="ot">&lt;-</span> x <span class="sc">%&gt;%</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>        <span class="fu">str_split</span>(<span class="st">&quot; &quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>        <span class="fu">unlist</span>()</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    max_index <span class="ot">&lt;-</span> words <span class="sc">%&gt;%</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        <span class="fu">map_int</span>(<span class="cf">function</span>(w) {</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>            w <span class="sc">%&gt;%</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>                <span class="fu">str_split</span>(<span class="st">&quot;&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>                <span class="fu">unlist</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>                <span class="fu">map_int</span>(<span class="sc">~</span><span class="fu">match</span>(.x, letters)) <span class="sc">%&gt;%</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>                <span class="fu">sum</span>()</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>        }) <span class="sc">%&gt;%</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>        <span class="fu">which.max</span>()</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    words[max_index]</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(testthat)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>get_value <span class="ot">&lt;-</span> <span class="cf">function</span>(word) {</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    word <span class="sc">%&gt;%</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>        <span class="fu">str_split</span>(<span class="st">&quot;&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        <span class="fu">unlist</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        <span class="fu">map_int</span>(<span class="sc">~</span><span class="fu">match</span>(.x, letters)) <span class="sc">%&gt;%</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>()</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>high <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    words <span class="ot">&lt;-</span> x <span class="sc">%&gt;%</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>        <span class="fu">str_split</span>(<span class="st">&quot; &quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>        <span class="fu">unlist</span>()</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    values <span class="ot">&lt;-</span> words <span class="sc">%&gt;%</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>        <span class="fu">map_int</span>(get_value)</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    words[<span class="fu">which.max</span>(values)]</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="co"># unit test</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="fu">test_that</span>(<span class="st">&quot;Sample Tests&quot;</span>, {</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">expect_equal</span>(<span class="fu">high</span>(<span class="st">&quot;what time are we climbing up the volcano&quot;</span>), <span class="st">&quot;volcano&quot;</span>)</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div>
+<pre><code>#&gt; Test passed</code></pre>
 </div>
 <div id="julia" class="section level4">
 <h4>Julia</h4>
-<div class="sourceCode" id="cb2"><pre
-class="sourceCode julia"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">get_score</span>(word)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  word <span class="op">|&gt;</span> collect <span class="op">.|&gt;</span> (char <span class="op">-&gt;</span> char <span class="op">-</span> <span class="ch">&#39;a&#39;</span>) <span class="op">|&gt;</span> sum</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Highest-Scoring-Word.jl</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Test</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="st">word 是字符串切割的产物，数据类型为 SubString{String}  </span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="st">其父类为 AbstractString</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span></code></pre></div>
+<pre><code>#&gt; &quot;word 是字符串切割的产物，数据类型为 SubString{String}  \n其父类为 AbstractString\n&quot;</code></pre>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">get_score</span>(word<span class="op">::</span><span class="dt">AbstractString</span>)<span class="op">::</span><span class="dt">Int64</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># @show typeof(word)</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    word <span class="op">|&gt;</span> collect <span class="op">.|&gt;</span> (char <span class="op">-&gt;</span> char <span class="op">-</span> <span class="ch">&#39;a&#39;</span> <span class="op">+</span> <span class="fl">1</span>) <span class="op">|&gt;</span> sum</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
 <pre><code>#&gt; get_score (generic function with 1 method)</code></pre>
-<div class="sourceCode" id="cb4"><pre
-class="sourceCode julia"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">high</span>(x)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  words <span class="op">=</span> x <span class="op">|&gt;</span> split</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  scores <span class="op">=</span> words <span class="op">.|&gt;</span> get_score</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  max_index <span class="op">=</span> <span class="fu">findmax</span>(identity, scores)[<span class="fl">2</span>]</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  words[max_index]</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">high</span>(x<span class="op">::</span><span class="dt">String</span>)<span class="op">::</span><span class="dt">String</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    words <span class="op">=</span> x <span class="op">|&gt;</span> split</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    _, max_index <span class="op">=</span> words <span class="op">.|&gt;</span> get_score <span class="op">|&gt;</span> findmax</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> words[max_index]</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
 <pre><code>#&gt; high (generic function with 1 method)</code></pre>
-<div class="sourceCode" id="cb6"><pre
-class="sourceCode julia"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Test</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="pp">@test</span> <span class="fu">high</span>(<span class="st">&quot;man i need a taxi up to ubud&quot;</span>) <span class="op">==</span> <span class="st">&quot;taxi&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="pp">@test</span> <span class="fu">high</span>(<span class="st">&quot;man i need a taxi up to ubud&quot;</span>) <span class="op">==</span> <span class="st">&quot;taxi&quot;</span></span></code></pre></div>
 <pre><code>#&gt; Test Passed
 #&gt;   Expression: high(&quot;man i need a taxi up to ubud&quot;) == &quot;taxi&quot;
 #&gt;    Evaluated: &quot;taxi&quot; == &quot;taxi&quot;</code></pre>
-<div class="sourceCode" id="cb8"><pre
-class="sourceCode julia"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="pp">@test</span> <span class="fu">high</span>(<span class="st">&quot;what time are we climbing up the volcano&quot;</span>) <span class="op">==</span> <span class="st">&quot;volcano&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="pp">@test</span> <span class="fu">high</span>(<span class="st">&quot;what time are we climbing up the volcano&quot;</span>) <span class="op">==</span> <span class="st">&quot;volcano&quot;</span></span></code></pre></div>
 <pre><code>#&gt; Test Passed
 #&gt;   Expression: high(&quot;what time are we climbing up the volcano&quot;) == &quot;volcano&quot;
 #&gt;    Evaluated: &quot;volcano&quot; == &quot;volcano&quot;</code></pre>
 </div>
 <div id="javascript" class="section level4">
 <h4>JavaScript</h4>
-<div class="sourceCode" id="cb10"><pre
-class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> sum <span class="op">=</span> <span class="pp">require</span>(<span class="st">&quot;../../src/JavaScript/toolkit/Statistics&quot;</span>)<span class="op">.</span><span class="at">sum</span><span class="op">;</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">high</span>(x) {</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> words <span class="op">=</span> x<span class="op">.</span><span class="fu">split</span>(<span class="st">&#39; &#39;</span>)<span class="op">;</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> values <span class="op">=</span> words<span class="op">.</span><span class="fu">map</span>(word <span class="kw">=&gt;</span> <span class="fu">sum</span>(word<span class="op">.</span><span class="fu">split</span>(<span class="st">&#39;&#39;</span>)<span class="op">.</span><span class="fu">map</span>(char <span class="kw">=&gt;</span> char<span class="op">.</span><span class="fu">charCodeAt</span>() <span class="op">-</span> <span class="dv">96</span>)))<span class="op">;</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> words[values<span class="op">.</span><span class="fu">indexOf</span>(<span class="bu">Math</span><span class="op">.</span><span class="fu">max</span>(<span class="op">...</span>values))]<span class="op">;</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="fu">high</span>(<span class="st">&#39;what time are we climbing up the volcano&#39;</span>))<span class="op">;</span></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>module<span class="op">.</span><span class="at">exports</span> <span class="op">=</span> high<span class="op">;</span></span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"> * </span><span class="an">@module</span><span class="co"> Highest-Scoring-Word</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"> */</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> sum <span class="op">=</span> <span class="pp">require</span>(<span class="st">&quot;../../src/JavaScript/toolkit/Statistics&quot;</span>)<span class="op">.</span><span class="at">sum</span><span class="op">;</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">get_score</span>(word) {</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="fu">sum</span>(word<span class="op">.</span><span class="fu">split</span>(<span class="st">&#39;&#39;</span>)<span class="op">.</span><span class="fu">map</span>(c <span class="kw">=&gt;</span> c<span class="op">.</span><span class="fu">charCodeAt</span>() <span class="op">-</span> <span class="st">&#39;a&#39;</span><span class="op">.</span><span class="fu">charCodeAt</span>() <span class="op">+</span> <span class="dv">1</span>))<span class="op">;</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">high</span>(x) {</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> words <span class="op">=</span> x<span class="op">.</span><span class="fu">split</span>(<span class="st">&#39; &#39;</span>)<span class="op">;</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> values <span class="op">=</span> words<span class="op">.</span><span class="fu">map</span>(get_score)<span class="op">;</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> words[values<span class="op">.</span><span class="fu">indexOf</span>(<span class="bu">Math</span><span class="op">.</span><span class="fu">max</span>(<span class="op">...</span>values))]<span class="op">;</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="fu">high</span>(<span class="st">&#39;what time are we climbing up the volcano&#39;</span>))<span class="op">;</span></span></code></pre></div>
 <pre><code>#&gt; volcano</code></pre>
+</div>
+<div id="python" class="section level4">
+<h4>Python</h4>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Highest-Scoring-Word.py</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co">#%%</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_score(word):</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">sum</span>([<span class="bu">ord</span>(c) <span class="op">-</span> <span class="dv">96</span> <span class="cf">for</span> c <span class="kw">in</span> word])</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="co">#%%</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> high(x):</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>    words <span class="op">=</span> x.split()</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">max</span>(words, key<span class="op">=</span>get_score)</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="co"># %%</span></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>high(<span class="st">&quot;what time are we climbing up the volcano&quot;</span>)</span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a><span class="co"># %%</span></span></code></pre></div>
+<pre><code>#&gt; &#39;volcano&#39;</code></pre>
 </div>
 </div>
 

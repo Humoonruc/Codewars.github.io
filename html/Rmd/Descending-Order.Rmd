@@ -74,18 +74,17 @@ descending_order(42145) # 54421
 ```{julia}
 ## Descending-Order.jl
 
-# 定义辅助函数，只接收一个参数，便于管道串联
-parseInt(s) = parse(Int64, s)
+using Pipe, Test
 
 
 """
-n作为字符串，其中字符降序排列
+使n的各位数字降序排列
 """
 function descending_order(n::Int)::Int
-  n |> string |> collect |> sort |> reverse |> join |> parseInt
+    @pipe n |> string |> collect |> sort |> reverse |> join |> parse(Int64, _)
 end
 
-descending_order(42145)
+@test descending_order(42145) == 54421
 ```
 
 

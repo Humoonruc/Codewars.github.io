@@ -11,7 +11,7 @@
 
 <meta name="author" content="Humoon" />
 
-<meta name="date" content="2022-07-12" />
+<meta name="date" content="2022-07-20" />
 
 <title>Highest and Lowest</title>
 
@@ -348,7 +348,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Highest and Lowest</h1>
 <h4 class="author">Humoon</h4>
-<h4 class="date">2022-07-12</h4>
+<h4 class="date">2022-07-20</h4>
 
 </div>
 
@@ -359,32 +359,32 @@ div.tocify {
 <h4>Julia</h4>
 <div class="sourceCode" id="cb1"><pre
 class="sourceCode julia"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Pipe</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Test</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="st">返回一组数的最大值和最小值</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="st"># Arguments</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="st">- `numbers::String`: 包含一组数字的字符串，用空格隔开</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span></code></pre></div>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="st">返回一组数的最大值和最小值</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="st"># Arguments</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="st">- `numbers::String`: 包含一组数字的字符串，用空格隔开</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span></code></pre></div>
 <pre><code>#&gt; &quot;返回一组数的最大值和最小值\n\n# Arguments\n- `numbers::String`: 包含一组数字的字符串，用空格隔开\n&quot;</code></pre>
 <div class="sourceCode" id="cb3"><pre
 class="sourceCode julia"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">highandlow</span>(numbers<span class="op">::</span><span class="dt">String</span>)<span class="op">::</span><span class="dt">String</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="pp">@pipe</span> numbers <span class="op">|&gt;</span> split <span class="op">.|&gt;</span> <span class="co"># split 默认分隔符为空格</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>        <span class="fu">parse</span>(<span class="dt">Int</span>, _) <span class="op">|&gt;</span> <span class="co"># 化为整数</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>        extrema <span class="op">|&gt;</span> <span class="co"># 返回 tuple，小数在前，大数在后</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>        reverse <span class="op">|&gt;</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>        <span class="fu">join</span>(_, <span class="st">&quot; &quot;</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@pipe</span> numbers <span class="op">|&gt;</span> split <span class="op">.|&gt;</span> <span class="co"># split 默认分隔符为空格</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>          <span class="fu">parse</span>(<span class="dt">Int</span>, _) <span class="op">|&gt;</span> <span class="co"># 化为整数</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>          extrema <span class="op">|&gt;</span> <span class="co"># 返回 tuple，小数在前，大数在后</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>          reverse <span class="op">|&gt;</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>          <span class="fu">join</span>(_, <span class="st">&quot; &quot;</span>)</span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
 <pre><code>#&gt; highandlow (generic function with 1 method)</code></pre>
 <div class="sourceCode" id="cb5"><pre
 class="sourceCode julia"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Test</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="pp">@testset</span> <span class="st">&quot;Example tests&quot;</span> <span class="cf">begin</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="pp">@test</span> <span class="fu">highandlow</span>(<span class="st">&quot;8 3 -5 42 -1 0 0 -9 4 7 4 -4&quot;</span>) <span class="op">==</span> <span class="st">&quot;42 -9&quot;</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="pp">@test</span> <span class="fu">highandlow</span>(<span class="st">&quot;1 2 3&quot;</span>) <span class="op">==</span> <span class="st">&quot;3 1&quot;</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code></pre></div>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="pp">@testset</span> <span class="st">&quot;Example tests&quot;</span> <span class="cf">begin</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@test</span> <span class="fu">highandlow</span>(<span class="st">&quot;8 3 -5 42 -1 0 0 -9 4 7 4 -4&quot;</span>) <span class="op">==</span> <span class="st">&quot;42 -9&quot;</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@test</span> <span class="fu">highandlow</span>(<span class="st">&quot;1 2 3&quot;</span>) <span class="op">==</span> <span class="st">&quot;3 1&quot;</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code></pre></div>
 <pre><code>#&gt; Test Summary: | Pass  Total
 #&gt; Example tests |    2      2</code></pre>
 <pre><code>#&gt; Test.DefaultTestSet(&quot;Example tests&quot;, Any[], 2, false, false)</code></pre>

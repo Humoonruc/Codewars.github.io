@@ -1,23 +1,31 @@
-using Statistics
+using Statistics, Test
 
 
-function get_outlier(sample::Vector, cutoff)::Vector
-  m = mean(sample)
-  n = length(sample)
-  sd = √((1 / n) * sum((sample .- m) .^ 2))
+function get_outlier(sample::Vector{Int64}, cutoff::Real)::Vector{Int64}
+    xs = sample
+    x_bar = mean(sample)
+    n = length(sample)
+    sd = √(n \ sum((x - x_bar)^2 for x in xs))
 
-  filter(x -> abs(x - m) > cutoff * sd, sample)
+    is_outlier(x::Real)::Bool = abs(x - x_bar) > cutoff * sd
+
+    return filter(is_outlier, xs)
 end
 
+@test get_outlier([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 100, 10000], 3) == [10000]
 
-function clean_mean(sample::Vector, cutoff)::Float64
-  while true
-    outliers = get_outlier(sample, cutoff)
-    isempty(outliers) && return mean(sample)
-    # sample = sample[sample.∉tuple(outliers)] # []选择器
-    sample = filter(x -> x ∉ outliers, sample)
-  end
+
+"""
+去掉所有离群点后，求均值
+"""
+function clean_mean(sample::Vector{Int64}, cutoff::Real)::Float64
+    while true
+        outliers = get_outlier(sample, cutoff)
+        isempty(outliers) && return mean(sample)
+        # sample = sample[sample.∉outliers] # []选择器
+        # sample = filter(x -> x ∉ outliers, sample)
+        sample = filter(∉(outliers), sample)
+    end
 end
 
-
-clean_mean([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 100], 3)
+clean_mean([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 100, 10000], 3)

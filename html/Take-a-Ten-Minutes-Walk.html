@@ -11,7 +11,7 @@
 
 <meta name="author" content="Humoon" />
 
-<meta name="date" content="2022-07-12" />
+<meta name="date" content="2022-07-20" />
 
 <title>Take a Ten Minutes Walk</title>
 
@@ -348,7 +348,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Take a Ten Minutes Walk</h1>
 <h4 class="author">Humoon</h4>
-<h4 class="date">2022-07-12</h4>
+<h4 class="date">2022-07-20</h4>
 
 </div>
 
@@ -379,24 +379,23 @@ course, return you to your starting point. Return false otherwise.</p>
 <div id="julia" class="section level4">
 <h4>Julia</h4>
 <div class="sourceCode" id="cb2"><pre
-class="sourceCode julia"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a></span>
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Test</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="st">valid walk 的标准为：走十步并回到原点</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span></code></pre></div>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="st">valid walk 的标准为：走十步并回到原点</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span></code></pre></div>
 <pre><code>#&gt; &quot;valid walk 的标准为：走十步并回到原点\n&quot;</code></pre>
 <div class="sourceCode" id="cb4"><pre
-class="sourceCode julia"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">isvalidwalk</span>(walk)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  [<span class="fu">length</span>(walk) <span class="op">==</span> <span class="fl">10</span>,</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sum</span>(walk <span class="op">.==</span> <span class="ch">&#39;n&#39;</span>) <span class="op">==</span> <span class="fu">sum</span>(walk <span class="op">.==</span> <span class="ch">&#39;s&#39;</span>),</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sum</span>(walk <span class="op">.==</span> <span class="ch">&#39;e&#39;</span>) <span class="op">==</span> <span class="fu">sum</span>(walk <span class="op">.==</span> <span class="ch">&#39;w&#39;</span>)] <span class="op">|&gt;</span> all</span>
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">isvalidwalk</span>(walk<span class="op">::</span><span class="dt">Vector{Char}</span>)<span class="op">::</span><span class="dt">Bool</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    [<span class="fu">length</span>(walk) <span class="op">==</span> <span class="fl">10</span>,</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(walk <span class="op">.==</span> <span class="ch">&#39;n&#39;</span>) <span class="op">==</span> <span class="fu">sum</span>(walk <span class="op">.==</span> <span class="ch">&#39;s&#39;</span>),</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(walk <span class="op">.==</span> <span class="ch">&#39;e&#39;</span>) <span class="op">==</span> <span class="fu">sum</span>(walk <span class="op">.==</span> <span class="ch">&#39;w&#39;</span>)] <span class="op">|&gt;</span> all</span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
 <pre><code>#&gt; isvalidwalk (generic function with 1 method)</code></pre>
 <div class="sourceCode" id="cb6"><pre
 class="sourceCode julia"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Test</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="pp">@test</span> <span class="fu">isvalidwalk</span>([<span class="ch">&#39;n&#39;</span>, <span class="ch">&#39;s&#39;</span>, <span class="ch">&#39;n&#39;</span>, <span class="ch">&#39;s&#39;</span>, <span class="ch">&#39;n&#39;</span>, <span class="ch">&#39;s&#39;</span>, <span class="ch">&#39;n&#39;</span>, <span class="ch">&#39;s&#39;</span>, <span class="ch">&#39;n&#39;</span>, <span class="ch">&#39;s&#39;</span>]) <span class="op">==</span> <span class="cn">true</span></span></code></pre></div>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@test</span> <span class="fu">isvalidwalk</span>([<span class="ch">&#39;n&#39;</span>, <span class="ch">&#39;s&#39;</span>, <span class="ch">&#39;n&#39;</span>, <span class="ch">&#39;s&#39;</span>, <span class="ch">&#39;n&#39;</span>, <span class="ch">&#39;s&#39;</span>, <span class="ch">&#39;n&#39;</span>, <span class="ch">&#39;s&#39;</span>, <span class="ch">&#39;n&#39;</span>, <span class="ch">&#39;s&#39;</span>]) <span class="op">==</span> <span class="cn">true</span></span></code></pre></div>
 <pre><code>#&gt; Test Passed
 #&gt;   Expression: isvalidwalk([&#39;n&#39;, &#39;s&#39;, &#39;n&#39;, &#39;s&#39;, &#39;n&#39;, &#39;s&#39;, &#39;n&#39;, &#39;s&#39;, &#39;n&#39;, &#39;s&#39;]) == true
 #&gt;    Evaluated: true == true</code></pre>

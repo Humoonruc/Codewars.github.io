@@ -11,7 +11,7 @@
 
 <meta name="author" content="Humoon" />
 
-<meta name="date" content="2022-07-12" />
+<meta name="date" content="2022-07-20" />
 
 <title>Decimal to Factorial and Back</title>
 
@@ -348,7 +348,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Decimal to Factorial and Back</h1>
 <h4 class="author">Humoon</h4>
-<h4 class="date">2022-07-12</h4>
+<h4 class="date">2022-07-20</h4>
 
 </div>
 
@@ -528,8 +528,10 @@ and produce the decimal representation.</p>
 <div class="sourceCode" id="cb11"><pre
 class="sourceCode julia"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Decimal-to-Factorial-and-Back.jl</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>code <span class="op">=</span> [<span class="ch">&#39;0&#39;</span><span class="op">:</span><span class="ch">&#39;9&#39;</span>; <span class="ch">&#39;A&#39;</span><span class="op">:</span><span class="ch">&#39;Z&#39;</span>]</span></code></pre></div>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Pipe</span>, <span class="bu">Test</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> code <span class="op">=</span> [<span class="ch">&#39;0&#39;</span><span class="op">:</span><span class="ch">&#39;9&#39;</span>; <span class="ch">&#39;A&#39;</span><span class="op">:</span><span class="ch">&#39;Z&#39;</span>]</span></code></pre></div>
 <pre><code>#&gt; 36-element Vector{Char}:
 #&gt;  &#39;0&#39;: ASCII/Unicode U+0030 (category Nd: Number, decimal digit)
 #&gt;  &#39;1&#39;: ASCII/Unicode U+0031 (category Nd: Number, decimal digit)
@@ -552,7 +554,7 @@ class="sourceCode julia"><code class="sourceCode julia"><span id="cb11-1"><a hre
 #&gt;  &#39;Y&#39;: ASCII/Unicode U+0059 (category Lu: Letter, uppercase)
 #&gt;  &#39;Z&#39;: ASCII/Unicode U+005A (category Lu: Letter, uppercase)</code></pre>
 <div class="sourceCode" id="cb13"><pre
-class="sourceCode julia"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>encode <span class="op">=</span> <span class="fu">Dict</span>(i <span class="op">-</span> <span class="fl">1</span> <span class="op">=&gt;</span> code[i] <span class="cf">for</span> i <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fu">length</span>(code))</span></code></pre></div>
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> encode <span class="op">=</span> <span class="fu">Dict</span>(i <span class="op">-</span> <span class="fl">1</span> <span class="op">=&gt;</span> code[i] <span class="cf">for</span> i <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fu">length</span>(code))</span></code></pre></div>
 <pre><code>#&gt; Dict{Int64, Char} with 36 entries:
 #&gt;   5  =&gt; &#39;5&#39;
 #&gt;   16 =&gt; &#39;G&#39;
@@ -575,7 +577,7 @@ class="sourceCode julia"><code class="sourceCode julia"><span id="cb13-1"><a hre
 #&gt;   9  =&gt; &#39;9&#39;
 #&gt;   ⋮  =&gt; ⋮</code></pre>
 <div class="sourceCode" id="cb15"><pre
-class="sourceCode julia"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>decode <span class="op">=</span> <span class="fu">Dict</span>(code[i] <span class="op">=&gt;</span> i <span class="op">-</span> <span class="fl">1</span> <span class="cf">for</span> i <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fu">length</span>(code))</span></code></pre></div>
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> decode <span class="op">=</span> <span class="fu">Dict</span>(code[i] <span class="op">=&gt;</span> i <span class="op">-</span> <span class="fl">1</span> <span class="cf">for</span> i <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fu">length</span>(code))</span></code></pre></div>
 <pre><code>#&gt; Dict{Char, Int64} with 36 entries:
 #&gt;   &#39;1&#39; =&gt; 1
 #&gt;   &#39;E&#39; =&gt; 14
@@ -601,96 +603,106 @@ class="sourceCode julia"><code class="sourceCode julia"><span id="cb15-1"><a hre
 class="sourceCode julia"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="st">将整数线性分解为一组基，返回系数字符串</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="st">将整数线性分解为一组基，返回系数连接成的字符串</span></span>
 <span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span></code></pre></div>
-<pre><code>#&gt; &quot;将整数线性分解为一组基，返回系数字符串\n&quot;</code></pre>
+<pre><code>#&gt; &quot;将整数线性分解为一组基，返回系数连接成的字符串\n&quot;</code></pre>
 <div class="sourceCode" id="cb19"><pre
 class="sourceCode julia"><code class="sourceCode julia"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">dec2FactString</span>(nb<span class="op">::</span><span class="dt">Int</span>)<span class="op">::</span><span class="dt">String</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 先找最大的基</span></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  max_base <span class="op">=</span> <span class="fl">1</span></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">while</span> <span class="fu">factorial</span>(max_base <span class="op">+</span> <span class="fl">1</span>) <span class="op">&lt;=</span> nb</span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    max_base <span class="op">+=</span> <span class="fl">1</span></span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">end</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 先找最大的基</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    max_base <span class="op">=</span> <span class="fl">1</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="fu">factorial</span>(max_base <span class="op">+</span> <span class="fl">1</span>) <span class="op">&lt;=</span> nb</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>        max_base <span class="op">+=</span> <span class="fl">1</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
 <span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 从大到小，确定每个基对应的系数</span></span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>  factors <span class="op">=</span> <span class="st">&quot;&quot;</span></span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> base <span class="op">∈</span> [max_base<span class="op">:-</span><span class="fl">1</span><span class="op">:</span><span class="fl">0</span><span class="op">...</span>]</span>
-<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>    factors <span class="op">*=</span> encode[<span class="fu">nb÷factorial</span>(base)] <span class="co"># 这里的*表示字符串连接</span></span>
-<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>    nb <span class="op">%=</span> <span class="fu">factorial</span>(base)</span>
-<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>  <span class="cf">end</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 从大到小，确定每个基对应的系数</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    factors <span class="op">=</span> <span class="st">&quot;&quot;</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> base <span class="op">∈</span> max_base<span class="op">:-</span><span class="fl">1</span><span class="op">:</span><span class="fl">0</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>        factors <span class="op">*=</span> encode[<span class="fu">nb÷factorial</span>(base)] <span class="co"># 这里的*表示字符串连接</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>        nb <span class="op">%=</span> <span class="fu">factorial</span>(base)</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
 <span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>  factors</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>    factors</span>
 <span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
 <pre><code>#&gt; dec2FactString (generic function with 1 method)</code></pre>
 <div class="sourceCode" id="cb21"><pre
 class="sourceCode julia"><code class="sourceCode julia"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dec2FactString</span>(<span class="fl">463</span>)</span></code></pre></div>
-<pre><code>#&gt; &quot;341010&quot;</code></pre>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@test</span> <span class="fu">dec2FactString</span>(<span class="fl">463</span>) <span class="op">==</span> <span class="st">&quot;341010&quot;</span></span></code></pre></div>
+<pre><code>#&gt; Test Passed
+#&gt;   Expression: dec2FactString(463) == &quot;341010&quot;
+#&gt;    Evaluated: &quot;341010&quot; == &quot;341010&quot;</code></pre>
 <div class="sourceCode" id="cb23"><pre
 class="sourceCode julia"><code class="sourceCode julia"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">factString2Dec</span>(str<span class="op">::</span><span class="dt">String</span>)<span class="op">::</span><span class="dt">Int</span></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 逆序的系数向量</span></span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  factors <span class="op">=</span> <span class="fu">collect</span>(str) <span class="op">.|&gt;</span> (ch <span class="op">-&gt;</span> decode[ch]) <span class="op">|&gt;</span> reverse</span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 基向量，从 0! 到 max_base!</span></span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>  bases <span class="op">=</span> <span class="fl">0</span><span class="op">:</span>(<span class="fu">length</span>(factors)<span class="op">-</span><span class="fl">1</span>) <span class="op">.|&gt;</span> factorial</span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>  factors <span class="op">.*</span> bases <span class="op">|&gt;</span> sum</span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
-<pre><code>#&gt; factString2Dec (generic function with 1 method)</code></pre>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="st">已知基（阶乘）和系数连接成的字符串，计算整数</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span></code></pre></div>
+<pre><code>#&gt; &quot;已知基（阶乘）和系数连接成的字符串，计算整数\n&quot;</code></pre>
 <div class="sourceCode" id="cb25"><pre
-class="sourceCode julia"><code class="sourceCode julia"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">factString2Dec</span>(<span class="st">&quot;341010&quot;</span>)</span></code></pre></div>
-<pre><code>#&gt; 463</code></pre>
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">factString2Dec</span>(str<span class="op">::</span><span class="dt">String</span>)<span class="op">::</span><span class="dt">Int</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 逆序的系数向量</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    factors <span class="op">=</span> <span class="pp">@pipe</span> <span class="fu">collect</span>(str) <span class="op">.|&gt;</span> decode[_] <span class="op">|&gt;</span> reverse</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 基向量，从 0! 到 max_base!</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>    bases <span class="op">=</span> <span class="fl">0</span><span class="op">:</span>(<span class="fu">length</span>(factors)<span class="op">-</span><span class="fl">1</span>) <span class="op">.|&gt;</span> factorial</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sum</span>(factors <span class="op">.*</span> bases)</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
+<pre><code>#&gt; factString2Dec (generic function with 1 method)</code></pre>
+<div class="sourceCode" id="cb27"><pre
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@test</span> <span class="fu">factString2Dec</span>(<span class="st">&quot;341010&quot;</span>) <span class="op">==</span> <span class="fl">463</span></span></code></pre></div>
+<pre><code>#&gt; Test Passed
+#&gt;   Expression: factString2Dec(&quot;341010&quot;) == 463
+#&gt;    Evaluated: 463 == 463</code></pre>
 </div>
 <div id="javascript" class="section level4">
 <h4>JavaScript</h4>
-<div class="sourceCode" id="cb27"><pre
-class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> naturalSequence <span class="op">=</span> <span class="pp">require</span>(<span class="st">&quot;../../src/JavaScript/toolkit/Vector&quot;</span>)<span class="op">.</span><span class="at">naturalSequence</span><span class="op">;</span></span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> factorial <span class="op">=</span> <span class="pp">require</span>(<span class="st">&quot;../../src/JavaScript/toolkit/Arithmetic&quot;</span>)<span class="op">.</span><span class="at">factorial</span><span class="op">;</span></span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> hadamardProduct <span class="op">=</span> <span class="pp">require</span>(<span class="st">&quot;../../src/JavaScript/toolkit/Matrix&quot;</span>)<span class="op">.</span><span class="at">hadamardProduct</span><span class="op">;</span></span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> sum <span class="op">=</span> <span class="pp">require</span>(<span class="st">&quot;../../src/JavaScript/toolkit/Statistics&quot;</span>)<span class="op">.</span><span class="at">sum</span><span class="op">;</span></span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a><span class="co">// 字符串本身就是 iterator, 可以用索引 [] 访问</span></span>
-<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> code <span class="op">=</span> <span class="st">&quot;0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;</span><span class="op">;</span></span>
-<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> encode <span class="op">=</span> <span class="kw">new</span> <span class="bu">Map</span><span class="op">,</span> decode <span class="op">=</span> <span class="kw">new</span> <span class="bu">Map</span><span class="op">;</span></span>
-<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (<span class="kw">let</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;=</span> <span class="dv">35</span><span class="op">;</span> i<span class="op">++</span>) {</span>
-<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>  encode<span class="op">.</span><span class="fu">set</span>(i<span class="op">,</span> code[i])<span class="op">;</span></span>
-<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>  decode<span class="op">.</span><span class="fu">set</span>(code[i]<span class="op">,</span> i)<span class="op">;</span></span>
-<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">dec2FactString</span>(nb) {</span>
-<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>  <span class="co">// 寻找最大的基</span></span>
-<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> maxBase <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></span>
-<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a>  <span class="cf">while</span> (<span class="fu">factorial</span>(maxBase <span class="op">+</span> <span class="dv">1</span>) <span class="op">&lt;=</span> nb) {</span>
-<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a>    maxBase<span class="op">++;</span></span>
-<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb27-23"><a href="#cb27-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-24"><a href="#cb27-24" aria-hidden="true" tabindex="-1"></a>  <span class="co">// 对应这组基的系数向量</span></span>
-<span id="cb27-25"><a href="#cb27-25" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> factors <span class="op">=</span> []<span class="op">;</span></span>
-<span id="cb27-26"><a href="#cb27-26" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="kw">let</span> i <span class="op">=</span> maxBase<span class="op">;</span> i <span class="op">&gt;=</span> <span class="dv">0</span><span class="op">;</span> i<span class="op">--</span>) {</span>
-<span id="cb27-27"><a href="#cb27-27" aria-hidden="true" tabindex="-1"></a>    char <span class="op">=</span> encode<span class="op">.</span><span class="fu">get</span>(<span class="bu">Math</span><span class="op">.</span><span class="fu">floor</span>(nb <span class="op">/</span> <span class="fu">factorial</span>(i)))<span class="op">;</span></span>
-<span id="cb27-28"><a href="#cb27-28" aria-hidden="true" tabindex="-1"></a>    factors<span class="op">.</span><span class="fu">push</span>(char)<span class="op">;</span></span>
-<span id="cb27-29"><a href="#cb27-29" aria-hidden="true" tabindex="-1"></a>    nb <span class="op">%=</span> <span class="fu">factorial</span>(i)<span class="op">;</span></span>
-<span id="cb27-30"><a href="#cb27-30" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb27-31"><a href="#cb27-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-32"><a href="#cb27-32" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> factors<span class="op">.</span><span class="fu">join</span>(<span class="st">&#39;&#39;</span>)<span class="op">;</span></span>
-<span id="cb27-33"><a href="#cb27-33" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb27-34"><a href="#cb27-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-35"><a href="#cb27-35" aria-hidden="true" tabindex="-1"></a><span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="fu">dec2FactString</span>(<span class="dv">463</span>))<span class="op">;</span></span>
-<span id="cb27-36"><a href="#cb27-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-37"><a href="#cb27-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-38"><a href="#cb27-38" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">factString2Dec</span>(string) {</span>
-<span id="cb27-39"><a href="#cb27-39" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> factors <span class="op">=</span> string<span class="op">.</span><span class="fu">split</span>(<span class="st">&#39;&#39;</span>)<span class="op">.</span><span class="fu">reverse</span>()<span class="op">.</span><span class="fu">map</span>(char <span class="kw">=&gt;</span> decode<span class="op">.</span><span class="fu">get</span>(char))<span class="op">;</span></span>
-<span id="cb27-40"><a href="#cb27-40" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> bases <span class="op">=</span> <span class="fu">naturalSequence</span>(string<span class="op">.</span><span class="at">length</span><span class="op">,</span> start <span class="op">=</span> <span class="dv">0</span>)<span class="op">.</span><span class="fu">map</span>(factorial)<span class="op">;</span></span>
-<span id="cb27-41"><a href="#cb27-41" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="fu">sum</span>(<span class="fu">hadamardProduct</span>(factors<span class="op">,</span> bases))<span class="op">;</span></span>
-<span id="cb27-42"><a href="#cb27-42" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb27-43"><a href="#cb27-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-44"><a href="#cb27-44" aria-hidden="true" tabindex="-1"></a><span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="fu">factString2Dec</span>(<span class="st">&quot;341010&quot;</span>))<span class="op">;</span></span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> naturalSequence <span class="op">=</span> <span class="pp">require</span>(<span class="st">&quot;../../src/JavaScript/toolkit/Vector&quot;</span>)<span class="op">.</span><span class="at">naturalSequence</span><span class="op">;</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> factorial <span class="op">=</span> <span class="pp">require</span>(<span class="st">&quot;../../src/JavaScript/toolkit/Arithmetic&quot;</span>)<span class="op">.</span><span class="at">factorial</span><span class="op">;</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> hadamardProduct <span class="op">=</span> <span class="pp">require</span>(<span class="st">&quot;../../src/JavaScript/toolkit/Matrix&quot;</span>)<span class="op">.</span><span class="at">hadamardProduct</span><span class="op">;</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> sum <span class="op">=</span> <span class="pp">require</span>(<span class="st">&quot;../../src/JavaScript/toolkit/Statistics&quot;</span>)<span class="op">.</span><span class="at">sum</span><span class="op">;</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a><span class="co">// 字符串本身就是 iterator, 可以用索引 [] 访问</span></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> code <span class="op">=</span> <span class="st">&quot;0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;</span><span class="op">;</span></span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> encode <span class="op">=</span> <span class="kw">new</span> <span class="bu">Map</span><span class="op">,</span> decode <span class="op">=</span> <span class="kw">new</span> <span class="bu">Map</span><span class="op">;</span></span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (<span class="kw">let</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;=</span> <span class="dv">35</span><span class="op">;</span> i<span class="op">++</span>) {</span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>  encode<span class="op">.</span><span class="fu">set</span>(i<span class="op">,</span> code[i])<span class="op">;</span></span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>  decode<span class="op">.</span><span class="fu">set</span>(code[i]<span class="op">,</span> i)<span class="op">;</span></span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">dec2FactString</span>(nb) {</span>
+<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a>  <span class="co">// 寻找最大的基</span></span>
+<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> maxBase <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a>  <span class="cf">while</span> (<span class="fu">factorial</span>(maxBase <span class="op">+</span> <span class="dv">1</span>) <span class="op">&lt;=</span> nb) {</span>
+<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a>    maxBase<span class="op">++;</span></span>
+<span id="cb29-22"><a href="#cb29-22" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb29-23"><a href="#cb29-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-24"><a href="#cb29-24" aria-hidden="true" tabindex="-1"></a>  <span class="co">// 对应这组基的系数向量</span></span>
+<span id="cb29-25"><a href="#cb29-25" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> factors <span class="op">=</span> []<span class="op">;</span></span>
+<span id="cb29-26"><a href="#cb29-26" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="kw">let</span> i <span class="op">=</span> maxBase<span class="op">;</span> i <span class="op">&gt;=</span> <span class="dv">0</span><span class="op">;</span> i<span class="op">--</span>) {</span>
+<span id="cb29-27"><a href="#cb29-27" aria-hidden="true" tabindex="-1"></a>    char <span class="op">=</span> encode<span class="op">.</span><span class="fu">get</span>(<span class="bu">Math</span><span class="op">.</span><span class="fu">floor</span>(nb <span class="op">/</span> <span class="fu">factorial</span>(i)))<span class="op">;</span></span>
+<span id="cb29-28"><a href="#cb29-28" aria-hidden="true" tabindex="-1"></a>    factors<span class="op">.</span><span class="fu">push</span>(char)<span class="op">;</span></span>
+<span id="cb29-29"><a href="#cb29-29" aria-hidden="true" tabindex="-1"></a>    nb <span class="op">%=</span> <span class="fu">factorial</span>(i)<span class="op">;</span></span>
+<span id="cb29-30"><a href="#cb29-30" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb29-31"><a href="#cb29-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-32"><a href="#cb29-32" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> factors<span class="op">.</span><span class="fu">join</span>(<span class="st">&#39;&#39;</span>)<span class="op">;</span></span>
+<span id="cb29-33"><a href="#cb29-33" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb29-34"><a href="#cb29-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-35"><a href="#cb29-35" aria-hidden="true" tabindex="-1"></a><span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="fu">dec2FactString</span>(<span class="dv">463</span>))<span class="op">;</span></span>
+<span id="cb29-36"><a href="#cb29-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-37"><a href="#cb29-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-38"><a href="#cb29-38" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">factString2Dec</span>(string) {</span>
+<span id="cb29-39"><a href="#cb29-39" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> factors <span class="op">=</span> string<span class="op">.</span><span class="fu">split</span>(<span class="st">&#39;&#39;</span>)<span class="op">.</span><span class="fu">reverse</span>()<span class="op">.</span><span class="fu">map</span>(char <span class="kw">=&gt;</span> decode<span class="op">.</span><span class="fu">get</span>(char))<span class="op">;</span></span>
+<span id="cb29-40"><a href="#cb29-40" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> bases <span class="op">=</span> <span class="fu">naturalSequence</span>(string<span class="op">.</span><span class="at">length</span><span class="op">,</span> start <span class="op">=</span> <span class="dv">0</span>)<span class="op">.</span><span class="fu">map</span>(factorial)<span class="op">;</span></span>
+<span id="cb29-41"><a href="#cb29-41" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="fu">sum</span>(<span class="fu">hadamardProduct</span>(factors<span class="op">,</span> bases))<span class="op">;</span></span>
+<span id="cb29-42"><a href="#cb29-42" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb29-43"><a href="#cb29-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-44"><a href="#cb29-44" aria-hidden="true" tabindex="-1"></a><span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="fu">factString2Dec</span>(<span class="st">&quot;341010&quot;</span>))<span class="op">;</span></span></code></pre></div>
 <pre><code>#&gt; 341010
 #&gt; 463</code></pre>
 </div>

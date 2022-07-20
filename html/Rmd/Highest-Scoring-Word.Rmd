@@ -51,47 +51,61 @@ All letters will be lowercase and all inputs will be valid.
 
 #### R
 ```{r}
-# 可读性不好，要大改
+# Highest-Scoring-Word.R
 
 library(tidyverse)
+library(testthat)
+
+
+get_value <- function(word) {
+  word %>%
+    str_split("") %>%
+    unlist() %>%
+    map_int(~ match(.x, letters)) %>%
+    sum()
+}
+
 
 high <- function(x) {
   words <- x %>%
     str_split(" ") %>%
     unlist()
-
-  max_index <- words %>%
-    map_int(function(w) {
-      w %>%
-        str_split("") %>%
-        unlist() %>%
-        map_int(~ match(.x, letters)) %>%
-        sum()
-    }) %>%
-    which.max()
-
-  words[max_index]
+  values <- words %>% map_int(get_value)
+  words[which.max(values)]
 }
+
+
+# unit test
+test_that("Sample Tests", {
+  expect_equal(high("what time are we climbing up the volcano"), "volcano")
+})
 ```
 
 
 #### Julia
 ```{julia}
-
-
-function get_score(word)
-  word |> collect .|> (char -> char - 'a') |> sum
-end
-
-function high(x)
-  words = x |> split
-  scores = words .|> get_score
-  max_index = findmax(identity, scores)[2]
-  words[max_index]
-end
-
+# Highest-Scoring-Word.jl
 
 using Test
+
+
+"""
+word 是字符串切割的产物，数据类型为 SubString{String}  
+其父类为 AbstractString
+"""
+function get_score(word::AbstractString)::Int64
+    # @show typeof(word)
+    word |> collect .|> (char -> char - 'a' + 1) |> sum
+end
+
+
+function high(x::String)::String
+    words = x |> split
+    _, max_index = words .|> get_score |> findmax
+    return words[max_index]
+end
+
+
 @test high("man i need a taxi up to ubud") == "taxi"
 @test high("what time are we climbing up the volcano") == "volcano"
 ```
@@ -100,17 +114,46 @@ using Test
 #### JavaScript
 
 ```{node}
+/**
+ * @module Highest-Scoring-Word
+ */
 
 const sum = require("../../src/JavaScript/toolkit/Statistics").sum;
 
+function get_score(word) {
+  return sum(word.split('').map(c => c.charCodeAt() - 'a'.charCodeAt() + 1));
+}
+
 function high(x) {
   const words = x.split(' ');
-  const values = words.map(word => sum(word.split('').map(char => char.charCodeAt() - 96)));
+  const values = words.map(get_score);
   return words[values.indexOf(Math.max(...values))];
 }
-console.log(high('what time are we climbing up the volcano'));
 
-module.exports = high;
+console.log(high('what time are we climbing up the volcano'));
+```
+
+
+#### Python
+```{python}
+# Highest-Scoring-Word.py
+
+
+#%%
+def get_score(word):
+    return sum([ord(c) - 96 for c in word])
+
+
+#%%
+def high(x):
+    words = x.split()
+    return max(words, key=get_score)
+
+
+# %%
+high("what time are we climbing up the volcano")
+
+# %%
 ```
 
 

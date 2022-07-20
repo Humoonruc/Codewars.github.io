@@ -1,19 +1,28 @@
-function solution(A::Matrix{Char})::Bool
-  arrow_indice = findfirst(c -> c == '>', A)
-  target_indice = findfirst(c -> c == 'x', A)
 
-  in_same_line = arrow_indice[1] == target_indice[1]
-  order_is_right = arrow_indice[2] < target_indice[2]
-  in_same_line && order_is_right
+using Test
+
+
+"""
+只有 `>` 和 `x` 在同一行且 `>` 在 `x` 前，才返回 true
+"""
+function solution(A::Matrix{Char})::Bool
+    arrow_indices = findfirst(==('>'), A) # 返回CartesianIndex{2}
+    arrowᵢ, arrowⱼ = arrow_indices[1], arrow_indices[2]
+    target_indices = findfirst(==('x'), A)
+    targetᵢ, targetⱼ = target_indices[1], target_indices[2]
+
+    return arrowᵢ == targetᵢ && arrowⱼ < targetⱼ
 end
 
 
 A = [
-  ' ' ' ' ' ' ' ' ' '
-  ' ' ' ' ' ' ' ' ' '
-  ' ' ' ' ' ' ' ' ' '
-  ' ' ' ' '>' ' ' 'x'
-  ' ' ' ' ' ' ' ' ' '
+    ' ' ' ' ' ' ' ' ' '
+    ' ' ' ' ' ' ' ' ' '
+    ' ' ' ' ' ' ' ' ' '
+    ' ' ' ' '>' ' ' 'x'
+    ' ' ' ' ' ' ' ' ' '
 ]
 
-solution(A)
+
+
+@test solution(A) == true

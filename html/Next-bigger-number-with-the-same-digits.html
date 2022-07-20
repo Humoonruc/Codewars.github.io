@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Humoon" />
+
+<meta name="date" content="2022-07-20" />
+
+<title>Next bigger number with the same digits</title>
+
+<script src="Rmd/libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="Rmd/libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="Rmd/libs/bootstrap-3.3.5/css/united.min.css" rel="stylesheet" />
+<script src="Rmd/libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="Rmd/libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="Rmd/libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="Rmd/libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="Rmd/libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="Rmd/libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="Rmd/libs/navigation-1.1/tabsets.js"></script>
+<script src="Rmd/libs/navigation-1.1/codefolding.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; } /* Alert */
+code span.an { color: #008000; } /* Annotation */
+code span.at { } /* Attribute */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #0000ff; } /* ControlFlow */
+code span.ch { color: #008080; } /* Char */
+code span.cn { } /* Constant */
+code span.co { color: #008000; } /* Comment */
+code span.cv { color: #008000; } /* CommentVar */
+code span.do { color: #008000; } /* Documentation */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.im { } /* Import */
+code span.in { color: #008000; } /* Information */
+code span.kw { color: #0000ff; } /* Keyword */
+code span.op { } /* Operator */
+code span.ot { color: #ff4000; } /* Other */
+code span.pp { color: #ff4000; } /* Preprocessor */
+code span.sc { color: #008080; } /* SpecialChar */
+code span.ss { color: #008080; } /* SpecialString */
+code span.st { color: #008080; } /* String */
+code span.va { } /* Variable */
+code span.vs { color: #008080; } /* VerbatimString */
+code span.wa { color: #008000; font-weight: bold; } /* Warning */
+
+.sourceCode .row {
+  width: 100%;
+}
+.sourceCode {
+  overflow-x: auto;
+}
+.code-folding-btn {
+  margin-right: -30px;
+}
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<link rel="stylesheet" href="css/vue.css" type="text/css" />
+<link rel="stylesheet" href="css/vue.user.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Next bigger number with the same
+digits</h1>
+<h4 class="author">Humoon</h4>
+<h4 class="date">2022-07-20</h4>
+
+</div>
+
+
+<div id="description" class="section level3">
+<h3>Description</h3>
+<p>Create a function that takes a positive integer and returns the next
+bigger number that can be formed by rearranging its digits. For
+example:</p>
+<pre><code>12 ==&gt; 21
+513 ==&gt; 531
+2017 ==&gt; 2071</code></pre>
+<pre><code>nextBigger(num: 12)   // returns 21
+nextBigger(num: 513)  // returns 531
+nextBigger(num: 2017) // returns 2071</code></pre>
+<p>If the digits can’t be rearranged to form a bigger number, return -1
+(or nil in Swift):</p>
+<pre><code>9 ==&gt; -1
+111 ==&gt; -1
+531 ==&gt; -1</code></pre>
+<pre><code>nextBigger(num: 9)   // returns nil
+nextBigger(num: 111) // returns nil
+nextBigger(num: 531) // returns nil</code></pre>
+</div>
+<div id="solution" class="section level3">
+<h3>Solution</h3>
+<div id="julia" class="section level4">
+<h4>Julia</h4>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Test</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#########################################</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 解法一</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#########################################</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="st">If the last k digits of a number follow a reverse order</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="st"># Arguments</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="st">- `vec`, digits vector of the number</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="st">- `k`</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span></code></pre></div>
+<pre><code>#&gt; &quot;If the last k digits of a number follow a reverse order\n\n# Arguments\n- `vec`, digits vector of the number\n- `k`\n&quot;</code></pre>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">latter_is_rev</span>(vec<span class="op">::</span><span class="dt">Vector</span>, k<span class="op">::</span><span class="dt">Int64</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    last <span class="op">=</span> vec[<span class="kw">end</span><span class="op">-</span>k<span class="op">+</span><span class="fl">1</span><span class="op">:</span><span class="kw">end</span>]</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    last <span class="op">|&gt;</span> sort <span class="op">|&gt;</span> reverse <span class="op">==</span> last ? <span class="cn">true</span> <span class="op">:</span> <span class="cn">false</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
+<pre><code>#&gt; latter_is_rev (generic function with 1 method)</code></pre>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="pp">@testset</span> <span class="st">&quot;check reverse on last k digits&quot;</span> <span class="cf">begin</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@test</span> <span class="fu">latter_is_rev</span>([<span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">2</span>], <span class="fl">2</span>) <span class="op">==</span> <span class="cn">true</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@test</span> <span class="fu">latter_is_rev</span>([<span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">2</span>], <span class="fl">3</span>) <span class="op">==</span> <span class="cn">false</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code></pre></div>
+<pre><code>#&gt; Test Summary:                  | Pass  Total
+#&gt; check reverse on last k digits |    2      2</code></pre>
+<pre><code>#&gt; Test.DefaultTestSet(&quot;check reverse on last k digits&quot;, Any[], 2, false, false)</code></pre>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="st">得知后k-1位皆为逆序但后k位不是逆序后</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="st">计算 next bigger arrangement</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span></code></pre></div>
+<pre><code>#&gt; &quot;得知后k-1位皆为逆序但后k位不是逆序后\n计算 next bigger arrangement\n&quot;</code></pre>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">render_bigger</span>(vec<span class="op">::</span><span class="dt">Vector</span>, k<span class="op">::</span><span class="dt">Int64</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    latterₖ <span class="op">=</span> vec[<span class="kw">end</span><span class="op">-</span>k<span class="op">+</span><span class="fl">1</span><span class="op">:</span><span class="kw">end</span>]</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 后k位中刚刚大于后第k位（即正第end-k+1位）的数字，排到后第k位上</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 由于后k-1位的逆序性质，用 findlast()</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    new₋ₖ_index <span class="op">=</span> <span class="fu">findlast</span>(<span class="fu">&gt;</span>(vec[<span class="kw">end</span><span class="op">-</span>k<span class="op">+</span><span class="fl">1</span>]), latterₖ)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    new₋ₖ_value <span class="op">=</span> latterₖ[new₋ₖ_index]</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 后k位中其余的数字顺序排列（尽可能小），作为新的后k-1列</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    new_latterₖ₋₁ <span class="op">=</span> <span class="fu">sort</span>([x for (i, x) <span class="op">∈</span> <span class="fu">enumerate</span>(latterₖ) if i <span class="op">≠</span> new₋ₖ_index])</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    [vec[<span class="fl">1</span><span class="op">:</span><span class="kw">end</span><span class="op">-</span>k]<span class="op">...</span>, new₋ₖ_value, new_latterₖ₋₁<span class="op">...</span>] <span class="op">|&gt;</span> join <span class="op">|&gt;</span> x <span class="op">-&gt;</span> <span class="fu">parse</span>(<span class="dt">Int64</span>, x)</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
+<pre><code>#&gt; render_bigger (generic function with 1 method)</code></pre>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@testset</span> <span class="st">&quot;render next bigger number&quot;</span> <span class="cf">begin</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@test</span> <span class="fu">render_bigger</span>([<span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>], <span class="fl">2</span>) <span class="op">==</span> <span class="fl">132</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@test</span> <span class="fu">render_bigger</span>([<span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">2</span>], <span class="fl">3</span>) <span class="op">==</span> <span class="fl">213</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code></pre></div>
+<pre><code>#&gt; Test Summary:             | Pass  Total
+#&gt; render next bigger number |    2      2</code></pre>
+<pre><code>#&gt; Test.DefaultTestSet(&quot;render next bigger number&quot;, Any[], 2, false, false)</code></pre>
+<div class="sourceCode" id="cb19"><pre
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">nextbigger</span>(n<span class="op">::</span><span class="dt">Int64</span>)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    vec <span class="op">=</span> <span class="fu">digits</span>(n) <span class="op">|&gt;</span> reverse</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> k <span class="op">∈</span> <span class="fl">2</span><span class="op">:</span><span class="fu">length</span>(vec)</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>        !<span class="fu">latter_is_rev</span>(vec, k) <span class="op">&amp;&amp;</span> <span class="cf">return</span> <span class="fu">render_bigger</span>(vec, k)</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="op">-</span><span class="fl">1</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
+<pre><code>#&gt; nextbigger (generic function with 1 method)</code></pre>
+<div class="sourceCode" id="cb21"><pre
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@testset</span> <span class="st">&quot;next bigger&quot;</span> <span class="cf">begin</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@test</span> <span class="fu">nextbigger</span>(<span class="fl">123456789</span>) <span class="op">==</span> <span class="fl">123456798</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@test</span> <span class="fu">nextbigger</span>(<span class="fl">1234567890</span>) <span class="op">==</span> <span class="fl">1234567908</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@test</span> <span class="fu">nextbigger</span>(<span class="fl">9876543210</span>) <span class="op">==</span> <span class="op">-</span><span class="fl">1</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@test</span> <span class="fu">nextbigger</span>(<span class="fl">9999999999</span>) <span class="op">==</span> <span class="op">-</span><span class="fl">1</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@test</span> <span class="fu">nextbigger</span>(<span class="fl">59884848459853</span>) <span class="op">==</span> <span class="fl">59884848483559</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code></pre></div>
+<pre><code>#&gt; Test Summary: | Pass  Total
+#&gt; next bigger   |    5      5</code></pre>
+<pre><code>#&gt; Test.DefaultTestSet(&quot;next bigger&quot;, Any[], 5, false, false)</code></pre>
+<div class="sourceCode" id="cb24"><pre
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="co">#########################################</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 解法二</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="co">#########################################</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">nextbigger</span>(n<span class="op">::</span><span class="dt">Int64</span>)</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>    numbers <span class="op">=</span> n <span class="op">|&gt;</span> digits <span class="op">|&gt;</span> sort <span class="co"># 所有数字的升序排列</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>    test <span class="op">=</span> n</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">digits</span>(n) <span class="op">==</span> numbers <span class="op">&amp;&amp;</span> <span class="cf">return</span> <span class="op">-</span><span class="fl">1</span></span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="cn">true</span></span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>        test <span class="op">+=</span> <span class="fl">1</span> <span class="co"># 在n的基础上自增，最快实现这些数字重排列的就是next bigger</span></span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>        test <span class="op">|&gt;</span> digits <span class="op">|&gt;</span> sort <span class="op">==</span> numbers <span class="op">&amp;&amp;</span> <span class="cf">return</span> test</span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
+<pre><code>#&gt; nextbigger (generic function with 1 method)</code></pre>
+<div class="sourceCode" id="cb26"><pre
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@testset</span> <span class="st">&quot;next bigger&quot;</span> <span class="cf">begin</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@test</span> <span class="fu">nextbigger</span>(<span class="fl">123456789</span>) <span class="op">==</span> <span class="fl">123456798</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@test</span> <span class="fu">nextbigger</span>(<span class="fl">1234567890</span>) <span class="op">==</span> <span class="fl">1234567908</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@test</span> <span class="fu">nextbigger</span>(<span class="fl">9876543210</span>) <span class="op">==</span> <span class="op">-</span><span class="fl">1</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@test</span> <span class="fu">nextbigger</span>(<span class="fl">9999999999</span>) <span class="op">==</span> <span class="op">-</span><span class="fl">1</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@test</span> <span class="fu">nextbigger</span>(<span class="fl">59884848459853</span>) <span class="op">==</span> <span class="fl">59884848483559</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code></pre></div>
+<pre><code>#&gt; Test Summary: | Pass  Total
+#&gt; next bigger   |    5      5</code></pre>
+<pre><code>#&gt; Test.DefaultTestSet(&quot;next bigger&quot;, Any[], 5, false, false)</code></pre>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

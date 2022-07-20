@@ -11,7 +11,7 @@
 
 <meta name="author" content="Humoon" />
 
-<meta name="date" content="2022-07-12" />
+<meta name="date" content="2022-07-20" />
 
 <title>Pyramid Array</title>
 
@@ -348,7 +348,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Pyramid Array</h1>
 <h4 class="author">Humoon</h4>
-<h4 class="date">2022-07-12</h4>
+<h4 class="date">2022-07-20</h4>
 
 </div>
 
@@ -387,20 +387,22 @@ pyramid(3) =&gt; [ [1], [1, 1], [1, 1, 1] ]</code></pre>
 <div id="julia" class="section level4">
 <h4>Julia</h4>
 <div class="sourceCode" id="cb4"><pre
-class="sourceCode julia"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">pyramid</span>(n)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 等价的三种写法</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># [ones(Int, k) for k ∈ 1:n]</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># [fill(1, k) for k ∈ 1:n]</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  [<span class="fu">repeat</span>([<span class="fl">1</span>], k) for k <span class="op">∈</span> <span class="fl">1</span><span class="op">:</span>n]</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Test</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">pyramid</span>(n<span class="op">::</span><span class="dt">Int64</span>)<span class="op">::</span><span class="dt">Vector{Vector}</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 等价的三种写法</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># [ones(Int, k) for k ∈ 1:n]</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># [fill(1, k) for k ∈ 1:n]</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    [<span class="fu">repeat</span>([<span class="fl">1</span>], k) for k <span class="op">∈</span> <span class="fl">1</span><span class="op">:</span>n]</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
 <pre><code>#&gt; pyramid (generic function with 1 method)</code></pre>
 <div class="sourceCode" id="cb6"><pre
 class="sourceCode julia"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Test</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="pp">@test</span> <span class="fu">pyramid</span>(<span class="fl">3</span>) <span class="op">==</span> [[<span class="fl">1</span>], [<span class="fl">1</span>, <span class="fl">1</span>], [<span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>]]</span></code></pre></div>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@test</span> <span class="fu">pyramid</span>(<span class="fl">3</span>) <span class="op">==</span> [[<span class="fl">1</span>], [<span class="fl">1</span>, <span class="fl">1</span>], [<span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>]]</span></code></pre></div>
 <pre><code>#&gt; Test Passed
 #&gt;   Expression: pyramid(3) == [[1], [1, 1], [1, 1, 1]]
-#&gt;    Evaluated: [[1], [1, 1], [1, 1, 1]] == [[1], [1, 1], [1, 1, 1]]</code></pre>
+#&gt;    Evaluated: Vector[[1], [1, 1], [1, 1, 1]] == [[1], [1, 1], [1, 1, 1]]</code></pre>
 </div>
 <div id="javascript" class="section level4">
 <h4>JavaScript</h4>

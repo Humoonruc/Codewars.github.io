@@ -11,7 +11,7 @@
 
 <meta name="author" content="Humoon" />
 
-<meta name="date" content="2022-07-12" />
+<meta name="date" content="2022-07-20" />
 
 <title>N-th Fibonacci</title>
 
@@ -348,7 +348,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">N-th Fibonacci</h1>
 <h4 class="author">Humoon</h4>
-<h4 class="date">2022-07-12</h4>
+<h4 class="date">2022-07-20</h4>
 
 </div>
 
@@ -404,19 +404,22 @@ a_{n}
 <h4>Julia</h4>
 <div class="sourceCode" id="cb4"><pre
 class="sourceCode julia"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 斐波那契数列对应的线性变换</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>F <span class="op">=</span> [<span class="fl">0</span> <span class="fl">1</span>; <span class="fl">1</span> <span class="fl">1</span>]</span></code></pre></div>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Test</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 斐波那契数列对应的线性变换</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>F <span class="op">=</span> [<span class="fl">0</span> <span class="fl">1</span>; <span class="fl">1</span> <span class="fl">1</span>]</span></code></pre></div>
 <pre><code>#&gt; 2×2 Matrix{Int64}:
 #&gt;  0  1
 #&gt;  1  1</code></pre>
 <div class="sourceCode" id="cb6"><pre
 class="sourceCode julia"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">nthfibo</span>(n<span class="op">::</span><span class="dt">Integer</span>) <span class="op">=</span> (F<span class="op">^</span>(n<span class="op">-</span><span class="fl">1</span>)<span class="op">*</span>[<span class="fl">0</span>, <span class="fl">1</span>])[<span class="fl">1</span>]</span></code></pre></div>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">nthfibo</span>(n<span class="op">::</span><span class="dt">Int64</span>)<span class="op">::</span><span class="dt">Int64 </span><span class="op">=</span> (F<span class="op">^</span>(n<span class="op">-</span><span class="fl">1</span>)<span class="op">*</span>[<span class="fl">0</span>, <span class="fl">1</span>])[<span class="fl">1</span>]</span></code></pre></div>
 <pre><code>#&gt; nthfibo (generic function with 1 method)</code></pre>
 <div class="sourceCode" id="cb8"><pre
 class="sourceCode julia"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Test</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="pp">@test</span> <span class="fu">nthfibo</span>(<span class="fl">4</span>) <span class="op">==</span> <span class="fl">2</span></span></code></pre></div>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@test</span> <span class="fu">nthfibo</span>(<span class="fl">4</span>) <span class="op">==</span> <span class="fl">2</span></span></code></pre></div>
 <pre><code>#&gt; Test Passed
 #&gt;   Expression: nthfibo(4) == 2
 #&gt;    Evaluated: 2 == 2</code></pre>

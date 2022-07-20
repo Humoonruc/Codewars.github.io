@@ -1,0 +1,57 @@
+---
+title: "Sum without highest and lowest number"
+author: "Humoon"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+
+```{r setup, include = FALSE}
+source("./config/config.R")
+
+## global options ===================================
+knitr::opts_chunk$set(
+  width = config$width,
+  fig.width = config$fig.width,
+  fig.asp = config$fig.asp,
+  out.width = config$out.width,
+  fig.align = config$fig.align,
+  fig.path = config$fig.path,
+  fig.show = config$fig.show,
+  warn = config$warn,
+  warning = config$warning,
+  message = config$message,
+  echo = config$echo,
+  eval = config$eval,
+  tidy = config$tidy,
+  comment = config$comment,
+  collapse = config$collapse,
+  cache = config$cache,
+  cache.comments = config$cache.comments,
+  autodep = config$autodep
+)
+```
+
+
+
+### Solution
+
+#### Julia
+```{julia}
+using Test
+
+
+"""
+去掉一个最高分，去掉要给最低分，求和  
+输入检查，有可能是 nothing
+"""
+function sumarray(arr)::Real
+    (isnothing(arr) || length(arr) ≤ 2) && return 0
+    sum(arr) - maximum(arr) - minimum(arr)
+    # sort(arr)[2:(end-1)] |> sum
+end
+
+@test sumarray([6, 2, 1, 8, 10]) == 16
+```
+
+

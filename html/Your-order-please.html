@@ -11,7 +11,7 @@
 
 <meta name="author" content="Humoon" />
 
-<meta name="date" content="2022-07-12" />
+<meta name="date" content="2022-07-20" />
 
 <title>Your order please</title>
 
@@ -348,7 +348,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Your order please</h1>
 <h4 class="author">Humoon</h4>
-<h4 class="date">2022-07-12</h4>
+<h4 class="date">2022-07-20</h4>
 
 </div>
 
@@ -402,22 +402,25 @@ the input String will only contain valid consecutive numbers.</p>
 <h4>Julia</h4>
 <div class="sourceCode" id="cb4"><pre
 class="sourceCode julia"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Pipe</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">extract_number</span>(s)</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="pp">@pipe</span> <span class="fu">match</span>(<span class="st">r&quot;</span><span class="sc">\d</span><span class="st">&quot;</span>, s).match <span class="op">|&gt;</span> <span class="fu">parse</span>(<span class="dt">Int</span>, _)</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Test</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">extract_number</span>(s<span class="op">::</span><span class="dt">AbstractString</span>)<span class="op">::</span><span class="dt">Int64</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@pipe</span> <span class="fu">match</span>(<span class="st">r&quot;</span><span class="sc">\d</span><span class="st">&quot;</span>, s).match <span class="op">|&gt;</span> <span class="fu">parse</span>(<span class="dt">Int</span>, _)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
 <pre><code>#&gt; extract_number (generic function with 1 method)</code></pre>
 <div class="sourceCode" id="cb6"><pre
 class="sourceCode julia"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">order</span>(words)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="pp">@pipe</span> words <span class="op">|&gt;</span> split <span class="op">|&gt;</span> <span class="fu">sort</span>(_, by<span class="op">=</span>extract_number) <span class="op">|&gt;</span> <span class="fu">join</span>(_, <span class="st">&quot; &quot;</span>)</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@assert</span> <span class="fu">extract_number</span>(<span class="st">&quot;T4est&quot;</span>) <span class="op">==</span> <span class="fl">4</span> <span class="st">&quot;Something wrong in extracting numbers.&quot;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">order</span>(words<span class="op">::</span><span class="dt">String</span>)<span class="op">::</span><span class="dt">String</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@pipe</span> words <span class="op">|&gt;</span> split <span class="op">|&gt;</span> <span class="fu">sort</span>(_, by<span class="op">=</span>extract_number) <span class="op">|&gt;</span> <span class="fu">join</span>(_, <span class="st">&quot; &quot;</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
 <pre><code>#&gt; order (generic function with 1 method)</code></pre>
 <div class="sourceCode" id="cb8"><pre
 class="sourceCode julia"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Test</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="pp">@test</span> <span class="fu">order</span>(<span class="st">&quot;is2 Thi1s T4est 3a&quot;</span>) <span class="op">==</span> <span class="st">&quot;Thi1s is2 3a T4est&quot;</span></span></code></pre></div>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@test</span> <span class="fu">order</span>(<span class="st">&quot;is2 Thi1s T4est 3a&quot;</span>) <span class="op">==</span> <span class="st">&quot;Thi1s is2 3a T4est&quot;</span></span></code></pre></div>
 <pre><code>#&gt; Test Passed
 #&gt;   Expression: order(&quot;is2 Thi1s T4est 3a&quot;) == &quot;Thi1s is2 3a T4est&quot;
 #&gt;    Evaluated: &quot;Thi1s is2 3a T4est&quot; == &quot;Thi1s is2 3a T4est&quot;</code></pre>
