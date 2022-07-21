@@ -1,0 +1,99 @@
+---
+title: "Delete occurrences of an element if it occurs more than n times"
+author: "Humoon"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+
+```{r setup, include = FALSE}
+source("./config/config.R")
+
+## global options ===================================
+knitr::opts_chunk$set(
+  width = config$width,
+  fig.width = config$fig.width,
+  fig.asp = config$fig.asp,
+  out.width = config$out.width,
+  fig.align = config$fig.align,
+  fig.path = config$fig.path,
+  fig.show = config$fig.show,
+  warn = config$warn,
+  warning = config$warning,
+  message = config$message,
+  echo = config$echo,
+  eval = config$eval,
+  tidy = config$tidy,
+  comment = config$comment,
+  collapse = config$collapse,
+  cache = config$cache,
+  cache.comments = config$cache.comments,
+  autodep = config$autodep
+)
+```
+
+
+
+### Solution
+
+#### Julia
+```{julia}
+
+function deleteNth(arr::Vector, n::Int64)
+
+    # 第一种解法：filter()
+    # d = Dict{Any,Int64}()
+
+    # function select(key)
+    #     value = get(d, key, 0)
+    #     d[key] = value + 1
+    #     return value < n
+    # end
+
+    # return filter(select, arr)
+
+    # 第二种解法：循环，相当于 foreach()
+    d = Dict{Any,Int64}()
+    output = []
+
+    for key ∈ arr
+        value = get(d, key, 0)
+        if value < n
+            push!(output, key)
+            d[key] = value + 1
+        end
+    end
+
+    return output
+end
+
+
+@test deleteNth([20, 37, 20, 21], 1) == [20, 37, 21]
+@test deleteNth([1, 1, 3, 3, 7, 2, 2, 2, 2], 3) == [1, 1, 3, 3, 7, 2, 2, 2]
+```
+
+
+#### JavaScript
+
+```{node}
+/**
+ * 去掉已出现次数大于n的字符
+ * @param {Array} arr 
+ * @param {Integer} n 
+ * @returns 
+ */
+const deleteNth = (arr, n) => {
+    let map = new Map();
+
+    return arr.filter(key => {
+        let value = map.get(key) || 0; // ||左边的表达式转换成Bool为false，返回||右边的表达式
+        map.set(key, value + 1);
+        return map.get(key) <= n;
+    });
+};
+
+
+console.log(deleteNth([1, 1, 3, 3, 7, 2, 2, 2, 2], 2)); // [1, 1, 3, 3, 7, 2, 2]
+```
+
+

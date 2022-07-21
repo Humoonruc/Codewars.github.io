@@ -1,0 +1,99 @@
+---
+title: "Title Case"
+author: "Humoon"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+
+```{r setup, include = FALSE}
+source("./config/config.R")
+
+## global options ===================================
+knitr::opts_chunk$set(
+  width = config$width,
+  fig.width = config$fig.width,
+  fig.asp = config$fig.asp,
+  out.width = config$out.width,
+  fig.align = config$fig.align,
+  fig.path = config$fig.path,
+  fig.show = config$fig.show,
+  warn = config$warn,
+  warning = config$warning,
+  message = config$message,
+  echo = config$echo,
+  eval = config$eval,
+  tidy = config$tidy,
+  comment = config$comment,
+  collapse = config$collapse,
+  cache = config$cache,
+  cache.comments = config$cache.comments,
+  autodep = config$autodep
+)
+```
+
+
+
+### Description
+
+title case 形式规则：
+1. 首个单词必然首字母大写
+2. 其他单词，在 minor 列表中的，全部小写；否则，首字母大写
+
+
+### Solution
+
+#### Julia
+```{julia}
+using Pipe, Test
+
+
+function to_title_case(sentence::String, minorWords::String="")::String
+    word_list = sentence |> split
+    minor_list = minorWords |> split
+    if_keep_lower(index, word) = index > 1 && lowercase(word) ∈ lowercase.(minor_list)
+    deal_word(index, word) = if_keep_lower(index, word) ? lowercase(word) : titlecase(word)
+
+    @pipe [deal_word(i, w) for (i, w) ∈ enumerate(word_list)] |> join(_, " ")
+end
+
+
+@testset "Unit Test" begin
+    @test to_title_case("a clash of KINGS", "a an the of") == "A Clash of Kings"
+    @test to_title_case("THE WIND IN THE WILLOWS", "The In") == "The Wind in the Willows"
+    @test to_title_case("the quick brown fox") == "The Quick Brown Fox"
+end
+```
+
+
+#### JavaScript
+
+```{node}
+/**
+ * @module Title-Case
+ */
+
+
+const toTitleCase = word =>
+    word.split("")
+        .map((char, i) => i === 0 ? char.toUpperCase() : char.toLowerCase())
+        .join("");
+
+console.log(toTitleCase("tHE"));
+
+
+
+function titleCase(sentence, minorWords = "") {
+    let lowerWords = sentence.split(" ").map(x => x.toLowerCase());
+    let lowerMinorWords = minorWords.split(" ").map(x => x.toLowerCase());
+
+    ifKeepLower = (word, index) => index > 0 && lowerMinorWords.indexOf(word) > -1;
+    dealWord = (word, index) => ifKeepLower(word, index) ? word.toLowerCase() : toTitleCase(word);
+
+    return lowerWords.map(dealWord).join(" ");
+};
+
+console.log(titleCase('THE WIND IN THE WILLOWS', 'The In'));
+```
+
+

@@ -11,7 +11,7 @@
 
 <meta name="author" content="Humoon" />
 
-<meta name="date" content="2022-07-20" />
+<meta name="date" content="2022-07-21" />
 
 <title>Convert string to camel case</title>
 
@@ -348,7 +348,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Convert string to camel case</h1>
 <h4 class="author">Humoon</h4>
-<h4 class="date">2022-07-20</h4>
+<h4 class="date">2022-07-21</h4>
 
 </div>
 
@@ -385,10 +385,10 @@ as Upper Camel Case, also often referred to as Pascal case).</p>
 <h4>JavaScript</h4>
 <div class="sourceCode" id="cb4"><pre
 class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">toCamelCase</span>(str) {</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">// return str.replace(/[-_]\w/g, w =&gt; w[1].toUpperCase());</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">// return str.replace(/[-_]\w/g, w =&gt; w[1].toUpperCase());</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">// 用()分组，匹配结果返回array，第一个元素永远都是完全匹配结果，第二个元素开始是括号中pattern匹配的局部</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> str<span class="op">.</span><span class="fu">replace</span>(<span class="ss">/</span><span class="sc">[-_](</span><span class="ss">.</span><span class="sc">)</span><span class="ss">/g</span><span class="op">,</span> (_<span class="op">,</span> c) <span class="kw">=&gt;</span> c<span class="op">.</span><span class="fu">toUpperCase</span>())<span class="op">;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 用()分组，匹配结果返回array，第一个元素永远都是完全匹配结果，第二个元素开始是括号中pattern匹配的局部</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> str<span class="op">.</span><span class="fu">replace</span>(<span class="ss">/</span><span class="sc">[-_](</span><span class="ss">.</span><span class="sc">)</span><span class="ss">/g</span><span class="op">,</span> (_<span class="op">,</span> c) <span class="kw">=&gt;</span> c<span class="op">.</span><span class="fu">toUpperCase</span>())<span class="op">;</span></span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 </div>
 </div>

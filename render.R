@@ -93,7 +93,7 @@ renderRmd <- function(title) {
 }
 
 
-#' 将 Rmd 全部生成 Html
+#' 运行该函数将 Rmd 全部生成 Html
 renderHtml <- function() {
     str_c(
         "./html/Rmd/",
