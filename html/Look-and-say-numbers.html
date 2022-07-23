@@ -11,17 +11,17 @@
 
 <meta name="author" content="Humoon" />
 
-<meta name="date" content="2022-07-21" />
+<meta name="date" content="2022-07-23" />
 
-<title>Look and say numbers</title>
+<title>Look-and-say-numbers</title>
 
-<script src="Rmd/libs/header-attrs-2.14/header-attrs.js"></script>
-<script src="Rmd/libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="Rmd/libs/bootstrap-3.3.5/css/united.min.css" rel="stylesheet" />
-<script src="Rmd/libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
-<script src="Rmd/libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
-<script src="Rmd/libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<link href="libs/bootstrap-3.3.5/css/united.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
 <style>h1 {font-size: 34px;}
        h1.title {font-size: 38px;}
        h2 {font-size: 30px;}
@@ -31,11 +31,11 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="Rmd/libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
-<link href="Rmd/libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="Rmd/libs/tocify-1.9.1/jquery.tocify.js"></script>
-<script src="Rmd/libs/navigation-1.1/tabsets.js"></script>
-<script src="Rmd/libs/navigation-1.1/codefolding.js"></script>
+<script src="libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="libs/navigation-1.1/tabsets.js"></script>
+<script src="libs/navigation-1.1/codefolding.js"></script>
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -151,8 +151,8 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 
 
 
-<link rel="stylesheet" href="css/vue.css" type="text/css" />
-<link rel="stylesheet" href="css/vue.user.css" type="text/css" />
+<link rel="stylesheet" href="../html/css/vue.css" type="text/css" />
+<link rel="stylesheet" href="../html/css/vue.user.css" type="text/css" />
 
 
 
@@ -346,9 +346,9 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Look and say numbers</h1>
+<h1 class="title toc-ignore">Look-and-say-numbers</h1>
 <h4 class="author">Humoon</h4>
-<h4 class="date">2022-07-21</h4>
+<h4 class="date">2022-07-23</h4>
 
 </div>
 
@@ -375,106 +375,106 @@ appropriate sequence as a list. The starting value can have any number
 of digits. The termination condition is a defined by the maximum number
 of iterations, also supplied as an argument.</p>
 </div>
-<div id="solution" class="section level3">
-<h3>Solution</h3>
-<div id="r" class="section level4">
-<h4>R</h4>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Look-and-say-numbers.R</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>count_string <span class="ot">&lt;-</span> <span class="cf">function</span>(s) {</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    s <span class="sc">%&gt;%</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>        <span class="fu">str_match_all</span>(<span class="at">pattern =</span> <span class="st">&quot;(.)</span><span class="sc">\\</span><span class="st">1*&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>        <span class="fu">extract2</span>(<span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>        <span class="fu">apply</span>(</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>            <span class="at">MARGIN =</span> <span class="dv">1</span>,</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>            <span class="at">FUN =</span> \(row) <span class="fu">str_c</span>(<span class="fu">nchar</span>(row[<span class="dv">1</span>]), row[<span class="dv">2</span>])</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>            <span class="co"># 每行的第一个元素是匹配的全部字符，第二个是()中的字符</span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>        ) <span class="sc">%&gt;%</span></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>        <span class="fu">str_c</span>(<span class="at">collapse =</span> <span class="st">&quot;&quot;</span>)</span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="fu">count_string</span>(<span class="st">&quot;112223&quot;</span>)</span></code></pre></div>
-<pre><code>#&gt; [1] &quot;213213&quot;</code></pre>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>lookandsay <span class="ot">&lt;-</span> <span class="cf">function</span>(s, max_len) {</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="dv">1</span><span class="sc">:</span>max_len <span class="sc">%&gt;%</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>        <span class="fu">map_chr</span>(\(x) s <span class="ot">&lt;&lt;-</span> <span class="fu">count_string</span>(s)) <span class="co"># &lt;&lt;- 才能修改外部变量</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># &lt;- 赋值表达式有返回值，可以 return()</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">lookandsay</span>(<span class="st">&quot;1&quot;</span>, <span class="dv">5</span>)</span></code></pre></div>
-<pre><code>#&gt; [1] &quot;11&quot;     &quot;21&quot;     &quot;1211&quot;   &quot;111221&quot; &quot;312211&quot;</code></pre>
-</div>
+<div id="solutions" class="section level3">
+<h3>Solutions</h3>
 <div id="julia" class="section level4">
 <h4>Julia</h4>
-<div class="sourceCode" id="cb6"><pre
-class="sourceCode julia"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Look-and-say-numbers.jl</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="st">执行一轮，生成对字符串连续字符计数的新字符串</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Look-and-say-numbers.jl</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="st">执行一轮，生成对字符串连续字符计数的新字符串</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span></code></pre></div>
 <pre><code>#&gt; &quot;执行一轮，生成对字符串连续字符计数的新字符串\n&quot;</code></pre>
-<div class="sourceCode" id="cb8"><pre
-class="sourceCode julia"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">count_string</span>(s<span class="op">::</span><span class="dt">String</span>)<span class="op">::</span><span class="dt">String</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 解法一：遍历</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># seq = []</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># k, n = s[1], 0</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># for c ∈ s</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">#     c == k &amp;&amp; (n += 1)</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">#     if c != k</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">#         push!(seq, &quot;$n$k&quot;)</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">#         k = c</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">#         n = 1</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">#     end</span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># end</span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># push!(seq, &quot;$n$k&quot;)</span></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># seq |&gt; join</span></span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    <span class="co">#  解法二：正则</span></span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">replace</span>(s, <span class="st">r&quot;</span><span class="ch">(</span><span class="sc">.</span><span class="ch">)</span><span class="sc">\1*</span><span class="st">&quot;</span> <span class="op">=&gt;</span> m <span class="op">-&gt;</span> <span class="fu">string</span>(<span class="fu">length</span>(m)) <span class="op">*</span> m[<span class="fl">1</span>])</span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">count_string</span>(s<span class="op">::</span><span class="dt">String</span>)<span class="op">::</span><span class="dt">String</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 解法一：遍历</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># seq = []</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># k, n = s[1], 0</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># for c ∈ s</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">#     c == k &amp;&amp; (n += 1)</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">#     if c != k</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">#         push!(seq, &quot;$n$k&quot;)</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">#         k = c</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">#         n = 1</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">#     end</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># end</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># push!(seq, &quot;$n$k&quot;)</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># seq |&gt; join</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    <span class="co">#  解法二：正则</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">replace</span>(s, <span class="st">r&quot;</span><span class="ch">(</span><span class="sc">.</span><span class="ch">)</span><span class="sc">\1*</span><span class="st">&quot;</span> <span class="op">=&gt;</span> m <span class="op">-&gt;</span> <span class="fu">string</span>(<span class="fu">length</span>(m)) <span class="op">*</span> m[<span class="fl">1</span>])</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
 <pre><code>#&gt; count_string (generic function with 1 method)</code></pre>
-<div class="sourceCode" id="cb10"><pre
-class="sourceCode julia"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">count_string</span>(<span class="st">&quot;112223&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">count_string</span>(<span class="st">&quot;112223&quot;</span>)</span></code></pre></div>
 <pre><code>#&gt; &quot;213213&quot;</code></pre>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="st"># Arguments</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="st">- `data::String`: starting string</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="st">- `n::Int`: number of turns</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span></code></pre></div>
+<pre><code>#&gt; &quot;# Arguments\n- `data::String`: starting string\n- `n::Int`: number of turns\n&quot;</code></pre>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">lookandsay</span>(data<span class="op">::</span><span class="dt">String</span>, n<span class="op">::</span><span class="dt">Int64</span>)<span class="op">::</span><span class="dt">Vector{String}</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 利用赋值语句有返回值的特性</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    [data <span class="op">=</span> <span class="fu">count_string</span>(data) for _ <span class="op">∈</span> <span class="fl">1</span><span class="op">:</span>n]</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 否则就必须写成这样，与for循环也差不多了</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># [</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">#     begin</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">#         data = count_string(data)</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">#         data</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">#     end for _ ∈ 1:n</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ]</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
+<pre><code>#&gt; lookandsay (generic function with 1 method)</code></pre>
 <div class="sourceCode" id="cb12"><pre
 class="sourceCode julia"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="st"># Arguments</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="st">- `data::String`: starting string</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="st">- `n::Int`: number of turns</span></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span></code></pre></div>
-<pre><code>#&gt; &quot;# Arguments\n- `data::String`: starting string\n- `n::Int`: number of turns\n&quot;</code></pre>
-<div class="sourceCode" id="cb14"><pre
-class="sourceCode julia"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">lookandsay</span>(data<span class="op">::</span><span class="dt">String</span>, n<span class="op">::</span><span class="dt">Int64</span>)<span class="op">::</span><span class="dt">Vector{String}</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 利用赋值语句有返回值的特性</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    [data <span class="op">=</span> <span class="fu">count_string</span>(data) for _ <span class="op">∈</span> <span class="fl">1</span><span class="op">:</span>n]</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 否则就必须写成这样，与for循环也差不多了</span></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># [</span></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">#     begin</span></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">#         data = count_string(data)</span></span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">#         data</span></span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">#     end for _ ∈ 1:n</span></span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ]</span></span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
-<pre><code>#&gt; lookandsay (generic function with 1 method)</code></pre>
-<div class="sourceCode" id="cb16"><pre
-class="sourceCode julia"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">lookandsay</span>(<span class="st">&quot;1&quot;</span>, <span class="fl">5</span>)</span></code></pre></div>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">lookandsay</span>(<span class="st">&quot;1&quot;</span>, <span class="fl">5</span>)</span></code></pre></div>
 <pre><code>#&gt; 5-element Vector{String}:
 #&gt;  &quot;11&quot;
 #&gt;  &quot;21&quot;
 #&gt;  &quot;1211&quot;
 #&gt;  &quot;111221&quot;
 #&gt;  &quot;312211&quot;</code></pre>
+</div>
+<div id="r" class="section level4">
+<h4>R</h4>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Look-and-say-numbers.R</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>count_string <span class="ot">&lt;-</span> <span class="cf">function</span>(s) {</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    s <span class="sc">%&gt;%</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>        <span class="fu">str_match_all</span>(<span class="at">pattern =</span> <span class="st">&quot;(.)</span><span class="sc">\\</span><span class="st">1*&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>        <span class="fu">extract2</span>(<span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>        <span class="fu">apply</span>(</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>            <span class="at">MARGIN =</span> <span class="dv">1</span>,</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>            <span class="at">FUN =</span> \(row) <span class="fu">str_c</span>(<span class="fu">nchar</span>(row[<span class="dv">1</span>]), row[<span class="dv">2</span>])</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>            <span class="co"># 每行的第一个元素是匹配的全部字符，第二个是()中的字符</span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>        ) <span class="sc">%&gt;%</span></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>        <span class="fu">str_c</span>(<span class="at">collapse =</span> <span class="st">&quot;&quot;</span>)</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a><span class="fu">count_string</span>(<span class="st">&quot;112223&quot;</span>)</span></code></pre></div>
+<pre><code>#&gt; [1] &quot;213213&quot;</code></pre>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>lookandsay <span class="ot">&lt;-</span> <span class="cf">function</span>(s, max_len) {</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    <span class="dv">1</span><span class="sc">:</span>max_len <span class="sc">%&gt;%</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>        <span class="fu">map_chr</span>(\(x) s <span class="ot">&lt;&lt;-</span> <span class="fu">count_string</span>(s)) <span class="co"># &lt;&lt;- 才能修改外部变量</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># &lt;- 赋值表达式有返回值，可以 return()</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="fu">lookandsay</span>(<span class="st">&quot;1&quot;</span>, <span class="dv">5</span>)</span></code></pre></div>
+<pre><code>#&gt; [1] &quot;11&quot;     &quot;21&quot;     &quot;1211&quot;   &quot;111221&quot; &quot;312211&quot;</code></pre>
 </div>
 <div id="javascript" class="section level4">
 <h4>JavaScript</h4>

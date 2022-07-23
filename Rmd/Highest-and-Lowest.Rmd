@@ -1,0 +1,68 @@
+---
+title: "Highest-and-Lowest"
+author: "Humoon"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+
+```{r setup, include = FALSE}
+source("../config/config.R")
+
+## global options ===================================
+knitr::opts_chunk$set(
+  width = config$width,
+  fig.width = config$fig.width,
+  fig.asp = config$fig.asp,
+  out.width = config$out.width,
+  fig.align = config$fig.align,
+  fig.path = config$fig.path,
+  fig.show = config$fig.show,
+  warn = config$warn,
+  warning = config$warning,
+  message = config$message,
+  echo = config$echo,
+  eval = config$eval,
+  tidy = config$tidy,
+  comment = config$comment,
+  collapse = config$collapse,
+  cache = config$cache,
+  cache.comments = config$cache.comments,
+  autodep = config$autodep
+)
+```
+
+### Description
+
+
+
+### Solutions
+
+
+#### Julia
+
+```{julia}
+using Pipe
+using Test
+
+
+"""
+返回一组数的最大值和最小值
+
+# Arguments
+- `numbers::String`: 包含一组数字的字符串，用空格隔开
+"""
+function highandlow(numbers::String)::String
+    @pipe numbers |> split .|> # split 默认分隔符为空格
+          parse(Int, _) |> # 化为整数
+          extrema |> # 返回 tuple，小数在前，大数在后
+          reverse |>
+          join(_, " ")
+end
+
+
+@testset "Example tests" begin
+    @test highandlow("8 3 -5 42 -1 0 0 -9 4 7 4 -4") == "42 -9"
+    @test highandlow("1 2 3") == "3 1"
+end
+```

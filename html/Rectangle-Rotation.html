@@ -11,17 +11,17 @@
 
 <meta name="author" content="Humoon" />
 
-<meta name="date" content="2022-07-21" />
+<meta name="date" content="2022-07-23" />
 
-<title>Rectangle Rotation</title>
+<title>Rectangle-Rotation</title>
 
-<script src="Rmd/libs/header-attrs-2.14/header-attrs.js"></script>
-<script src="Rmd/libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="Rmd/libs/bootstrap-3.3.5/css/united.min.css" rel="stylesheet" />
-<script src="Rmd/libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
-<script src="Rmd/libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
-<script src="Rmd/libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<link href="libs/bootstrap-3.3.5/css/united.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
 <style>h1 {font-size: 34px;}
        h1.title {font-size: 38px;}
        h2 {font-size: 30px;}
@@ -31,11 +31,11 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="Rmd/libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
-<link href="Rmd/libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="Rmd/libs/tocify-1.9.1/jquery.tocify.js"></script>
-<script src="Rmd/libs/navigation-1.1/tabsets.js"></script>
-<script src="Rmd/libs/navigation-1.1/codefolding.js"></script>
+<script src="libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="libs/navigation-1.1/tabsets.js"></script>
+<script src="libs/navigation-1.1/codefolding.js"></script>
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -151,8 +151,8 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 
 
 
-<link rel="stylesheet" href="css/vue.css" type="text/css" />
-<link rel="stylesheet" href="css/vue.user.css" type="text/css" />
+<link rel="stylesheet" href="../html/css/vue.css" type="text/css" />
+<link rel="stylesheet" href="../html/css/vue.user.css" type="text/css" />
 
 
 
@@ -346,15 +346,18 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Rectangle Rotation</h1>
+<h1 class="title toc-ignore">Rectangle-Rotation</h1>
 <h4 class="author">Humoon</h4>
-<h4 class="date">2022-07-21</h4>
+<h4 class="date">2022-07-23</h4>
 
 </div>
 
 
-<div id="solution" class="section level3">
-<h3>Solution</h3>
+<div id="description" class="section level3">
+<h3>Description</h3>
+</div>
+<div id="solutions" class="section level3">
+<h3>Solutions</h3>
 <div id="r" class="section level4">
 <h4>R</h4>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">## rectangle-rotation</span></span>
@@ -369,38 +372,47 @@ div.tocify {
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @param b 矩形的宽</span></span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>rectangle_rotation <span class="ot">&lt;-</span> <span class="cf">function</span>(a, b) {</span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 解法一：遍历整数交点 N &lt;- floor((a + b) / (2 * sqrt(2))) sum &lt;- 0 for (x0 in -N:N) { for (y0 in -N:N) { # 整数交点逆时针旋转45°后，是否在摆正的矩形内 x &lt;- x0</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># / sqrt(2) - y0 / sqrt(2) y &lt;- x0 / sqrt(2) + y0 / sqrt(2) if (between(x, -b / 2, b / 2) &amp;&amp; between(y, -a / 2, a / 2)) { sum &lt;- sum + 1 } } } sum</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 解法二：观察图形中整数交点点阵的规律 倾角45°的交点行，从右上到左下，第一行三个点，相距sqrt(2) 下一行两个点，相距sqrt(2)，下一行又是三个点……</span></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 三个点的行之间的距离为sqrt(2)，两个点的行同样 所以，所有三个点的行，构成了一个单位长度为sqrt(2)的点阵</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 同样，所有两个点的行，也构成了一个单位长度为sqrt(2)的点阵 总交点数，就是这两个矩形点阵交点数的和</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># # 第一个点阵的宽度方向的交点数 b1 &lt;- ((b / 2) %/% sqrt(2)) * 2 + 1 # 第一个点阵的长度方向的交点数 a1 &lt;- ((a / 2) %/% sqrt(2)) * 2 + 1 # 第一个点阵的交点数 n1</span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># &lt;- a1 * b1</span></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># # 第二个点阵的宽度方向的交点数 b2 &lt;- ((b / 2 - sqrt(2) / 2) %/% sqrt(2) + 1) * 2 # 第二个点阵的长度方向的交点数 a2 &lt;- ((a / 2 - sqrt(2) / 2) %/% sqrt(2) + 1)</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># * 2 # 第二个点阵的交点数 n2 &lt;- a2 * b2</span></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># return(n1 + n2)</span></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 可将上述代码化简为：</span></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    h <span class="ot">&lt;-</span> a<span class="sc">%/%</span><span class="fu">sqrt</span>(<span class="dv">2</span>)</span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>    v <span class="ot">&lt;-</span> b<span class="sc">%/%</span><span class="fu">sqrt</span>(<span class="dv">2</span>)</span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    n1 <span class="ot">&lt;-</span> (v<span class="sc">%/%</span><span class="dv">2</span> <span class="sc">*</span> <span class="dv">2</span> <span class="sc">+</span> <span class="dv">1</span>) <span class="sc">*</span> (h<span class="sc">%/%</span><span class="dv">2</span> <span class="sc">*</span> <span class="dv">2</span> <span class="sc">+</span> <span class="dv">1</span>)</span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>    n2 <span class="ot">&lt;-</span> ((v <span class="sc">+</span> <span class="dv">1</span>)<span class="sc">%/%</span><span class="dv">2</span>) <span class="sc">*</span> <span class="dv">2</span> <span class="sc">*</span> ((h <span class="sc">+</span> <span class="dv">1</span>)<span class="sc">%/%</span><span class="dv">2</span>) <span class="sc">*</span> <span class="dv">2</span></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(n1 <span class="sc">+</span> n2)</span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 解法一：遍历整数交点 N &lt;- floor((a + b) / (2 * sqrt(2))) sum &lt;- 0 for (x0</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># in -N:N) { for (y0 in -N:N) { #</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 整数交点逆时针旋转45°后，是否在摆正的矩形内 x &lt;- x0 / sqrt(2) - y0 /</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># sqrt(2) y &lt;- x0 / sqrt(2) + y0 / sqrt(2) if (between(x, -b / 2, b / 2) &amp;&amp;</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># between(y, -a / 2, a / 2)) { sum &lt;- sum + 1 } } } sum</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 解法二：观察图形中整数交点点阵的规律</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 倾角45°的交点行，从右上到左下，第一行三个点，相距sqrt(2)</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 下一行两个点，相距sqrt(2)，下一行又是三个点……</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 三个点的行之间的距离为sqrt(2)，两个点的行同样</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 所以，所有三个点的行，构成了一个单位长度为sqrt(2)的点阵</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 同样，所有两个点的行，也构成了一个单位长度为sqrt(2)的点阵</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 总交点数，就是这两个矩形点阵交点数的和</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    <span class="co"># # 第一个点阵的宽度方向的交点数 b1 &lt;- ((b / 2) %/% sqrt(2)) * 2 + 1 #</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 第一个点阵的长度方向的交点数 a1 &lt;- ((a / 2) %/% sqrt(2)) * 2 + 1 #</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 第一个点阵的交点数 n1 &lt;- a1 * b1</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    <span class="co"># # 第二个点阵的宽度方向的交点数 b2 &lt;- ((b / 2 - sqrt(2) / 2) %/% sqrt(2) +</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 1) * 2 # 第二个点阵的长度方向的交点数 a2 &lt;- ((a / 2 - sqrt(2) / 2) %/%</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>    <span class="co"># sqrt(2) + 1) * 2 # 第二个点阵的交点数 n2 &lt;- a2 * b2</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>    <span class="co"># return(n1 + n2)</span></span>
 <span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(testthat)</span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="fu">test_that</span>(<span class="st">&quot;basic tests&quot;</span>, {</span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>    <span class="fu">expect_equal</span>(<span class="fu">rectangle_rotation</span>(<span class="dv">6</span>, <span class="dv">4</span>), <span class="dv">23</span>)</span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>    <span class="fu">expect_equal</span>(<span class="fu">rectangle_rotation</span>(<span class="dv">30</span>, <span class="dv">2</span>), <span class="dv">65</span>)</span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>    <span class="fu">expect_equal</span>(<span class="fu">rectangle_rotation</span>(<span class="dv">8</span>, <span class="dv">6</span>), <span class="dv">49</span>)</span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>    <span class="fu">expect_equal</span>(<span class="fu">rectangle_rotation</span>(<span class="dv">16</span>, <span class="dv">20</span>), <span class="dv">333</span>)</span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div>
-<pre><code>#&gt; Test passed</code></pre>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 可将上述代码化简为：</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>    h <span class="ot">&lt;-</span> a<span class="sc">%/%</span><span class="fu">sqrt</span>(<span class="dv">2</span>)</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>    v <span class="ot">&lt;-</span> b<span class="sc">%/%</span><span class="fu">sqrt</span>(<span class="dv">2</span>)</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>    n1 <span class="ot">&lt;-</span> (v<span class="sc">%/%</span><span class="dv">2</span> <span class="sc">*</span> <span class="dv">2</span> <span class="sc">+</span> <span class="dv">1</span>) <span class="sc">*</span> (h<span class="sc">%/%</span><span class="dv">2</span> <span class="sc">*</span> <span class="dv">2</span> <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>    n2 <span class="ot">&lt;-</span> ((v <span class="sc">+</span> <span class="dv">1</span>)<span class="sc">%/%</span><span class="dv">2</span>) <span class="sc">*</span> <span class="dv">2</span> <span class="sc">*</span> ((h <span class="sc">+</span> <span class="dv">1</span>)<span class="sc">%/%</span><span class="dv">2</span>) <span class="sc">*</span> <span class="dv">2</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(n1 <span class="sc">+</span> n2)</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(testthat)</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="fu">test_that</span>(<span class="st">&quot;basic tests&quot;</span>, {</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>    <span class="fu">expect_equal</span>(<span class="fu">rectangle_rotation</span>(<span class="dv">6</span>, <span class="dv">4</span>), <span class="dv">23</span>)</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>    <span class="fu">expect_equal</span>(<span class="fu">rectangle_rotation</span>(<span class="dv">30</span>, <span class="dv">2</span>), <span class="dv">65</span>)</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>    <span class="fu">expect_equal</span>(<span class="fu">rectangle_rotation</span>(<span class="dv">8</span>, <span class="dv">6</span>), <span class="dv">49</span>)</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>    <span class="fu">expect_equal</span>(<span class="fu">rectangle_rotation</span>(<span class="dv">16</span>, <span class="dv">20</span>), <span class="dv">333</span>)</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div>
+<pre><code>#&gt; Test passed 🌈</code></pre>
 </div>
 </div>
 

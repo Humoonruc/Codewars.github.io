@@ -1,0 +1,179 @@
+---
+title: "Game-Hit-the-target"
+author: "Humoon"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+
+```{r setup, include = FALSE}
+source("../config/config.R")
+
+## global options ===================================
+knitr::opts_chunk$set(
+  width = config$width,
+  fig.width = config$fig.width,
+  fig.asp = config$fig.asp,
+  out.width = config$out.width,
+  fig.align = config$fig.align,
+  fig.path = config$fig.path,
+  fig.show = config$fig.show,
+  warn = config$warn,
+  warning = config$warning,
+  message = config$message,
+  echo = config$echo,
+  eval = config$eval,
+  tidy = config$tidy,
+  comment = config$comment,
+  collapse = config$collapse,
+  cache = config$cache,
+  cache.comments = config$cache.comments,
+  autodep = config$autodep
+)
+```
+
+### Description
+
+
+given a matrix `n x n` , determine if the arrow is directed to the target (x).
+There will be only 1 arrow '>' and 1 target 'x'
+An empty spot will be denoted by a space " ", the target with a cross "x", and the scope ">"
+
+#### Examples:
+
+given matrix 4x4:
+
+```
+[
+
+  [' ', ' ', ' ', ' '],
+
+  [' ', ' ', ' ', ' '], --> return true
+
+  [' ', '>', ' ', 'x'],
+
+  [' ', ' ', ' ', ' ']
+
+] 
+```
+
+given matrix 4x4:
+
+```
+[
+
+  [' ', ' ', ' ', ' '],
+
+  [' ', '>', ' ', ' '], --> return false
+
+  [' ', ' ', ' ', 'x'],
+
+  [' ', ' ', ' ', ' ']
+
+] 
+```
+
+given matrix 4x4:
+
+```
+[
+
+  [' ', ' ', ' ', ' '],
+
+  [' ', 'x', '>', ' '], --> return false
+
+  [' ', '', ' ', ' '],
+
+  [' ', ' ', ' ', ' ']
+
+] 
+```
+
+In this example, only a 4x4 matrix was used, the problem will have matrices of dimensions from 2 to 7
+Happy hacking as they say!
+
+### Solutions
+
+
+#### Julia
+
+```{julia}
+
+using Test
+
+
+"""
+只有 `>` 和 `x` 在同一行且 `>` 在 `x` 前，才返回 true
+"""
+function solution(A::Matrix{Char})::Bool
+    arrow_indices = findfirst(==('>'), A) # 返回CartesianIndex{2}
+    arrowᵢ, arrowⱼ = arrow_indices[1], arrow_indices[2]
+    target_indices = findfirst(==('x'), A)
+    targetᵢ, targetⱼ = target_indices[1], target_indices[2]
+
+    return arrowᵢ == targetᵢ && arrowⱼ < targetⱼ
+end
+
+
+A = [
+    ' ' ' ' ' ' ' ' ' '
+    ' ' ' ' ' ' ' ' ' '
+    ' ' ' ' ' ' ' ' ' '
+    ' ' ' ' '>' ' ' 'x'
+    ' ' ' ' ' ' ' ' ' '
+]
+
+
+
+@test solution(A) == true
+
+```
+
+#### R
+
+```{r}
+library(tidyverse)
+
+
+solution <- function(M) {
+  # 将M沿列展开为向量的一维坐标
+  arrow_index <- match(">", M)
+  target_index <- match("x", M)
+
+  # 二维坐标中的行
+  arrow_i <- arrow_index %% nrow(M)
+  target_i <- target_index %% nrow(M)
+
+  arrow_i == target_i && arrow_index < target_index
+}
+
+
+M <- c(rep(" ", 17), ">", " ", "x", rep(" ", 5)) %>%
+  matrix(nrow = 5, ncol = 5, byrow = TRUE)
+
+solution(M)
+
+```
+
+#### JavaScript
+
+```{node}
+const solution = function (mtrx) {
+  for (let row of mtrx) {
+    let scope = row.indexOf('>');
+    let target = row.indexOf('x');
+    if (target > -1 && scope > -1 && scope < target) return true;
+  }
+  return false;
+};
+
+
+console.log(solution([
+  [' ', ' ', ' ', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' '],
+  [' ', ' ', ' ', ' ', ' '],
+  [' ', ' ', '>', ' ', 'x'],
+  [' ', ' ', '', ' ', ' ']
+]));
+
+```

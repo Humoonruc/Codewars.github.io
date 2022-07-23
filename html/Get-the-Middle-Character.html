@@ -11,17 +11,17 @@
 
 <meta name="author" content="Humoon" />
 
-<meta name="date" content="2022-07-21" />
+<meta name="date" content="2022-07-23" />
 
-<title>Get the Middle Character</title>
+<title>Get-the-Middle-Character</title>
 
-<script src="Rmd/libs/header-attrs-2.14/header-attrs.js"></script>
-<script src="Rmd/libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="Rmd/libs/bootstrap-3.3.5/css/united.min.css" rel="stylesheet" />
-<script src="Rmd/libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
-<script src="Rmd/libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
-<script src="Rmd/libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<link href="libs/bootstrap-3.3.5/css/united.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
 <style>h1 {font-size: 34px;}
        h1.title {font-size: 38px;}
        h2 {font-size: 30px;}
@@ -31,11 +31,11 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="Rmd/libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
-<link href="Rmd/libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="Rmd/libs/tocify-1.9.1/jquery.tocify.js"></script>
-<script src="Rmd/libs/navigation-1.1/tabsets.js"></script>
-<script src="Rmd/libs/navigation-1.1/codefolding.js"></script>
+<script src="libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="libs/navigation-1.1/tabsets.js"></script>
+<script src="libs/navigation-1.1/codefolding.js"></script>
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -151,8 +151,8 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 
 
 
-<link rel="stylesheet" href="css/vue.css" type="text/css" />
-<link rel="stylesheet" href="css/vue.user.css" type="text/css" />
+<link rel="stylesheet" href="../html/css/vue.css" type="text/css" />
+<link rel="stylesheet" href="../html/css/vue.user.css" type="text/css" />
 
 
 
@@ -346,9 +346,9 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Get the Middle Character</h1>
+<h1 class="title toc-ignore">Get-the-Middle-Character</h1>
 <h4 class="author">Humoon</h4>
-<h4 class="date">2022-07-21</h4>
+<h4 class="date">2022-07-23</h4>
 
 </div>
 
@@ -378,57 +378,57 @@ you that you do not need to worry about your solution timing out.</p>
 <p>The middle character(s) of the word represented as a string.</p>
 </div>
 </div>
-<div id="solution" class="section level3">
-<h3>Solution</h3>
-<div id="r" class="section level4">
-<h4>R</h4>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Get the Middle Character</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @title 提取字符串中间的一个或两个字母</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>get_middle <span class="ot">&lt;-</span> <span class="cf">function</span>(string) {</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    m <span class="ot">&lt;-</span> <span class="fu">median</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nchar</span>(string))  <span class="co"># middle letter index</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    string <span class="sc">|&gt;</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>        <span class="fu">str_sub</span>(<span class="fu">floor</span>(m), <span class="fu">ceiling</span>(m))</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(testthat)</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="fu">test_that</span>(<span class="st">&quot;Sample Tests&quot;</span>, {</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">expect_equal</span>(<span class="fu">get_middle</span>(<span class="st">&quot;test&quot;</span>), <span class="st">&quot;es&quot;</span>)</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">expect_equal</span>(<span class="fu">get_middle</span>(<span class="st">&quot;testing&quot;</span>), <span class="st">&quot;t&quot;</span>)</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">expect_equal</span>(<span class="fu">get_middle</span>(<span class="st">&quot;middle&quot;</span>), <span class="st">&quot;dd&quot;</span>)</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">expect_equal</span>(<span class="fu">get_middle</span>(<span class="st">&quot;A&quot;</span>), <span class="st">&quot;A&quot;</span>)</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">expect_equal</span>(<span class="fu">get_middle</span>(<span class="st">&quot;of&quot;</span>), <span class="st">&quot;of&quot;</span>)</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div>
-<pre><code>#&gt; Test passed</code></pre>
-</div>
+<div id="solutions" class="section level3">
+<h3>Solutions</h3>
 <div id="julia" class="section level4">
 <h4>Julia</h4>
-<div class="sourceCode" id="cb4"><pre
-class="sourceCode julia"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Get-the-Middle-Character.jl</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Statistics</span>, <span class="bu">Test</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="st">return middle character(s) of a string</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Get-the-Middle-Character.jl</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Statistics</span>, <span class="bu">Test</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="st">return middle character(s) of a string</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span></code></pre></div>
 <pre><code>#&gt; &quot;return middle character(s) of a string\n&quot;</code></pre>
-<div class="sourceCode" id="cb6"><pre
-class="sourceCode julia"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">getmiddle</span>(s<span class="op">::</span><span class="dt">String</span>)<span class="op">::</span><span class="dt">String</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> <span class="fu">median</span>(<span class="fl">1</span><span class="op">:</span><span class="fu">length</span>(s))</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    s[<span class="fu">floor</span>(<span class="dt">Int</span>, m)<span class="op">:</span><span class="fu">ceil</span>(<span class="dt">Int</span>, m)] <span class="co"># median() 返回 Float</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">getmiddle</span>(s<span class="op">::</span><span class="dt">String</span>)<span class="op">::</span><span class="dt">String</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> <span class="fu">median</span>(<span class="fl">1</span><span class="op">:</span><span class="fu">length</span>(s))</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    s[<span class="fu">floor</span>(<span class="dt">Int</span>, m)<span class="op">:</span><span class="fu">ceil</span>(<span class="dt">Int</span>, m)] <span class="co"># median() 返回 Float</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
 <pre><code>#&gt; getmiddle (generic function with 1 method)</code></pre>
-<div class="sourceCode" id="cb8"><pre
-class="sourceCode julia"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="pp">@testset</span> <span class="st">&quot;Sample tests&quot;</span> <span class="cf">begin</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@test</span> <span class="fu">getmiddle</span>(<span class="st">&quot;test&quot;</span>) <span class="op">==</span> <span class="st">&quot;es&quot;</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@test</span> <span class="fu">getmiddle</span>(<span class="st">&quot;testing&quot;</span>) <span class="op">==</span> <span class="st">&quot;t&quot;</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="pp">@testset</span> <span class="st">&quot;Sample tests&quot;</span> <span class="cf">begin</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@test</span> <span class="fu">getmiddle</span>(<span class="st">&quot;test&quot;</span>) <span class="op">==</span> <span class="st">&quot;es&quot;</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@test</span> <span class="fu">getmiddle</span>(<span class="st">&quot;testing&quot;</span>) <span class="op">==</span> <span class="st">&quot;t&quot;</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code></pre></div>
 <pre><code>#&gt; Test Summary: | Pass  Total
 #&gt; Sample tests  |    2      2</code></pre>
 <pre><code>#&gt; Test.DefaultTestSet(&quot;Sample tests&quot;, Any[], 2, false, false)</code></pre>
+</div>
+<div id="r" class="section level4">
+<h4>R</h4>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Get the Middle Character</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @title 提取字符串中间的一个或两个字母</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>get_middle <span class="ot">&lt;-</span> <span class="cf">function</span>(string) {</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    m <span class="ot">&lt;-</span> <span class="fu">median</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nchar</span>(string))  <span class="co"># middle letter index</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    string <span class="sc">|&gt;</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>        <span class="fu">str_sub</span>(<span class="fu">floor</span>(m), <span class="fu">ceiling</span>(m))</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(testthat)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="fu">test_that</span>(<span class="st">&quot;Sample Tests&quot;</span>, {</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">expect_equal</span>(<span class="fu">get_middle</span>(<span class="st">&quot;test&quot;</span>), <span class="st">&quot;es&quot;</span>)</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">expect_equal</span>(<span class="fu">get_middle</span>(<span class="st">&quot;testing&quot;</span>), <span class="st">&quot;t&quot;</span>)</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">expect_equal</span>(<span class="fu">get_middle</span>(<span class="st">&quot;middle&quot;</span>), <span class="st">&quot;dd&quot;</span>)</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">expect_equal</span>(<span class="fu">get_middle</span>(<span class="st">&quot;A&quot;</span>), <span class="st">&quot;A&quot;</span>)</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">expect_equal</span>(<span class="fu">get_middle</span>(<span class="st">&quot;of&quot;</span>), <span class="st">&quot;of&quot;</span>)</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div>
+<pre><code>#&gt; Test passed 🎉</code></pre>
 </div>
 <div id="javascript" class="section level4">
 <h4>JavaScript</h4>

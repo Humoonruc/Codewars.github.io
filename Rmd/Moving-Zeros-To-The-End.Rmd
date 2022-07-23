@@ -1,0 +1,90 @@
+---
+title: "Moving-Zeros-To-The-End"
+author: "Humoon"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+
+```{r setup, include = FALSE}
+source("../config/config.R")
+
+## global options ===================================
+knitr::opts_chunk$set(
+  width = config$width,
+  fig.width = config$fig.width,
+  fig.asp = config$fig.asp,
+  out.width = config$out.width,
+  fig.align = config$fig.align,
+  fig.path = config$fig.path,
+  fig.show = config$fig.show,
+  warn = config$warn,
+  warning = config$warning,
+  message = config$message,
+  echo = config$echo,
+  eval = config$eval,
+  tidy = config$tidy,
+  comment = config$comment,
+  collapse = config$collapse,
+  cache = config$cache,
+  cache.comments = config$cache.comments,
+  autodep = config$autodep
+)
+```
+
+### Description
+
+Write an algorithm that takes an array and moves all of the zeros to the end, preserving the order of the other elements.
+
+```
+moveZeros([false,1,0,1,2,0,1,3,"a"]) // returns[false,1,1,2,1,3,"a",0,0]
+```
+
+
+### Solutions
+
+
+#### Julia
+
+```{julia}
+
+function is_zero(arr::Vector)::Vector{Bool}
+    map(x -> x == 0 && typeof(x) != Bool, arr)
+end
+
+
+function moveZeros(arr::Vector)::Vector
+    [arr[.!is_zero(arr)]..., arr[is_zero(arr)]...]
+end
+
+moveZeros([false, 1, 0, 1, 2, 0, 1, 3, "a"])
+
+```
+
+#### R
+
+```{r}
+library(tidyverse)
+
+moveZeros <- function(arr) {
+  c(arr %>% keep(~ !identical(.x, 0)), arr %>% keep(~ identical(.x, 0)))
+}
+
+moveZeros(c(1, 2, 0, 1, 0, 1, 0, 3, 0, 1))
+moveZeros(list(FALSE, 1, 0, 1, 2, 0, 1, 3, "a"))
+
+```
+
+#### JavaScript
+
+```{node}
+function moveZeros(arr) {
+    // ...将数组中的所有元素展开，然后才是元素的串联，而非两个数组元素组成嵌套数组
+    return [...arr.filter(x => x !== 0), ...arr.filter(x => x === 0)];
+}
+
+console.log(moveZeros([false, 1, 0, 1, 2, 0, 1, 3, "a"]));
+
+module.exports = moveZeros;
+
+```

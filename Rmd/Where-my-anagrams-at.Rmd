@@ -1,0 +1,119 @@
+---
+title: "Where-my-anagrams-at"
+author: "Humoon"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+
+```{r setup, include = FALSE}
+source("../config/config.R")
+
+## global options ===================================
+knitr::opts_chunk$set(
+  width = config$width,
+  fig.width = config$fig.width,
+  fig.asp = config$fig.asp,
+  out.width = config$out.width,
+  fig.align = config$fig.align,
+  fig.path = config$fig.path,
+  fig.show = config$fig.show,
+  warn = config$warn,
+  warning = config$warning,
+  message = config$message,
+  echo = config$echo,
+  eval = config$eval,
+  tidy = config$tidy,
+  comment = config$comment,
+  collapse = config$collapse,
+  cache = config$cache,
+  cache.comments = config$cache.comments,
+  autodep = config$autodep
+)
+```
+
+### Description
+
+
+What is an anagram? Well, two words are anagrams of each other if they both contain the same letters. For example:
+
+```
+'abba' & 'baab' == true
+
+'abba' & 'bbaa' == true
+
+'abba' & 'abbba' == false
+
+'abba' & 'abca' == false
+```
+
+Write a function that will find all the anagrams of a word from a list. You will be given two inputs a word and an array with words. You should return an array of all the anagrams or an empty array if there are none. For example:
+
+```
+anagrams('abba', ['aabb', 'abcd', 'bbaa', 'dada']) => ['aabb', 'bbaa']
+
+anagrams('racer', ['crazer', 'carer', 'racar', 'caers', 'racer']) => ['carer', 'racer']
+
+anagrams('laser', ['lazing', 'lazy',  'lacer']) => []
+```
+
+#### Note for Go
+For Go: Empty string slice is expected when there are no anagrams found.
+
+
+### Solutions
+
+
+#### Julia
+
+```{julia}
+
+
+rearrange(str::String)::String = collect(str) |> sort |> join
+
+
+"""
+words 中与 word 拥有相同字母的元素
+"""
+function anagrams(word::String, words::Vector{String})::Vector{String}
+    filter(w -> rearrange(w) == rearrange(word), words)
+end
+
+
+anagrams("abba", ["aabb", "abcd", "bbaa", "dada"])
+```
+
+#### R
+
+```{r}
+library(tidyverse)
+
+#' 挑选出 words 中所含字母与 word 相同的元素
+anagrams <- function(word, words) {
+  rearrange <- function(w) {
+    w %>%
+      str_split("") %>%
+      unlist() %>%
+      sort() %>%
+      str_c(collapse = "")
+  }
+
+  # 该问题的核心就是一步 filter
+  words %>%
+    keep(function(element) rearrange(element) == rearrange(word))
+}
+
+anagrams("abba", c("aabb", "abcd", "bbaa", "dada"))
+
+```
+
+#### JavaScript
+
+```{node}
+function anagrams(word, words) {
+  rearrange = string => string.split('').sort().join('');
+  return words.filter(w => rearrange(w) === rearrange(word));
+}
+
+console.log(anagrams("abba", ["aabb", "abcd", "bbaa", "dada"]));
+```

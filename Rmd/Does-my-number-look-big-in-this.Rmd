@@ -1,0 +1,53 @@
+---
+title: "Does-my-number-look-big-in-this"
+author: "Humoon"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+
+```{r setup, include = FALSE}
+source("../config/config.R")
+
+## global options ===================================
+knitr::opts_chunk$set(
+  width = config$width,
+  fig.width = config$fig.width,
+  fig.asp = config$fig.asp,
+  out.width = config$out.width,
+  fig.align = config$fig.align,
+  fig.path = config$fig.path,
+  fig.show = config$fig.show,
+  warn = config$warn,
+  warning = config$warning,
+  message = config$message,
+  echo = config$echo,
+  eval = config$eval,
+  tidy = config$tidy,
+  comment = config$comment,
+  collapse = config$collapse,
+  cache = config$cache,
+  cache.comments = config$cache.comments,
+  autodep = config$autodep
+)
+```
+
+### Description
+
+
+
+### Solutions
+
+
+#### JavaScript
+
+```{node}
+function narcissistic(value) {
+    return String(value).split("")
+        .map((x, i, arr) => x ** arr.length)
+        .reduce((a, b) => a + b, 0)
+        === value;
+}
+
+console.log(narcissistic(371));
+```

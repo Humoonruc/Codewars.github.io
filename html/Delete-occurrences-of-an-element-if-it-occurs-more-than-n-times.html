@@ -11,17 +11,17 @@
 
 <meta name="author" content="Humoon" />
 
-<meta name="date" content="2022-07-21" />
+<meta name="date" content="2022-07-23" />
 
-<title>Delete occurrences of an element if it occurs more than n times</title>
+<title>Delete-occurrences-of-an-element-if-it-occurs-more-than-n-times</title>
 
-<script src="Rmd/libs/header-attrs-2.14/header-attrs.js"></script>
-<script src="Rmd/libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="Rmd/libs/bootstrap-3.3.5/css/united.min.css" rel="stylesheet" />
-<script src="Rmd/libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
-<script src="Rmd/libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
-<script src="Rmd/libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<link href="libs/bootstrap-3.3.5/css/united.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
 <style>h1 {font-size: 34px;}
        h1.title {font-size: 38px;}
        h2 {font-size: 30px;}
@@ -31,11 +31,11 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="Rmd/libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
-<link href="Rmd/libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="Rmd/libs/tocify-1.9.1/jquery.tocify.js"></script>
-<script src="Rmd/libs/navigation-1.1/tabsets.js"></script>
-<script src="Rmd/libs/navigation-1.1/codefolding.js"></script>
+<script src="libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="libs/navigation-1.1/tabsets.js"></script>
+<script src="libs/navigation-1.1/codefolding.js"></script>
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -151,8 +151,8 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 
 
 
-<link rel="stylesheet" href="css/vue.css" type="text/css" />
-<link rel="stylesheet" href="css/vue.user.css" type="text/css" />
+<link rel="stylesheet" href="../html/css/vue.css" type="text/css" />
+<link rel="stylesheet" href="../html/css/vue.user.css" type="text/css" />
 
 
 
@@ -346,16 +346,18 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Delete occurrences of an element if it
-occurs more than n times</h1>
+<h1 class="title toc-ignore">Delete-occurrences-of-an-element-if-it-occurs-more-than-n-times</h1>
 <h4 class="author">Humoon</h4>
-<h4 class="date">2022-07-21</h4>
+<h4 class="date">2022-07-23</h4>
 
 </div>
 
 
-<div id="solution" class="section level3">
-<h3>Solution</h3>
+<div id="description" class="section level3">
+<h3>Description</h3>
+</div>
+<div id="solutions" class="section level3">
+<h3>Solutions</h3>
 <div id="julia" class="section level4">
 <h4>Julia</h4>
 <div class="sourceCode" id="cb1"><pre
@@ -391,7 +393,8 @@ class="sourceCode julia"><code class="sourceCode julia"><span id="cb1-1"><a href
 <div class="sourceCode" id="cb3"><pre
 class="sourceCode julia"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="pp">@test</span> <span class="fu">deleteNth</span>([<span class="fl">20</span>, <span class="fl">37</span>, <span class="fl">20</span>, <span class="fl">21</span>], <span class="fl">1</span>) <span class="op">==</span> [<span class="fl">20</span>, <span class="fl">37</span>, <span class="fl">21</span>]</span></code></pre></div>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Test</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="pp">@test</span> <span class="fu">deleteNth</span>([<span class="fl">20</span>, <span class="fl">37</span>, <span class="fl">20</span>, <span class="fl">21</span>], <span class="fl">1</span>) <span class="op">==</span> [<span class="fl">20</span>, <span class="fl">37</span>, <span class="fl">21</span>]</span></code></pre></div>
 <pre><code>#&gt; Test Passed
 #&gt;   Expression: deleteNth([20, 37, 20, 21], 1) == [20, 37, 21]
 #&gt;    Evaluated: Any[20, 37, 21] == [20, 37, 21]</code></pre>

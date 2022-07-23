@@ -11,17 +11,17 @@
 
 <meta name="author" content="Humoon" />
 
-<meta name="date" content="2022-07-21" />
+<meta name="date" content="2022-07-23" />
 
-<title>Directions Reduction</title>
+<title>Directions-Reduction</title>
 
-<script src="Rmd/libs/header-attrs-2.14/header-attrs.js"></script>
-<script src="Rmd/libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="Rmd/libs/bootstrap-3.3.5/css/united.min.css" rel="stylesheet" />
-<script src="Rmd/libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
-<script src="Rmd/libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
-<script src="Rmd/libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<link href="libs/bootstrap-3.3.5/css/united.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
 <style>h1 {font-size: 34px;}
        h1.title {font-size: 38px;}
        h2 {font-size: 30px;}
@@ -31,11 +31,11 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="Rmd/libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
-<link href="Rmd/libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="Rmd/libs/tocify-1.9.1/jquery.tocify.js"></script>
-<script src="Rmd/libs/navigation-1.1/tabsets.js"></script>
-<script src="Rmd/libs/navigation-1.1/codefolding.js"></script>
+<script src="libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="libs/navigation-1.1/tabsets.js"></script>
+<script src="libs/navigation-1.1/codefolding.js"></script>
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -151,8 +151,8 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 
 
 
-<link rel="stylesheet" href="css/vue.css" type="text/css" />
-<link rel="stylesheet" href="css/vue.user.css" type="text/css" />
+<link rel="stylesheet" href="../html/css/vue.css" type="text/css" />
+<link rel="stylesheet" href="../html/css/vue.user.css" type="text/css" />
 
 
 
@@ -346,9 +346,9 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Directions Reduction</h1>
+<h1 class="title toc-ignore">Directions-Reduction</h1>
 <h4 class="author">Humoon</h4>
-<h4 class="date">2022-07-21</h4>
+<h4 class="date">2022-07-23</h4>
 
 </div>
 
@@ -418,97 +418,97 @@ can’t become such. Hence the result path is itself : [“NORTH”, “WEST”,
 translating.</p>
 </div>
 </div>
-<div id="solution" class="section level3">
-<h3>Solution</h3>
-<div id="r" class="section level4">
-<h4>R</h4>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>dirReduc <span class="ot">&lt;-</span> <span class="cf">function</span>(arr) {</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 用 named vector 起到其他语言中 Dict/Map 的作用</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    opposite_dir <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;NORTH&quot;</span>, <span class="st">&quot;SOUTH&quot;</span>, <span class="st">&quot;EAST&quot;</span>, <span class="st">&quot;WEST&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>        <span class="fu">set_names</span>(<span class="fu">c</span>(<span class="st">&quot;SOUTH&quot;</span>, <span class="st">&quot;NORTH&quot;</span>, <span class="st">&quot;WEST&quot;</span>, <span class="st">&quot;EAST&quot;</span>))</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    stack <span class="ot">&lt;-</span> <span class="fu">character</span>(<span class="dv">0</span>)</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (step <span class="cf">in</span> arr) {</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>        n <span class="ot">&lt;-</span> <span class="fu">length</span>(stack)</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (n <span class="sc">&gt;</span> <span class="dv">0</span> <span class="sc">&amp;&amp;</span> opposite_dir[step] <span class="sc">==</span> stack[n]) {</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>            stack <span class="ot">&lt;-</span> stack[<span class="sc">-</span>n]</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>        } <span class="cf">else</span> {</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>            stack[n <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> step</span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>        }</span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    stack</span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(testthat)</span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>testing <span class="ot">&lt;-</span> <span class="cf">function</span>(ls, expected) {</span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>    actual <span class="ot">&lt;-</span> <span class="fu">dirReduc</span>(ls)</span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    <span class="fu">expect_equal</span>(actual, expected)</span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a><span class="fu">test_that</span>(<span class="st">&quot;tests&quot;</span>, {</span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>    a <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;NORTH&quot;</span>, <span class="st">&quot;SOUTH&quot;</span>, <span class="st">&quot;SOUTH&quot;</span>, <span class="st">&quot;EAST&quot;</span>, <span class="st">&quot;WEST&quot;</span>, <span class="st">&quot;NORTH&quot;</span>, <span class="st">&quot;WEST&quot;</span>)</span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">testing</span>(a, <span class="fu">c</span>(<span class="st">&quot;WEST&quot;</span>))</span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>    a <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;NORTH&quot;</span>, <span class="st">&quot;WEST&quot;</span>, <span class="st">&quot;SOUTH&quot;</span>, <span class="st">&quot;EAST&quot;</span>)</span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>    <span class="fu">testing</span>(a, <span class="fu">c</span>(<span class="st">&quot;NORTH&quot;</span>, <span class="st">&quot;WEST&quot;</span>, <span class="st">&quot;SOUTH&quot;</span>, <span class="st">&quot;EAST&quot;</span>))</span>
-<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>    a <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;NORTH&quot;</span>, <span class="st">&quot;SOUTH&quot;</span>, <span class="st">&quot;SOUTH&quot;</span>, <span class="st">&quot;EAST&quot;</span>, <span class="st">&quot;WEST&quot;</span>, <span class="st">&quot;NORTH&quot;</span>, <span class="st">&quot;NORTH&quot;</span>)</span>
-<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>    <span class="fu">testing</span>(a, <span class="fu">c</span>(<span class="st">&quot;NORTH&quot;</span>))</span>
-<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div>
-<pre><code>#&gt; Test passed</code></pre>
-</div>
+<div id="solutions" class="section level3">
+<h3>Solutions</h3>
 <div id="julia" class="section level4">
 <h4>Julia</h4>
-<div class="sourceCode" id="cb5"><pre
-class="sourceCode julia"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Directions-Reduction.jl</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Test</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 有对应关系时，经常可以用 Dict 化简代码</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> opposite <span class="op">=</span> <span class="fu">Dict</span>(</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;NORTH&quot;</span> <span class="op">=&gt;</span> <span class="st">&quot;SOUTH&quot;</span>,</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;EAST&quot;</span> <span class="op">=&gt;</span> <span class="st">&quot;WEST&quot;</span>,</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;SOUTH&quot;</span> <span class="op">=&gt;</span> <span class="st">&quot;NORTH&quot;</span>,</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;WEST&quot;</span> <span class="op">=&gt;</span> <span class="st">&quot;EAST&quot;</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Directions-Reduction.jl</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Test</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 有对应关系时，经常可以用 Dict 化简代码</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> opposite <span class="op">=</span> <span class="fu">Dict</span>(</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;NORTH&quot;</span> <span class="op">=&gt;</span> <span class="st">&quot;SOUTH&quot;</span>,</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;EAST&quot;</span> <span class="op">=&gt;</span> <span class="st">&quot;WEST&quot;</span>,</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;SOUTH&quot;</span> <span class="op">=&gt;</span> <span class="st">&quot;NORTH&quot;</span>,</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;WEST&quot;</span> <span class="op">=&gt;</span> <span class="st">&quot;EAST&quot;</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <pre><code>#&gt; Dict{String, String} with 4 entries:
 #&gt;   &quot;NORTH&quot; =&gt; &quot;SOUTH&quot;
 #&gt;   &quot;EAST&quot;  =&gt; &quot;WEST&quot;
 #&gt;   &quot;SOUTH&quot; =&gt; &quot;NORTH&quot;
 #&gt;   &quot;WEST&quot;  =&gt; &quot;EAST&quot;</code></pre>
-<div class="sourceCode" id="cb7"><pre
-class="sourceCode julia"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="st">简化无效路径</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="st">简化无效路径</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span></code></pre></div>
 <pre><code>#&gt; &quot;简化无效路径\n&quot;</code></pre>
-<div class="sourceCode" id="cb9"><pre
-class="sourceCode julia"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">dir_reduc</span>(arr<span class="op">::</span><span class="dt">Vector{String}</span>)<span class="op">::</span><span class="dt">Vector{String}</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    stack <span class="op">=</span> []</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> step <span class="op">∈</span> arr</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="fu">isempty</span>(stack)</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>            <span class="fu">push!</span>(stack, step) <span class="co"># 只要栈空了，就填新元素</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>            opposite[step] <span class="op">==</span> stack[<span class="kw">end</span>] ? <span class="fu">pop!</span>(stack) <span class="op">:</span> <span class="fu">push!</span>(stack, step)</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">end</span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    stack</span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">dir_reduc</span>(arr<span class="op">::</span><span class="dt">Vector{String}</span>)<span class="op">::</span><span class="dt">Vector{String}</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    stack <span class="op">=</span> []</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> step <span class="op">∈</span> arr</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="fu">isempty</span>(stack)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>            <span class="fu">push!</span>(stack, step) <span class="co"># 只要栈空了，就填新元素</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>            opposite[step] <span class="op">==</span> stack[<span class="kw">end</span>] ? <span class="fu">pop!</span>(stack) <span class="op">:</span> <span class="fu">push!</span>(stack, step)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">end</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    stack</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
 <pre><code>#&gt; dir_reduc (generic function with 1 method)</code></pre>
-<div class="sourceCode" id="cb11"><pre
-class="sourceCode julia"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@test</span> <span class="fu">dir_reduc</span>([<span class="st">&quot;NORTH&quot;</span>, <span class="st">&quot;SOUTH&quot;</span>, <span class="st">&quot;SOUTH&quot;</span>, <span class="st">&quot;EAST&quot;</span>, <span class="st">&quot;WEST&quot;</span>, <span class="st">&quot;NORTH&quot;</span>, <span class="st">&quot;WEST&quot;</span>]) <span class="op">==</span> [<span class="st">&quot;WEST&quot;</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@test</span> <span class="fu">dir_reduc</span>([<span class="st">&quot;NORTH&quot;</span>, <span class="st">&quot;SOUTH&quot;</span>, <span class="st">&quot;SOUTH&quot;</span>, <span class="st">&quot;EAST&quot;</span>, <span class="st">&quot;WEST&quot;</span>, <span class="st">&quot;NORTH&quot;</span>, <span class="st">&quot;WEST&quot;</span>]) <span class="op">==</span> [<span class="st">&quot;WEST&quot;</span>]</span></code></pre></div>
 <pre><code>#&gt; Test Passed
 #&gt;   Expression: dir_reduc([&quot;NORTH&quot;, &quot;SOUTH&quot;, &quot;SOUTH&quot;, &quot;EAST&quot;, &quot;WEST&quot;, &quot;NORTH&quot;, &quot;WEST&quot;]) == [&quot;WEST&quot;]
 #&gt;    Evaluated: [&quot;WEST&quot;] == [&quot;WEST&quot;]</code></pre>
+</div>
+<div id="r" class="section level4">
+<h4>R</h4>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>dirReduc <span class="ot">&lt;-</span> <span class="cf">function</span>(arr) {</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 用 named vector 起到其他语言中 Dict/Map 的作用</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    opposite_dir <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;NORTH&quot;</span>, <span class="st">&quot;SOUTH&quot;</span>, <span class="st">&quot;EAST&quot;</span>, <span class="st">&quot;WEST&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>        <span class="fu">set_names</span>(<span class="fu">c</span>(<span class="st">&quot;SOUTH&quot;</span>, <span class="st">&quot;NORTH&quot;</span>, <span class="st">&quot;WEST&quot;</span>, <span class="st">&quot;EAST&quot;</span>))</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    stack <span class="ot">&lt;-</span> <span class="fu">character</span>(<span class="dv">0</span>)</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (step <span class="cf">in</span> arr) {</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>        n <span class="ot">&lt;-</span> <span class="fu">length</span>(stack)</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (n <span class="sc">&gt;</span> <span class="dv">0</span> <span class="sc">&amp;&amp;</span> opposite_dir[step] <span class="sc">==</span> stack[n]) {</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>            stack <span class="ot">&lt;-</span> stack[<span class="sc">-</span>n]</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>        } <span class="cf">else</span> {</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>            stack[n <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> step</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>    stack</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(testthat)</span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>testing <span class="ot">&lt;-</span> <span class="cf">function</span>(ls, expected) {</span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>    actual <span class="ot">&lt;-</span> <span class="fu">dirReduc</span>(ls)</span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>    <span class="fu">expect_equal</span>(actual, expected)</span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a><span class="fu">test_that</span>(<span class="st">&quot;tests&quot;</span>, {</span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>    a <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;NORTH&quot;</span>, <span class="st">&quot;SOUTH&quot;</span>, <span class="st">&quot;SOUTH&quot;</span>, <span class="st">&quot;EAST&quot;</span>, <span class="st">&quot;WEST&quot;</span>, <span class="st">&quot;NORTH&quot;</span>, <span class="st">&quot;WEST&quot;</span>)</span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">testing</span>(a, <span class="fu">c</span>(<span class="st">&quot;WEST&quot;</span>))</span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a>    a <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;NORTH&quot;</span>, <span class="st">&quot;WEST&quot;</span>, <span class="st">&quot;SOUTH&quot;</span>, <span class="st">&quot;EAST&quot;</span>)</span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>    <span class="fu">testing</span>(a, <span class="fu">c</span>(<span class="st">&quot;NORTH&quot;</span>, <span class="st">&quot;WEST&quot;</span>, <span class="st">&quot;SOUTH&quot;</span>, <span class="st">&quot;EAST&quot;</span>))</span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>    a <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;NORTH&quot;</span>, <span class="st">&quot;SOUTH&quot;</span>, <span class="st">&quot;SOUTH&quot;</span>, <span class="st">&quot;EAST&quot;</span>, <span class="st">&quot;WEST&quot;</span>, <span class="st">&quot;NORTH&quot;</span>, <span class="st">&quot;NORTH&quot;</span>)</span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>    <span class="fu">testing</span>(a, <span class="fu">c</span>(<span class="st">&quot;NORTH&quot;</span>))</span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div>
+<pre><code>#&gt; Test passed 🎉</code></pre>
 </div>
 <div id="javascript" class="section level4">
 <h4>JavaScript</h4>

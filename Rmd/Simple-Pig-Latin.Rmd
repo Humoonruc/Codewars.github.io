@@ -1,0 +1,86 @@
+---
+title: "Simple-Pig-Latin"
+author: "Humoon"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+
+```{r setup, include = FALSE}
+source("../config/config.R")
+
+## global options ===================================
+knitr::opts_chunk$set(
+  width = config$width,
+  fig.width = config$fig.width,
+  fig.asp = config$fig.asp,
+  out.width = config$out.width,
+  fig.align = config$fig.align,
+  fig.path = config$fig.path,
+  fig.show = config$fig.show,
+  warn = config$warn,
+  warning = config$warning,
+  message = config$message,
+  echo = config$echo,
+  eval = config$eval,
+  tidy = config$tidy,
+  comment = config$comment,
+  collapse = config$collapse,
+  cache = config$cache,
+  cache.comments = config$cache.comments,
+  autodep = config$autodep
+)
+```
+
+### Description
+
+Move the first letter of each word to the end of it, then add "ay" to the end of the word. 
+
+Leave punctuation marks untouched.
+
+#### Examples
+
+```
+pigIt('Pig latin is cool'); // igPay atinlay siay oolcay
+pigIt('Hello world !');     // elloHay orldway !
+```
+
+
+### Solutions
+
+
+#### R
+
+```{r}
+library(tidyverse)
+
+replace_rule <- function(word) {
+  str_c(str_sub(word, 2), str_sub(word, 1, 1), "ay")
+}
+
+pigIt <- function(string) {
+  string %>%
+    str_replace_all("\\w+", replace_rule)
+}
+
+
+library(testthat)
+test_that("Sample Tests", {
+  expect_equal(pigIt("Pig latin is cool"), "igPay atinlay siay oolcay")
+  expect_equal(pigIt("Hello world !"), "elloHay orldway !")
+})
+
+```
+
+#### JavaScript
+
+```{node}
+/**
+ * 修改/替换所有的单词，使用正则检测，避开标点符号
+ * @param {String} str 
+ * @returns 
+ */
+function pigIt(str) {
+  return str.replace(/\w+/g, word => word.slice(1) + word[0] + 'ay');
+}
+```

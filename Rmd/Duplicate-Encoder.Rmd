@@ -1,0 +1,120 @@
+---
+title: "Duplicate-Encoder"
+author: "Humoon"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+
+```{r setup, include = FALSE}
+source("../config/config.R")
+
+## global options ===================================
+knitr::opts_chunk$set(
+  width = config$width,
+  fig.width = config$fig.width,
+  fig.asp = config$fig.asp,
+  out.width = config$out.width,
+  fig.align = config$fig.align,
+  fig.path = config$fig.path,
+  fig.show = config$fig.show,
+  warn = config$warn,
+  warning = config$warning,
+  message = config$message,
+  echo = config$echo,
+  eval = config$eval,
+  tidy = config$tidy,
+  comment = config$comment,
+  collapse = config$collapse,
+  cache = config$cache,
+  cache.comments = config$cache.comments,
+  autodep = config$autodep
+)
+```
+
+### Description
+
+
+
+### Solutions
+
+
+#### Julia
+
+```{julia}
+
+using DataStructures, Test
+
+
+"""
+出现多于1次的字符编码为右括号，只有1次的为左括号
+"""
+function duplicateencode(word::String)::String
+    lower_word = lowercase(word)
+
+    dict = counter(lower_word)
+    encode(c::Char)::Char = dict[c] > 1 ? ')' : '('
+
+    map(encode, lower_word)
+end
+
+@test duplicateencode("Success") == ")())())"
+```
+
+#### R
+
+```{r}
+## Duplicate Encoder
+
+library(tidyverse)
+
+
+#' @title 重复字符编码器
+#' @description 只出现一次的字符转换为"("；出现多次的字符转换为")"
+duplicate_encode <- function(word) {
+  # 字符串拆解为字符向量
+  chars <- tolower(word) %>%
+    str_split("") %>%
+    unlist()
+
+  # 统计频数
+  frequency <- table(chars)
+
+  chars %>%
+    map_chr(function(ch) {
+      ifelse(frequency[ch] == 1, "(", ")")
+    }) %>%
+    str_c(collapse = "")
+}
+
+duplicate_encode("Success")
+
+
+library(testthat)
+test_that("Sample Tests", {
+  expect_equal(duplicate_encode("din"), "(((")
+  expect_equal(duplicate_encode("recede"), "()()()")
+  expect_equal(duplicate_encode("Success"), ")())())", "should ignore case")
+  expect_equal(duplicate_encode("CodeWarrior"), "()(((())())")
+  expect_equal(duplicate_encode("(( @"), "))((")
+})
+
+```
+
+#### JavaScript
+
+```{node}
+const counter = require("../src/JavaScript/toolkit/Vector").counter;
+
+/**
+ * 重复字符编码器
+ * @param {String} word 
+ */
+function duplicateEncode(word) {
+  const lowerWord = word.toLowerCase();
+  const dict = counter(lowerWord);
+  return lowerWord.split("").map(c => dict[c] === 1 ? "(" : ")").join("");
+}
+
+console.log(duplicateEncode("Success"));
+```

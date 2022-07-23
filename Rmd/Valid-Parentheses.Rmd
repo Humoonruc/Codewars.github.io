@@ -1,0 +1,196 @@
+---
+title: "Valid-Parentheses"
+author: "Humoon"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+
+```{r setup, include = FALSE}
+source("../config/config.R")
+
+## global options ===================================
+knitr::opts_chunk$set(
+  width = config$width,
+  fig.width = config$fig.width,
+  fig.asp = config$fig.asp,
+  out.width = config$out.width,
+  fig.align = config$fig.align,
+  fig.path = config$fig.path,
+  fig.show = config$fig.show,
+  warn = config$warn,
+  warning = config$warning,
+  message = config$message,
+  echo = config$echo,
+  eval = config$eval,
+  tidy = config$tidy,
+  comment = config$comment,
+  collapse = config$collapse,
+  cache = config$cache,
+  cache.comments = config$cache.comments,
+  autodep = config$autodep
+)
+```
+
+### Description
+
+Write a function that takes a string of parentheses, and determines if the order of the parentheses is valid. The function should return true if the string is valid, and false if it's invalid.
+
+
+#### Examples
+
+```
+"()"              =>  true
+")(()))"          =>  false
+"("               =>  false
+"(())((()())())"  =>  true
+```
+
+#### Constraints
+
+`0 <= input.length <= 100`
+
+Along with opening (`(`) and closing (`)`) parenthesis, input may contain any valid ASCII characters. Furthermore, the input string may be empty and/or not contain any parentheses at all. Do not treat other forms of brackets as parentheses (e.g. [], {}, <>).
+
+### 算法与数据结构
+
+本题的考点是 Stack 这种数据结构，先进后出，后进先出，思路如下：
+
+```js
+function validParentheses(parens) {
+  let stack = [];
+
+  for (c of parens.split("")) {
+    if (c === '(') {
+      stack.push(c);
+    } else if (c === ')') {
+      if (stack.length === 0) return false;
+      stack.pop();
+    }
+  }
+
+  return stack.length === 0;
+}
+```
+
+具体实现时，可以用整数代替栈，尽可能化简
+
+### Solutions
+
+
+#### Julia
+
+```{julia}
+# Valid-Parentheses.jl
+
+using Test
+
+
+"""
+合法的括号
+"""
+function validparentheses(parens::String)::Bool
+    num = 0
+    for c in parens
+        # 利用短路运算，Julia 特有语法，因任何表达式都有返回值
+        c == '(' && (num += 1)
+        c == ')' && (num -= 1)
+        num < 0 && return false
+    end
+    num == 0
+end
+
+
+@test validparentheses("()") == true
+@test validparentheses("())") == false
+```
+
+#### R
+
+```{r}
+# Valid-Parentheses.R
+
+library(tidyverse)
+
+#' 检查括号对的匹配
+valid_parentheses <- function(parens) {
+  num <- 0
+
+  char_vector <- parens %>%
+    str_split("") %>%
+    unlist()
+
+  for (char in char_vector) {
+    if (char == "(") num <- num + 1
+    if (char == ")") num <- num - 1
+    if (num < 0) {
+      return(FALSE)
+    }
+  }
+
+  num == 0
+}
+
+
+valid_parentheses("()(()())")
+```
+
+#### JavaScript
+
+```{node}
+/**
+ * @module Valid-Parentheses
+ */
+
+
+/**
+ * 检测括号对匹配是否合法
+ * @param {String} parens 包含小括号和其他各种字符的字符串
+ * @returns {Boolean}
+ */
+function validParentheses(parens) {
+  // 用整数 stack 类比 Stack 
+  let stack = 0;
+
+  for (c of parens.split("")) {
+    if (c === '(') stack++;
+    if (c === ')') stack--;
+    if (stack < 0) return false;
+  }
+
+  return stack === 0;
+}
+
+
+console.log(validParentheses("()(())"));
+```
+
+#### Python
+
+```{python}
+# Valid-Parentheses.py
+
+
+#%%
+def valid_parentheses(string):
+    """
+    This is a practice problem.
+    It checks to see if parenthesis's are balanced
+    :param string: String
+    :return Bool:
+    """
+
+    num = 0
+    for c in string:
+        if (c == "("): num += 1
+        if (c == ")"): num -= 1
+        if (num < 0): return False
+    return num == 0
+
+
+#%%
+valid_parentheses("()")
+
+# %%
+
+```

@@ -7,12 +7,6 @@ using DataStructures, Test
     duplicatecount(str)
 
 计算str中出现次数多于1次的字符的个数
-
-# Example
-```jldoctest
-julia> duplicatecount("aabbcde")
-2
-```
 """
 function duplicatecount(str::String)::Int64
     dict = str |> lowercase |> counter

@@ -1,0 +1,112 @@
+---
+title: "Descending-Order"
+author: "Humoon"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+
+```{r setup, include = FALSE}
+source("../config/config.R")
+
+## global options ===================================
+knitr::opts_chunk$set(
+  width = config$width,
+  fig.width = config$fig.width,
+  fig.asp = config$fig.asp,
+  out.width = config$out.width,
+  fig.align = config$fig.align,
+  fig.path = config$fig.path,
+  fig.show = config$fig.show,
+  warn = config$warn,
+  warning = config$warning,
+  message = config$message,
+  echo = config$echo,
+  eval = config$eval,
+  tidy = config$tidy,
+  comment = config$comment,
+  collapse = config$collapse,
+  cache = config$cache,
+  cache.comments = config$cache.comments,
+  autodep = config$autodep
+)
+```
+
+### Description
+
+Your task is to make a function that can take any non-negative integer as an argument and return it with its digits in descending order. Essentially, rearrange the digits to create the highest possible number.
+
+#### Examples
+
+Input: `42145` Output: `54421`
+
+Input: `145263` Output: `654321`
+
+Input: `123456789` Output: `987654321`
+
+### Solutions
+
+
+#### Julia
+
+```{julia}
+## Descending-Order.jl
+
+using Pipe, Test
+
+
+"""
+使n的各位数字降序排列
+"""
+function descending_order(n::Int)::Int
+    @pipe n |> string |> collect |> sort |> reverse |> join |> parse(Int64, _)
+end
+
+@test descending_order(42145) == 54421
+```
+
+#### R
+
+```{r}
+library(tidyverse)
+
+#' 整数各位数字降序排列
+#' @param n 整数
+#' @return 整数
+descending_order <- function(n) {
+  n %>%
+    as.character() %>%
+    str_split("") %>% # 注意，该函数返回列表
+    unlist() %>%
+    sort(decreasing = TRUE) %>% # 可直接对字符排序
+    str_c(collapse = "") %>%
+    as.integer()
+}
+
+descending_order(42145) # 54421
+
+```
+
+#### JavaScript
+
+```{node}
+/**
+ * 
+ * @param {Number} n 
+ * @returns {Number}
+ */
+function descendingOrder(n) {
+  return parseInt(String(n).split('').sort().reverse().join(''));
+}
+
+
+// 同理有
+function squareDigits(n) {
+  return parseInt(String(n).split('').map(x => x ** 2).join(''));
+}
+console.log(squareDigits(9812) === 816414);
+
+
+module.exports = descendingOrder;
+
+```

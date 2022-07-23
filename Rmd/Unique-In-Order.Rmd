@@ -1,0 +1,138 @@
+---
+title: "Unique-In-Order"
+author: "Humoon"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+
+```{r setup, include = FALSE}
+source("../config/config.R")
+
+## global options ===================================
+knitr::opts_chunk$set(
+  width = config$width,
+  fig.width = config$fig.width,
+  fig.asp = config$fig.asp,
+  out.width = config$out.width,
+  fig.align = config$fig.align,
+  fig.path = config$fig.path,
+  fig.show = config$fig.show,
+  warn = config$warn,
+  warning = config$warning,
+  message = config$message,
+  echo = config$echo,
+  eval = config$eval,
+  tidy = config$tidy,
+  comment = config$comment,
+  collapse = config$collapse,
+  cache = config$cache,
+  cache.comments = config$cache.comments,
+  autodep = config$autodep
+)
+```
+
+### Description
+
+mplement the function unique_in_order which takes as argument a sequence and returns a list of items without any elements with the same value next to each other and preserving the original order of elements.
+
+For example:
+
+```
+uniqueInOrder('AAAABBBCCDAABBB') == ['A', 'B', 'C', 'D', 'A', 'B']
+uniqueInOrder('ABBCcAD')         == ['A', 'B', 'C', 'c', 'A', 'D']
+uniqueInOrder([1,2,2,3,3])       == [1,2,3]
+```
+
+### Solutions
+
+
+#### Julia
+
+```{julia}
+# Unique-In-Order.jl
+
+"""
+删除与前一个元素相同的元素
+"""
+function unique_in_order(arr)::Vector
+    [x for (i, x) ∈ enumerate(arr) if (i == 1 || x ≠ arr[i-1])]
+end
+
+
+unique_in_order([1, 2, 2, 3, 3, 3, 2])
+unique_in_order("aabbccaa")
+
+
+```
+
+#### R
+
+```{r}
+# Unique-In-Order.R
+
+library(tidyverse)
+
+
+unique_in_order <- function(arr) {
+    if (is.character(arr) && length(arr) == 1) {
+        arr <- unlist(str_split(arr, ""))
+    }
+
+    output <- c()
+
+    arr %>%
+        walk(function(x) {
+            if (length(output) == 0) {
+                output <<- c(output, x)
+            } else if (x != output[length(output)]) {
+                output <<- c(output, x)
+            }
+        })
+
+    output
+}
+
+
+unique_in_order(c(1, 2, 2, 3, 3, 3))
+unique_in_order("aabbbccaa")
+```
+
+#### JavaScript
+
+```{node}
+/**
+ * @module Unique-In-Order
+ */
+
+/**
+ * 只保留与前一项不同的项，组成新向量
+ * @param {Iterable} iterable 
+ * @returns {Iterable}
+ */
+function uniqueInOrder(iterable) {
+    return [...iterable].filter((a, i) => a !== iterable[i - 1]);
+    // index为-1时，返回undefined
+};
+
+console.log(uniqueInOrder('AAAABBBCCDAABBB'));
+```
+
+#### Python
+
+```{python}
+# Unique-In-Order.py
+
+#%%
+from itertools import groupby
+
+
+def unique_in_order(iterable):
+    return [k for (k, _) in groupby(iterable)]
+
+
+unique_in_order([1, 2, 2, 3, 3])
+
+# %%
+
+```

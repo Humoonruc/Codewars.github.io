@@ -1,0 +1,95 @@
+---
+title: "ISBN-10-Validation"
+author: "Humoon"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+
+```{r setup, include = FALSE}
+source("../config/config.R")
+
+## global options ===================================
+knitr::opts_chunk$set(
+  width = config$width,
+  fig.width = config$fig.width,
+  fig.asp = config$fig.asp,
+  out.width = config$out.width,
+  fig.align = config$fig.align,
+  fig.path = config$fig.path,
+  fig.show = config$fig.show,
+  warn = config$warn,
+  warning = config$warning,
+  message = config$message,
+  echo = config$echo,
+  eval = config$eval,
+  tidy = config$tidy,
+  comment = config$comment,
+  collapse = config$collapse,
+  cache = config$cache,
+  cache.comments = config$cache.comments,
+  autodep = config$autodep
+)
+```
+
+### Description
+
+ISBN-10 identifiers are ten digits long. The first nine characters are digits 0-9. The last digit can be 0-9 or X, to indicate a value of 10.
+
+An ISBN-10 number is valid if the sum of the digits multiplied by their position modulo 11 equals zero.
+
+For example:
+
+```
+ISBN     : 1 1 1 2 2 2 3 3 3  9
+position : 1 2 3 4 5 6 7 8 9 10
+```
+
+This is a valid ISBN, because:
+```
+(1*1 + 1*2 + 1*3 + 2*4 + 2*5 + 2*6 + 3*7 + 3*8 + 3*9 + 9*10) % 11 = 0
+```
+
+#### Examples
+
+```
+1112223339   -->  true
+111222333    -->  false
+1112223339X  -->  false
+1234554321   -->  true
+1234512345   -->  false
+048665088X   -->  true
+X123456788   -->  false
+```
+
+### Solutions
+
+
+#### Julia
+
+```{julia}
+# ISBN-10-Validation.jl
+
+
+"""
+解析每一位数字，'X'解析为10
+"""
+function parse_isbn(isbn::String)::Vector{Int8}
+    isbn |> collect .|> x -> isdigit(x) ? parse(Int8, x) : 10
+end
+
+
+function isvalidISBN10(isbn::String)::Bool
+    form_check = occursin(r"^\d{9}(\d|X)$", isbn)
+    !form_check && return false
+
+    arithmetic_check = sum(parse_isbn(isbn) .* (1:10)) % 11 == 0
+    return arithmetic_check
+end
+
+
+isvalidISBN10("1293")
+isvalidISBN10("1112223339")
+isvalidISBN10("1234512345")
+isvalidISBN10("X123456788")
+```

@@ -1,0 +1,109 @@
+---
+title: "Scramblies"
+author: "Humoon"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+
+```{r setup, include = FALSE}
+source("../config/config.R")
+
+## global options ===================================
+knitr::opts_chunk$set(
+  width = config$width,
+  fig.width = config$fig.width,
+  fig.asp = config$fig.asp,
+  out.width = config$out.width,
+  fig.align = config$fig.align,
+  fig.path = config$fig.path,
+  fig.show = config$fig.show,
+  warn = config$warn,
+  warning = config$warning,
+  message = config$message,
+  echo = config$echo,
+  eval = config$eval,
+  tidy = config$tidy,
+  comment = config$comment,
+  collapse = config$collapse,
+  cache = config$cache,
+  cache.comments = config$cache.comments,
+  autodep = config$autodep
+)
+```
+
+### Description
+
+Complete the function scramble(str1, str2) that returns true if a portion of str1 characters can be rearranged to match str2, otherwise returns false.
+
+#### Notes:
+
+Only lower case letters will be used (a-z). No punctuation or digits will be included.
+Performance needs to be considered.
+
+#### Examples
+
+```
+scramble('rkqodlw', 'world') ==> True
+scramble('cedewaraaossoqqyt', 'codewars') ==> True
+scramble('katas', 'steak') ==> False
+```
+
+### Solutions
+
+
+#### Julia
+
+```{julia}
+using DataStructures
+using Test
+
+
+"""
+if a portion of str1 characters can be rearranged to match str2
+"""
+function scramble(str1::String, str2::String)
+    dict1 = DataStructures.counter(str1)
+    dict2 = DataStructures.counter(str2)
+
+    [dict2[key] ≤ dict1[key] for key ∈ keys(dict2)] |> all
+end
+
+
+@test scramble("rkqodlw", "world") == true
+@test scramble("cedewaraaossoqqyt", "codewars") == true
+@test scramble("katas", "steak") == false
+```
+
+#### R
+
+```{r}
+library(tidyverse)
+
+scramble <- function(s1, s2) {
+    table1 <- s1 %>%
+        str_split("") %>%
+        unlist() %>%
+        table()
+
+
+    table2 <- s2 %>%
+        str_split("") %>%
+        unlist() %>%
+        table()
+
+
+    map_lgl(
+        .x = names(table2),
+        .f = function(key) {
+            if (!key %in% names(t1)) {
+                return(FALSE)
+            } else {
+                return(table2[key] <= table1[key])
+            }
+        }
+    ) %>%
+        all()
+}
+
+```

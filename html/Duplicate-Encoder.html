@@ -11,17 +11,17 @@
 
 <meta name="author" content="Humoon" />
 
-<meta name="date" content="2022-07-21" />
+<meta name="date" content="2022-07-23" />
 
-<title>Duplicate Encoder</title>
+<title>Duplicate-Encoder</title>
 
-<script src="Rmd/libs/header-attrs-2.14/header-attrs.js"></script>
-<script src="Rmd/libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="Rmd/libs/bootstrap-3.3.5/css/united.min.css" rel="stylesheet" />
-<script src="Rmd/libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
-<script src="Rmd/libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
-<script src="Rmd/libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<link href="libs/bootstrap-3.3.5/css/united.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
 <style>h1 {font-size: 34px;}
        h1.title {font-size: 38px;}
        h2 {font-size: 30px;}
@@ -31,11 +31,11 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="Rmd/libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
-<link href="Rmd/libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="Rmd/libs/tocify-1.9.1/jquery.tocify.js"></script>
-<script src="Rmd/libs/navigation-1.1/tabsets.js"></script>
-<script src="Rmd/libs/navigation-1.1/codefolding.js"></script>
+<script src="libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="libs/navigation-1.1/tabsets.js"></script>
+<script src="libs/navigation-1.1/codefolding.js"></script>
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -151,8 +151,8 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 
 
 
-<link rel="stylesheet" href="css/vue.css" type="text/css" />
-<link rel="stylesheet" href="css/vue.user.css" type="text/css" />
+<link rel="stylesheet" href="../html/css/vue.css" type="text/css" />
+<link rel="stylesheet" href="../html/css/vue.user.css" type="text/css" />
 
 
 
@@ -346,84 +346,87 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Duplicate Encoder</h1>
+<h1 class="title toc-ignore">Duplicate-Encoder</h1>
 <h4 class="author">Humoon</h4>
-<h4 class="date">2022-07-21</h4>
+<h4 class="date">2022-07-23</h4>
 
 </div>
 
 
-<div id="solution" class="section level3">
-<h3>Solution</h3>
-<div id="r" class="section level4">
-<h4>R</h4>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Duplicate Encoder</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @title 重复字符编码器</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @description 只出现一次的字符转换为&#39;(&#39;；出现多次的字符转换为&#39;)&#39;</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>duplicate_encode <span class="ot">&lt;-</span> <span class="cf">function</span>(word) {</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 字符串拆解为字符向量</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    chars <span class="ot">&lt;-</span> <span class="fu">tolower</span>(word) <span class="sc">%&gt;%</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        <span class="fu">str_split</span>(<span class="st">&quot;&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>        <span class="fu">unlist</span>()</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 统计频数</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    frequency <span class="ot">&lt;-</span> <span class="fu">table</span>(chars)</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    chars <span class="sc">%&gt;%</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>        <span class="fu">map_chr</span>(<span class="cf">function</span>(ch) {</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>            <span class="fu">ifelse</span>(frequency[ch] <span class="sc">==</span> <span class="dv">1</span>, <span class="st">&quot;(&quot;</span>, <span class="st">&quot;)&quot;</span>)</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>        }) <span class="sc">%&gt;%</span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>        <span class="fu">str_c</span>(<span class="at">collapse =</span> <span class="st">&quot;&quot;</span>)</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="fu">duplicate_encode</span>(<span class="st">&quot;Success&quot;</span>)</span></code></pre></div>
-<pre><code>#&gt; [1] &quot;)())())&quot;</code></pre>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(testthat)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">test_that</span>(<span class="st">&quot;Sample Tests&quot;</span>, {</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">expect_equal</span>(<span class="fu">duplicate_encode</span>(<span class="st">&quot;din&quot;</span>), <span class="st">&quot;(((&quot;</span>)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">expect_equal</span>(<span class="fu">duplicate_encode</span>(<span class="st">&quot;recede&quot;</span>), <span class="st">&quot;()()()&quot;</span>)</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">expect_equal</span>(<span class="fu">duplicate_encode</span>(<span class="st">&quot;Success&quot;</span>), <span class="st">&quot;)())())&quot;</span>, <span class="st">&quot;should ignore case&quot;</span>)</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">expect_equal</span>(<span class="fu">duplicate_encode</span>(<span class="st">&quot;CodeWarrior&quot;</span>), <span class="st">&quot;()(((())())&quot;</span>)</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">expect_equal</span>(<span class="fu">duplicate_encode</span>(<span class="st">&quot;(( @&quot;</span>), <span class="st">&quot;))((&quot;</span>)</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div>
-<pre><code>#&gt; Test passed</code></pre>
+<div id="description" class="section level3">
+<h3>Description</h3>
 </div>
+<div id="solutions" class="section level3">
+<h3>Solutions</h3>
 <div id="julia" class="section level4">
 <h4>Julia</h4>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataStructures</span>, <span class="bu">Test</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="st">出现多于1次的字符编码为右括号，只有1次的为左括号</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span></code></pre></div>
+<pre><code>#&gt; &quot;出现多于1次的字符编码为右括号，只有1次的为左括号\n&quot;</code></pre>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode julia"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">duplicateencode</span>(word<span class="op">::</span><span class="dt">String</span>)<span class="op">::</span><span class="dt">String</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    lower_word <span class="op">=</span> <span class="fu">lowercase</span>(word)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    dict <span class="op">=</span> <span class="fu">counter</span>(lower_word)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">encode</span>(c<span class="op">::</span><span class="dt">Char</span>)<span class="op">::</span><span class="dt">Char </span><span class="op">=</span> dict[c] <span class="op">&gt;</span> <span class="fl">1</span> ? <span class="ch">&#39;)&#39;</span> <span class="op">:</span> <span class="ch">&#39;(&#39;</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">map</span>(encode, lower_word)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
+<pre><code>#&gt; duplicateencode (generic function with 1 method)</code></pre>
 <div class="sourceCode" id="cb5"><pre
 class="sourceCode julia"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataStructures</span>, <span class="bu">Test</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="st">出现多于1次的字符编码为右括号，只有1次的为左括号</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span></code></pre></div>
-<pre><code>#&gt; &quot;出现多于1次的字符编码为右括号，只有1次的为左括号\n&quot;</code></pre>
-<div class="sourceCode" id="cb7"><pre
-class="sourceCode julia"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">duplicateencode</span>(word<span class="op">::</span><span class="dt">String</span>)<span class="op">::</span><span class="dt">String</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    lower_word <span class="op">=</span> <span class="fu">lowercase</span>(word)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    dict <span class="op">=</span> <span class="fu">counter</span>(lower_word)</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">encode</span>(c<span class="op">::</span><span class="dt">Char</span>)<span class="op">::</span><span class="dt">Char </span><span class="op">=</span> dict[c] <span class="op">&gt;</span> <span class="fl">1</span> ? <span class="ch">&#39;)&#39;</span> <span class="op">:</span> <span class="ch">&#39;(&#39;</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">map</span>(encode, lower_word)</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
-<pre><code>#&gt; duplicateencode (generic function with 1 method)</code></pre>
-<div class="sourceCode" id="cb9"><pre
-class="sourceCode julia"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@test</span> <span class="fu">duplicateencode</span>(<span class="st">&quot;Success&quot;</span>) <span class="op">==</span> <span class="st">&quot;)())())&quot;</span></span></code></pre></div>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@test</span> <span class="fu">duplicateencode</span>(<span class="st">&quot;Success&quot;</span>) <span class="op">==</span> <span class="st">&quot;)())())&quot;</span></span></code></pre></div>
 <pre><code>#&gt; Test Passed
 #&gt;   Expression: duplicateencode(&quot;Success&quot;) == &quot;)())())&quot;
 #&gt;    Evaluated: &quot;)())())&quot; == &quot;)())())&quot;</code></pre>
 </div>
+<div id="r" class="section level4">
+<h4>R</h4>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Duplicate Encoder</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @title 重复字符编码器</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @description 只出现一次的字符转换为&#39;(&#39;；出现多次的字符转换为&#39;)&#39;</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>duplicate_encode <span class="ot">&lt;-</span> <span class="cf">function</span>(word) {</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 字符串拆解为字符向量</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    chars <span class="ot">&lt;-</span> <span class="fu">tolower</span>(word) <span class="sc">%&gt;%</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>        <span class="fu">str_split</span>(<span class="st">&quot;&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>        <span class="fu">unlist</span>()</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 统计频数</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    frequency <span class="ot">&lt;-</span> <span class="fu">table</span>(chars)</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    chars <span class="sc">%&gt;%</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>        <span class="fu">map_chr</span>(<span class="cf">function</span>(ch) {</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>            <span class="fu">ifelse</span>(frequency[ch] <span class="sc">==</span> <span class="dv">1</span>, <span class="st">&quot;(&quot;</span>, <span class="st">&quot;)&quot;</span>)</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>        }) <span class="sc">%&gt;%</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>        <span class="fu">str_c</span>(<span class="at">collapse =</span> <span class="st">&quot;&quot;</span>)</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="fu">duplicate_encode</span>(<span class="st">&quot;Success&quot;</span>)</span></code></pre></div>
+<pre><code>#&gt; [1] &quot;)())())&quot;</code></pre>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(testthat)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">test_that</span>(<span class="st">&quot;Sample Tests&quot;</span>, {</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">expect_equal</span>(<span class="fu">duplicate_encode</span>(<span class="st">&quot;din&quot;</span>), <span class="st">&quot;(((&quot;</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">expect_equal</span>(<span class="fu">duplicate_encode</span>(<span class="st">&quot;recede&quot;</span>), <span class="st">&quot;()()()&quot;</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">expect_equal</span>(<span class="fu">duplicate_encode</span>(<span class="st">&quot;Success&quot;</span>), <span class="st">&quot;)())())&quot;</span>, <span class="st">&quot;should ignore case&quot;</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">expect_equal</span>(<span class="fu">duplicate_encode</span>(<span class="st">&quot;CodeWarrior&quot;</span>), <span class="st">&quot;()(((())())&quot;</span>)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">expect_equal</span>(<span class="fu">duplicate_encode</span>(<span class="st">&quot;(( @&quot;</span>), <span class="st">&quot;))((&quot;</span>)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div>
+<pre><code>#&gt; Test passed 🥇</code></pre>
+</div>
 <div id="javascript" class="section level4">
 <h4>JavaScript</h4>
 <div class="sourceCode" id="cb11"><pre
-class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> counter <span class="op">=</span> <span class="pp">require</span>(<span class="st">&quot;../../src/JavaScript/toolkit/Vector&quot;</span>)<span class="op">.</span><span class="at">counter</span><span class="op">;</span></span>
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> counter <span class="op">=</span> <span class="pp">require</span>(<span class="st">&quot;../src/JavaScript/toolkit/Vector&quot;</span>)<span class="op">.</span><span class="at">counter</span><span class="op">;</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"> * 重复字符编码器</span></span>

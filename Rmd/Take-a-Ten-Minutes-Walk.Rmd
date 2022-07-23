@@ -1,0 +1,86 @@
+---
+title: "Take-a-Ten-Minutes-Walk"
+author: "Humoon"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+
+```{r setup, include = FALSE}
+source("../config/config.R")
+
+## global options ===================================
+knitr::opts_chunk$set(
+  width = config$width,
+  fig.width = config$fig.width,
+  fig.asp = config$fig.asp,
+  out.width = config$out.width,
+  fig.align = config$fig.align,
+  fig.path = config$fig.path,
+  fig.show = config$fig.show,
+  warn = config$warn,
+  warning = config$warning,
+  message = config$message,
+  echo = config$echo,
+  eval = config$eval,
+  tidy = config$tidy,
+  comment = config$comment,
+  collapse = config$collapse,
+  cache = config$cache,
+  cache.comments = config$cache.comments,
+  autodep = config$autodep
+)
+```
+
+### Description
+
+You live in the city of Cartesia where all roads are laid out in a perfect grid. You arrived ten minutes too early to an appointment, so you decided to take the opportunity to go for a short walk. The city provides its citizens with a Walk Generating App on their phones -- everytime you press the button it sends you an array of one-letter strings representing directions to walk (eg. ['n', 's', 'w', 'e']). You always walk only a single block for each letter (direction) and you know it takes you one minute to traverse one city block, so create a function that will return true if the walk the app gives you will take you exactly ten minutes (you don't want to be early or late!) and will, of course, return you to your starting point. Return false otherwise.
+
+
+### Solutions
+
+
+#### Julia
+
+```{julia}
+using Test
+
+
+"""
+valid walk 的标准为：走十步并回到原点
+"""
+function isvalidwalk(walk::Vector{Char})::Bool
+    [length(walk) == 10,
+        sum(walk .== 'n') == sum(walk .== 's'),
+        sum(walk .== 'e') == sum(walk .== 'w')] |> all
+end
+
+@test isvalidwalk(['n', 's', 'n', 's', 'n', 's', 'n', 's', 'n', 's']) == true
+```
+
+#### R
+
+```{r}
+#' @description 10轮后恰好回到起点返回 TRUE，否则返回 FALSE
+isValidWalk <- function(walk) {
+  all(
+    length(walk) == 10,
+    sum(walk == "n") == sum(walk == "s"),
+    sum(walk == "w") == sum(walk == "e")
+  )
+}
+
+```
+
+#### JavaScript
+
+```{node}
+function isValidWalk(walk) {
+  let nn = walk.filter(x => x === "n").length;
+  let ns = walk.filter(x => x === "s").length;
+  let nw = walk.filter(x => x === "w").length;
+  let ne = walk.filter(x => x === "e").length;
+  if (walk.length === 10 && nn === ns && nw === ne) return true;
+  else return false;
+}
+```
