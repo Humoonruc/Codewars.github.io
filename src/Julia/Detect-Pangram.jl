@@ -11,6 +11,4 @@ function is_pangram(str::String)::Bool
     all('a':'z' .∈ lowercase(str))
 end
 
-
-
 @test is_pangram("The quick, brown fox jumps over the lazy dog!") == true

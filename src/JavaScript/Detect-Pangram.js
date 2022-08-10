@@ -2,8 +2,8 @@
 const letters = require("./toolkit/CharacterObject").letters;
 
 function isPangram(string) {
-  // const letters = [...Array(26)].map((_, i) => String.fromCharCode(i + 97));
-  return letters.every(c => string.toLowerCase().includes(c));
+    // const letters = [...Array(26)].map((_, i) => String.fromCharCode(i + 97));
+    return letters.every(c => string.toLowerCase().includes(c));
 }
 
 

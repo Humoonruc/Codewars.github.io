@@ -51,3 +51,4 @@ def look_and_say(data='1', maxlen=5):
 look_and_say("1", 5)
 
 # %%
+

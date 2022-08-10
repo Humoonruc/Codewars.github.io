@@ -1,4 +1,4 @@
-using Test
+# Calculating-with-Functions.jl
 
 
 """
@@ -9,8 +9,9 @@ function ClosureFactory(x)
     closure(f=nothing) = isnothing(f) ? x : f(x) # return a closure
 end
 
-methods(ClosureFactory(-2))
+# methods(ClosureFactory(-2))
 
+using Test
 @testset "Closure factory working tests" begin
     @test ClosureFactory(-2)() == -2
     @test ClosureFactory(-2)(abs) == 2
@@ -18,8 +19,8 @@ methods(ClosureFactory(-2))
 end
 
 
-# 10 data closures
-zero, one, two, three, four, five, six, seven, eight, nine = map(ClosureFactory, 0:9)
+# 10 closures
+zero, one, two, three, four, five, six, seven, eight, nine = ClosureFactory.(0:9)
 
 
 # 4 operator closure factories
